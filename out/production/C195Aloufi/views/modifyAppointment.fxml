@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="900.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="21.0" layoutY="36.0" text="Modify An Appointment">
+         <font>
+            <Font name="SansSerif Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="46.0" layoutY="127.0" text="Appointment ID:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="46.0" layoutY="180.0" text="Title:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="47.0" layoutY="229.0" text="Description:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="288.0" text="Location:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="46.0" layoutY="340.0" text="Contact:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="399.0" text="Type:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="454.0" text="Customer ID:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="48.0" layoutY="505.0" text="User ID:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="440.0" layoutY="180.0" text="Start Date:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="modStartDate" layoutX="549.0" layoutY="178.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </DatePicker>
+      <Label layoutX="440.0" layoutY="228.0" text="Start Time:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="440.0" layoutY="339.0" text="End Date:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="modEndDate" layoutX="549.0" layoutY="337.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </DatePicker>
+      <Label layoutX="438.0" layoutY="398.0" text="End Time:">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <Spinner fx:id="modStartHourSpinner" layoutX="549.0" layoutY="226.0" prefHeight="26.0" prefWidth="70.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Spinner>
+      <Spinner fx:id="modStartMinSpinner" layoutX="650.0" layoutY="226.0" prefHeight="26.0" prefWidth="70.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Spinner>
+      <Spinner fx:id="modEndHourSpinner" layoutX="549.0" layoutY="396.0" prefHeight="26.0" prefWidth="70.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Spinner>
+      <Spinner fx:id="modEndMinSpinner" layoutX="650.0" layoutY="396.0" prefHeight="26.0" prefWidth="70.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Spinner>
+      <ComboBox fx:id="modUserIdCombo" layoutX="214.0" layoutY="502.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ComboBox>
+      <ComboBox fx:id="modCustomerIdCombo" layoutX="214.0" layoutY="451.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ComboBox>
+      <ComboBox fx:id="modContactCombo" layoutX="214.0" layoutY="337.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ComboBox>
+      <TextField fx:id="modAppointmentIdTxt" disable="true" editable="false" layoutX="214.0" layoutY="125.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="modTitleTxt" layoutX="214.0" layoutY="178.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="modDescriptionTxt" layoutX="214.0" layoutY="227.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="modLocationTxt" layoutX="214.0" layoutY="285.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="modTypeTxt" layoutX="214.0" layoutY="396.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <Button fx:id="saveBtn" layoutX="531.0" layoutY="557.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: daecfe;" text="Save">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="cancelBtn" layoutX="765.0" layoutY="557.0" mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: daecfe;" text="Cancel">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="clearBtn" layoutX="650.0" layoutY="557.0" mnemonicParsing="false" onAction="#handleClear" prefHeight="34.0" prefWidth="83.0" style="-fx-background-color: daecfe;" text="Clear">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+   </children>
+</AnchorPane>
