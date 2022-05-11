@@ -68,11 +68,13 @@ public class LoginController implements Initializable {
                 loginSuccess();
 
                 try {
-                    Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                    Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
                     Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
                     stage.setTitle("Appointment Management System");
                     stage.setScene(new Scene(scene));
                     stage.show();
+                    stage.centerOnScreen();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
