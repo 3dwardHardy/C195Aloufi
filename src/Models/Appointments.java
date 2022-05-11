@@ -1,6 +1,5 @@
 package Models;
 
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
@@ -39,10 +38,12 @@ private int userId;
 
 private int contactId;
 
+private String contactName;
+
 
 public ObservableList<Appointments> appointments;
 
-public Appointments ( int apptId,
+public Appointments (int apptId,
                      String title,
                      String description,
                      String location,
@@ -53,7 +54,8 @@ public Appointments ( int apptId,
                      LocalDate endDate,
                      LocalDateTime endTime,
                      int customerId,
-                     int userId) {
+                     int userId,
+                     String contactName) {
     this.apptId = apptId;
     this.title = title;
     this.description = description;
@@ -66,6 +68,7 @@ public Appointments ( int apptId,
     this.endTime = endTime;
     this.customerId = customerId;
     this.userId = userId;
+    this.contactName = contactName;
 }
 
     public int getApptId() {
@@ -158,6 +161,14 @@ public Appointments ( int apptId,
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
     public ObservableList<Appointments> getAppointments() {

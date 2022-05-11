@@ -11,20 +11,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="1052.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="549.0" prefWidth="1085.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainScreenController">
    <children>
-      <TableView fx:id="appointmentsTableView" layoutX="14.0" layoutY="100.0" prefHeight="400.0" prefWidth="1023.0" style="-fx-background-color: e2f0fe;">
+      <TableView fx:id="appointmentsTableView" layoutX="14.0" layoutY="100.0" prefHeight="400.0" prefWidth="1058.0" style="-fx-background-color: e2f0fe;">
         <columns>
           <TableColumn fx:id="apptId" editable="false" prefWidth="75.0" text="APPT ID" />
           <TableColumn fx:id="title" editable="false" prefWidth="134.39999389648438" text="TITLE" />
-            <TableColumn fx:id="description" editable="false" prefWidth="156.0000457763672" text="DESCRIPTION" />
-            <TableColumn fx:id="location" editable="false" prefWidth="89.5999755859375" text="LOCATION" />
-            <TableColumn fx:id="contactId" editable="false" prefWidth="85.60006713867188" text="CONTACT ID" />
-            <TableColumn fx:id="type" editable="false" prefWidth="112.00006103515625" text="TYPE" />
-            <TableColumn fx:id="startDateTime" editable="false" minWidth="0.0" prefWidth="109.60003662109375" text="START DATE TIME" />
-            <TableColumn fx:id="endDateTime" editable="false" minWidth="0.0" prefWidth="103.20001220703125" text="END DATE TIME" />
-            <TableColumn fx:id="customerId" editable="false" prefWidth="88.79998779296875" text="CUSTOMER ID" />
-            <TableColumn fx:id="userId" editable="false" prefWidth="71.20001220703125" text="USER ID" />
+            <TableColumn fx:id="description" editable="false" prefWidth="150.39996337890625" text="DESCRIPTION" />
+            <TableColumn fx:id="location" editable="false" prefWidth="96.800048828125" text="LOCATION" />
+            <TableColumn fx:id="contactId" editable="false" prefWidth="115.99993896484375" text="CONTACT" />
+            <TableColumn fx:id="type" editable="false" prefWidth="120.0" text="TYPE" />
+            <TableColumn fx:id="startDateTime" editable="false" minWidth="0.0" prefWidth="119.20001220703125" text="START DATE TIME" />
+            <TableColumn fx:id="endDateTime" editable="false" minWidth="0.0" prefWidth="105.60003662109375" text="END DATE TIME" />
+            <TableColumn fx:id="customerId" editable="false" prefWidth="88.0" text="CUSTOMER ID" />
+            <TableColumn fx:id="userId" editable="false" prefWidth="51.199951171875" text="USER ID" />
         </columns>
          <effect>
             <DropShadow />
@@ -46,7 +46,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="apptAddBtn" layoutX="228.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleAddAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Add Appointment">
+      <Button fx:id="apptAddBtn" layoutX="239.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleAddAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Add Appointment">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -54,7 +54,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="modifyApptBtn" layoutX="448.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleModifyAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Modify Appointment">
+      <Button fx:id="modifyApptBtn" layoutX="465.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleModifyAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Modify Appointment">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -70,7 +70,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="logoutBtn" layoutX="880.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleLogout" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Logout" textAlignment="CENTER">
+      <Button fx:id="logoutBtn" layoutX="915.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleLogout" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Logout" textAlignment="CENTER">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -113,7 +113,7 @@
             <Glow />
          </effect>
       </RadioButton>
-      <Button fx:id="deleteApptBtn" layoutX="662.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleApptDelete" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Delete Appointment">
+      <Button fx:id="deleteApptBtn" layoutX="688.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleApptDelete" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Delete Appointment">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>

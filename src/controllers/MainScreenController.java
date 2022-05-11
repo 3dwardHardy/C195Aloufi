@@ -2,14 +2,21 @@ package controllers;
 
 import Models.Appointments;
 import database.AppointmentsDAO;
+import helper.JDBC;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -54,7 +61,13 @@ public class MainScreenController implements Initializable {
 
     static ObservableList<Appointments> appointments;
 
-    public void handleCustomerMenu(ActionEvent actionEvent) {
+    public void handleCustomerMenu(ActionEvent actionEvent) throws IOException {
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/customerMenu.FXML"));
+        stage.setTitle("Customer Menu");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
     }
 
     public void handleAddAppt(ActionEvent actionEvent) {
@@ -66,7 +79,14 @@ public class MainScreenController implements Initializable {
     public void handleReports(ActionEvent actionEvent) {
     }
 
-    public void handleLogout(ActionEvent actionEvent) {
+    public void handleLogout(ActionEvent actionEvent) throws IOException {
+        JDBC.closeConnection();
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/loginScreen.FXML"));
+        stage.setTitle("Login Screen");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
     }
 
     public void handleCustomerView(ActionEvent actionEvent) {
@@ -93,7 +113,7 @@ public class MainScreenController implements Initializable {
             title.setCellValueFactory(new PropertyValueFactory<>("title"));
             description.setCellValueFactory(new PropertyValueFactory<>("description"));
             location.setCellValueFactory(new PropertyValueFactory<>("location"));
-            contactId.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+            contactId.setCellValueFactory(new PropertyValueFactory<>("contactName"));
             type.setCellValueFactory(new PropertyValueFactory<>("type"));
             startDateTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
             endDateTime.setCellValueFactory(new PropertyValueFactory<>("endTime"));

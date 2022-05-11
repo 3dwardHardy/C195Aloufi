@@ -14,7 +14,7 @@ public class AppointmentsDAO {
 
     public static ObservableList<Appointments> getAppts() throws SQLException {
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();
-        String sqlStatement = "SELECT * FROM appointments;";
+        String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID;";
         PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
         ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -31,7 +31,8 @@ public class AppointmentsDAO {
                     resultSet.getDate("End").toLocalDate(),
                     resultSet.getTimestamp("End").toLocalDateTime(),
                     resultSet.getInt("Customer_ID"),
-                    resultSet.getInt("User_ID"));
+                    resultSet.getInt("User_ID"),
+                    resultSet.getString("Contact_Name"));
             appointments.add(appts);
             }
         return appointments;
