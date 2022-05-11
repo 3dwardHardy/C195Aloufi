@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="500.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.loginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="500.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <children>
-      <TextField fx:id="userNameTxt" layoutX="125.0" layoutY="49.0">
+      <TextField fx:id="userNameTxt" layoutX="162.0" layoutY="49.0">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>
@@ -20,7 +20,15 @@
             <DropShadow />
          </effect>
       </TextField>
-      <Button fx:id="loginBtn" layoutX="391.0" layoutY="49.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="26.0" prefWidth="73.0" style="-fx-background-color: daecfe;" text="Login">
+      <PasswordField fx:id="passTxt" layoutX="162.0" layoutY="86.0" prefHeight="26.0" prefWidth="175.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
+      </PasswordField>
+      <Button fx:id="loginBtn" layoutX="374.0" layoutY="49.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="26.0" prefWidth="106.0" style="-fx-background-color: daecfe;" text="Login">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -28,7 +36,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="resetBtn" layoutX="390.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleReset" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: daecfe;" text="Reset">
+      <Button fx:id="resetBtn" layoutX="374.0" layoutY="112.0" mnemonicParsing="false" onAction="#handleReset" prefHeight="26.0" prefWidth="106.0" style="-fx-background-color: daecfe;" text="Reset">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -36,7 +44,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="exitBtn" layoutX="390.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: daecfe;" text=" Exit ">
+      <Button fx:id="exitBtn" layoutX="374.0" layoutY="174.0" mnemonicParsing="false" onAction="#handleExit" prefHeight="26.0" prefWidth="106.0" style="-fx-background-color: daecfe;" text=" Exit ">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -44,30 +52,30 @@
             <DropShadow />
          </effect>
       </Button>
-      <Label fx:id="userLabel" layoutX="43.0" layoutY="54.0" text="Username:">
+      <Label fx:id="userLabel" layoutX="27.0" layoutY="54.0" text="Username:">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="passLabel" layoutX="43.0" layoutY="91.0" text="Password:">
+      <Label fx:id="passLabel" layoutX="27.0" layoutY="91.0" text="Password:">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="timeZoneLabel" layoutX="43.0" layoutY="145.0" text="Current Time Zone: ">
+      <Label fx:id="timeZoneLabel" layoutX="27.0" layoutY="145.0" text="Current Time Zone: ">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="currentTimeZoneLabel" layoutX="190.0" layoutY="145.0" text="Time Zone">
+      <Label fx:id="currentTimeZoneLabel" layoutX="215.0" layoutY="145.0" text="Time Zone">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
       </Label>
-      <SplitMenuButton fx:id="languageMenu" layoutX="43.0" layoutY="187.0" mnemonicParsing="false" style="-fx-background-color: daecfe;" text="Language">
+      <SplitMenuButton fx:id="languageMenu" layoutX="27.0" layoutY="187.0" mnemonicParsing="false" style="-fx-background-color: daecfe;" text="Language">
         <items>
-          <MenuItem fx:id="englishLangSelection" mnemonicParsing="false" text="English" />
-          <MenuItem fx:id="frenchLangSelection" mnemonicParsing="false" text="French" />
+          <MenuItem fx:id="englishLangSelection" mnemonicParsing="false" onAction="#handleEnglish" text="English" />
+          <MenuItem fx:id="frenchLangSelection" mnemonicParsing="false" onAction="#handleFrench" text="French" />
         </items>
          <font>
             <Font name="SansSerif Bold" size="14.0" />
@@ -76,10 +84,5 @@
             <DropShadow />
          </effect>
       </SplitMenuButton>
-      <PasswordField fx:id="passTxt" layoutX="125.0" layoutY="86.0" onAction="#handleLogin" prefHeight="26.0" prefWidth="175.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </PasswordField>
    </children>
 </AnchorPane>

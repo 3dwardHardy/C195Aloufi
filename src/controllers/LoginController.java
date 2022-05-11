@@ -1,8 +1,6 @@
 package controllers;
 
-import database.AppointmentsDAO;
 import database.UsersDAO;
-import helper.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,17 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Locale;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -28,7 +22,7 @@ public class LoginController implements Initializable {
     private TextField userNameTxt;
 
     @FXML
-    private TextField passTxt;
+    private PasswordField passTxt;
 
     @FXML
     private Label userLabel;
@@ -60,79 +54,75 @@ public class LoginController implements Initializable {
     @FXML
     private Button exitBtn;
 
+    private ResourceBundle resourceBundle;
 
-    public boolean handleLogin(ActionEvent actionEvent) throws IOException {
-        try{
-        String userName = userNameTxt.getText();
-        String password = passTxt.getText();
-        String dateTime = ZonedDateTime.now(ZoneId.of("UTC")).toString();
 
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("Properties/French");
-        ResourceBundle rb = ResourceBundle.getBundle("Properties/English");
+    public void handleLogin(ActionEvent actionEvent) throws IOException {
+        usernamePresent(userNameTxt.getText());
+        passwordPresent(passTxt.getText());
 
-         boolean validatedLogon = UsersDAO.validLogin(userName, password);
-         if (!validatedLogon) {
-             if (Locale.getDefault().getLanguage().equals("fr")) {
-                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                 alert.setTitle(resourceBundle.getString("loginError"));
-                 alert.setHeaderText(resourceBundle.getString("incorrect"));
-                 alert.setContentText(resourceBundle.getString("tryAgain"));
-                 alert.showAndWait();
-             }
+        try {
+            boolean validLogon = UsersDAO.validLogin(userNameTxt.getText(), passTxt.getText());
 
-                 if (Locale.getDefault().getLanguage().equals("en")) {
-                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                     alert.setTitle(rb.getString("loginError"));
-                     alert.setHeaderText(rb.getString("incorrect"));
-                     alert.setContentText(rb.getString("tryAgain"));
-                     alert.showAndWait();
-                 }
-         }
-         if (userNameTxt.getText().isEmpty()) {
-             if (Locale.getDefault().getLanguage().equals("fr")) {
-                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                 alert.setTitle(resourceBundle.getString("loginError"));
-                 alert.setHeaderText(resourceBundle.getString("noUser"));
-                 alert.setContentText(resourceBundle.getString("tryAgain"));
-                 alert.showAndWait();
-             } if (Locale.getDefault().getLanguage().equals("en")) {
-                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                 alert.setTitle(rb.getString("loginError"));
-                 alert.setHeaderText(rb.getString("noUser"));
-                 alert.setContentText(rb.getString("tryAgain"));
-                 alert.showAndWait();
-             }
-         }
-         if (passTxt.getText().isEmpty()) {
-            if (Locale.getDefault().getLanguage().equals("fr")) {
+            if (validLogon) {
+                loginSuccess();
+
+                try {
+                    Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
+                    Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
+                    stage.setTitle("Appointment Management System");
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+
+                loginFailed();
+
+                if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle(resourceBundle.getString("loginError"));
+                    alert.setHeaderText(resourceBundle.getString("incorrect"));
+                    alert.setContentText(resourceBundle.getString("tryAgain"));
+                    alert.showAndWait();
+                }
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    private void usernamePresent(String username) {
+        if (username.isEmpty()) {
+            if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(resourceBundle.getString("loginError"));
-                alert.setHeaderText(resourceBundle.getString("noPassword"));
-                alert.setContentText(resourceBundle.getString("tryAgain"));
+                alert.setHeaderText("noUser");
+                alert.setContentText("tryAgain");
                 alert.showAndWait();
             }
-            if (Locale.getDefault().getLanguage().equals("en")) {
+        }
+    }
+
+    private void passwordPresent(String password) {
+        if (password.isEmpty()) {
+            if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(rb.getString("loginError"));
-                alert.setHeaderText(rb.getString("noPassword"));
-                alert.setContentText(rb.getString("tryAgain"));
+                alert.setTitle(resourceBundle.getString("loginError"));
+                alert.setHeaderText("noPassword");
+                alert.setContentText("tryAgain");
                 alert.showAndWait();
             }
         }
-         else {
-             Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
-             Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
-             stage.setTitle("Appointment Management System");
-             stage.setScene(new Scene(scene));
-             stage.show();
-             return true;
-         }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        return false;
+    }
+
+    private void loginSuccess() {
+
+    }
+
+    private void loginFailed() {
+
     }
 
     public void handleReset(ActionEvent actionEvent) {
@@ -147,19 +137,45 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        currentTimeZoneLabel.setText(String.valueOf(ZoneId.systemDefault()));
+        if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
+            ResourceBundle resource = ResourceBundle.getBundle("Language/French", Locale.getDefault());
+            userLabel.setText(resource.getString("username"));
+            passLabel.setText(resource.getString("password"));
+            timeZoneLabel.setText(resource.getString("timezone"));
+            currentTimeZoneLabel.setText(String.valueOf(ZoneId.systemDefault()));
+            languageMenu.setText(resource.getString("language"));
+            englishLangSelection.setText(resource.getString("english"));
+            frenchLangSelection.setText(resource.getString("french"));
+            loginBtn.setText(resource.getString("login"));
+            resetBtn.setText(resource.getString("reset"));
+            exitBtn.setText(resource.getString("exit"));
+        }
+    }
 
-      ResourceBundle  resource = ResourceBundle.getBundle("Properties/French", Locale.getDefault());
-      if(Locale.getDefault().getLanguage().equals("fr")) {
-          userLabel.setText(resource.getString("username"));
-          passLabel.setText(resource.getString("password"));
-          timeZoneLabel.setText(resource.getString("timezone"));
-          languageMenu.setText(resource.getString("language"));
-          englishLangSelection.setText(resource.getString("english"));
-          frenchLangSelection.setText(resource.getString("french"));
-          loginBtn.setText(resource.getString("login"));
-          resetBtn.setText(resource.getString("reset"));
-          exitBtn.setText(resource.getString("exit"));
-      }
+    public void handleEnglish(ActionEvent actionEvent) {
+        ResourceBundle  resource = ResourceBundle.getBundle("Language/English");
+        userLabel.setText(resource.getString("username"));
+        passLabel.setText(resource.getString("password"));
+        timeZoneLabel.setText(resource.getString("timezone"));
+        languageMenu.setText(resource.getString("language"));
+        englishLangSelection.setText(resource.getString("english"));
+        frenchLangSelection.setText(resource.getString("french"));
+        loginBtn.setText(resource.getString("login"));
+        resetBtn.setText(resource.getString("reset"));
+        exitBtn.setText(resource.getString("exit"));
+
+    }
+
+    public void handleFrench(ActionEvent actionEvent) {
+        ResourceBundle  resource = ResourceBundle.getBundle("Language/French", Locale.getDefault());
+        userLabel.setText(resource.getString("username"));
+        passLabel.setText(resource.getString("password"));
+        timeZoneLabel.setText(resource.getString("timezone"));
+        languageMenu.setText(resource.getString("language"));
+        englishLangSelection.setText(resource.getString("english"));
+        frenchLangSelection.setText(resource.getString("french"));
+        loginBtn.setText(resource.getString("login"));
+        resetBtn.setText(resource.getString("reset"));
+        exitBtn.setText(resource.getString("exit"));
     }
 }

@@ -12,6 +12,7 @@ public class UsersDAO {
     public static boolean validLogin(String userName, String password) throws SQLException {
         try {
             String sqlStatement = "SELECT * FROM users WHERE User_Name = ? AND Password = ?;";
+            JDBC.openConnection();
             PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, password);
