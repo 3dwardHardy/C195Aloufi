@@ -137,23 +137,24 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        resourceBundle = ResourceBundle.getBundle("Language/language", Locale.getDefault());
+
         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
-            ResourceBundle resource = ResourceBundle.getBundle("Language/French", Locale.getDefault());
-            userLabel.setText(resource.getString("username"));
-            passLabel.setText(resource.getString("password"));
-            timeZoneLabel.setText(resource.getString("timezone"));
+            userLabel.setText(resourceBundle.getString("username"));
+            passLabel.setText(resourceBundle.getString("password"));
+            timeZoneLabel.setText(resourceBundle.getString("timezone"));
             currentTimeZoneLabel.setText(String.valueOf(ZoneId.systemDefault()));
-            languageMenu.setText(resource.getString("language"));
-            englishLangSelection.setText(resource.getString("english"));
-            frenchLangSelection.setText(resource.getString("french"));
-            loginBtn.setText(resource.getString("login"));
-            resetBtn.setText(resource.getString("reset"));
-            exitBtn.setText(resource.getString("exit"));
+            languageMenu.setText(resourceBundle.getString("language"));
+            englishLangSelection.setText(resourceBundle.getString("english"));
+            frenchLangSelection.setText(resourceBundle.getString("french"));
+            loginBtn.setText(resourceBundle.getString("login"));
+            resetBtn.setText(resourceBundle.getString("reset"));
+            exitBtn.setText(resourceBundle.getString("exit"));
         }
     }
 
     public void handleEnglish(ActionEvent actionEvent) {
-        ResourceBundle  resource = ResourceBundle.getBundle("Language/English");
+        ResourceBundle  resource = ResourceBundle.getBundle("Language/language", Locale.ENGLISH);
         userLabel.setText(resource.getString("username"));
         passLabel.setText(resource.getString("password"));
         timeZoneLabel.setText(resource.getString("timezone"));
@@ -167,34 +168,7 @@ public class LoginController implements Initializable {
     }
 
     public void handleFrench(ActionEvent actionEvent) {
-        ResourceBundle  resource = ResourceBundle.getBundle("Language/French", Locale.getDefault());
-        userLabel.setText(resource.getString("username"));
-        passLabel.setText(resource.getString("password"));
-        timeZoneLabel.setText(resource.getString("timezone"));
-        languageMenu.setText(resource.getString("language"));
-        englishLangSelection.setText(resource.getString("english"));
-        frenchLangSelection.setText(resource.getString("french"));
-        loginBtn.setText(resource.getString("login"));
-        resetBtn.setText(resource.getString("reset"));
-        exitBtn.setText(resource.getString("exit"));
-    }
-
-    public void handleEnglish(ActionEvent actionEvent) {
-        ResourceBundle  resource = ResourceBundle.getBundle("Properties/English");
-        userLabel.setText(resource.getString("username"));
-        passLabel.setText(resource.getString("password"));
-        timeZoneLabel.setText(resource.getString("timezone"));
-        languageMenu.setText(resource.getString("language"));
-        englishLangSelection.setText(resource.getString("english"));
-        frenchLangSelection.setText(resource.getString("french"));
-        loginBtn.setText(resource.getString("login"));
-        resetBtn.setText(resource.getString("reset"));
-        exitBtn.setText(resource.getString("exit"));
-
-    }
-
-    public void handleFrench(ActionEvent actionEvent) {
-        ResourceBundle  resource = ResourceBundle.getBundle("Properties/French");
+        ResourceBundle  resource = ResourceBundle.getBundle("Language/language", Locale.FRENCH);
         userLabel.setText(resource.getString("username"));
         passLabel.setText(resource.getString("password"));
         timeZoneLabel.setText(resource.getString("timezone"));
