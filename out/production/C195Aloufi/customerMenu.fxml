@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="addCustomerBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="877.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="35.0" layoutY="21.0" text="Customer Menu">
+         <font>
+            <Font name="SansSerif Bold" size="18.0" />
+         </font>
+      </Label>
+      <TableView fx:id="customerTableView" layoutX="34.0" layoutY="69.0" prefHeight="490.0" prefWidth="808.0">
+        <columns>
+          <TableColumn fx:id="customerId" prefWidth="75.0" text="Customer ID" />
+          <TableColumn fx:id="customerName" prefWidth="121.60003662109375" text="Customer Name" />
+            <TableColumn fx:id="address" prefWidth="197.59999084472656" text="Address" />
+            <TableColumn fx:id="postalCode" minWidth="8.79998779296875" prefWidth="80.79998779296875" text="Postal Code" />
+            <TableColumn fx:id="country" prefWidth="126.4000244140625" text="Country" />
+            <TableColumn fx:id="phone" prefWidth="128.79998779296875" text="Phone" />
+            <TableColumn fx:id="divisionId" prefWidth="69.5999755859375" text="Division ID" />
+        </columns>
+         <effect>
+            <DropShadow />
+         </effect>
+      </TableView>
+      <Button fx:id="addCustomerBtn" layoutX="34.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Add Customer">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="modCustomerBtn" layoutX="245.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Modify Customer">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="deleteCustomerBtn" layoutX="491.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Delete Customer">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="cancelBtn" layoutX="703.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Cancel">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+   </children>
+</AnchorPane>
