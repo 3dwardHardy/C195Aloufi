@@ -15,7 +15,7 @@
    <children>
       <TableView fx:id="appointmentsTableView" layoutX="14.0" layoutY="100.0" prefHeight="400.0" prefWidth="1023.0" style="-fx-background-color: e2f0fe;">
         <columns>
-          <TableColumn fx:id="appointmentId" editable="false" prefWidth="75.0" text="APPT ID" />
+          <TableColumn fx:id="apptId" editable="false" prefWidth="75.0" text="APPT ID" />
           <TableColumn fx:id="title" editable="false" prefWidth="134.39999389648438" text="TITLE" />
             <TableColumn fx:id="description" editable="false" prefWidth="156.0000457763672" text="DESCRIPTION" />
             <TableColumn fx:id="location" editable="false" prefWidth="89.5999755859375" text="LOCATION" />
@@ -46,7 +46,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="handleApptAdd" layoutX="228.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleAddAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Add Appointment">
+      <Button fx:id="apptAddBtn" layoutX="228.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleAddAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Add Appointment">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -54,7 +54,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="deleteCustomerBtn" layoutX="448.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleModifyAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Modify Appointment">
+      <Button fx:id="modifyApptBtn" layoutX="448.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleModifyAppt" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Modify Appointment">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -78,7 +78,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <RadioButton fx:id="viewCustomerBtn" layoutX="703.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleCustomerView" selected="true" text="View By Customer">
+      <RadioButton fx:id="viewCustomerBtn" layoutX="703.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleCustomerView" text="View By Customer">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -105,7 +105,7 @@
             <Glow />
          </effect>
       </RadioButton>
-      <RadioButton fx:id="viewAllBtn" layoutX="355.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleAllView" text="View All" toggleGroup="$ViewGroup">
+      <RadioButton fx:id="viewAllBtn" layoutX="355.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleAllView" selected="true" text="View All" toggleGroup="$ViewGroup">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -113,7 +113,7 @@
             <Glow />
          </effect>
       </RadioButton>
-      <Button fx:id="ApptDeleteBtn" layoutX="662.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleApptDelete" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Delete Appointment">
+      <Button fx:id="deleteApptBtn" layoutX="662.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleApptDelete" prefHeight="26.0" prefWidth="155.0" style="-fx-background-color: daecfe;" text="Delete Appointment">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>

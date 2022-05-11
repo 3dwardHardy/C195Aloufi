@@ -17,6 +17,8 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static database.UsersDAO.validLogin;
+
 public class LoginController implements Initializable {
     @FXML
     private TextField userNameTxt;
@@ -57,75 +59,60 @@ public class LoginController implements Initializable {
     private ResourceBundle resourceBundle;
 
 
-    public void handleLogin(ActionEvent actionEvent) throws IOException {
-        usernamePresent(userNameTxt.getText());
-        passwordPresent(passTxt.getText());
+    public void handleLogin(ActionEvent actionEvent) throws IOException, SQLException {
+        String username = userNameTxt.getText();
+        String password = passTxt.getText();
 
-        try {
-            boolean validLogon = UsersDAO.validLogin(userNameTxt.getText(), passTxt.getText());
+        boolean validLogon = UsersDAO.validLogin(username, password);
 
-            if (validLogon) {
-                loginSuccess();
-
-                try {
-                    Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
-                    Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
-                    stage.setTitle("Appointment Management System");
-                    stage.setScene(new Scene(scene));
-                    stage.show();
-                    stage.centerOnScreen();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-
-                loginFailed();
-
-                if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle(resourceBundle.getString("loginError"));
-                    alert.setHeaderText(resourceBundle.getString("incorrect"));
-                    alert.setContentText(resourceBundle.getString("tryAgain"));
-                    alert.showAndWait();
-                }
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-    }
-
-    private void usernamePresent(String username) {
         if (username.isEmpty()) {
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(resourceBundle.getString("loginError"));
-                alert.setHeaderText("noUser");
-                alert.setContentText("tryAgain");
+                alert.setHeaderText(resourceBundle.getString("noUser"));
+                alert.setContentText(resourceBundle.getString("tryAgain"));
                 alert.showAndWait();
+                return;
             }
         }
-    }
 
-    private void passwordPresent(String password) {
         if (password.isEmpty()) {
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(resourceBundle.getString("loginError"));
-                alert.setHeaderText("noPassword");
-                alert.setContentText("tryAgain");
+                alert.setHeaderText(resourceBundle.getString("noPassword"));
+                alert.setContentText(resourceBundle.getString("tryAgain"));
+                alert.showAndWait();
+                return;
+            }
+        }
+
+        if (!validLogon) {
+            if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle(resourceBundle.getString("loginError"));
+                alert.setHeaderText(resourceBundle.getString("incorrect"));
+                alert.setContentText(resourceBundle.getString("tryAgain"));
                 alert.showAndWait();
             }
         }
+         else {
+            Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+            Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
+            stage.setTitle("Appointment Management System");
+            stage.setScene(new Scene(scene));
+            stage.show();
+            stage.centerOnScreen();
+        }
     }
 
-    private void loginSuccess() {
+    //private void loginSuccess() {
 
-    }
+    //}
 
-    private void loginFailed() {
+   // private void loginFailed() {
 
-    }
+   // }
 
     public void handleReset(ActionEvent actionEvent) {
         userNameTxt.setText("");
@@ -137,7 +124,7 @@ public class LoginController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resource) {
 
         resourceBundle = ResourceBundle.getBundle("Language/language", Locale.getDefault());
 
