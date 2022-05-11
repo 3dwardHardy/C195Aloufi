@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="langInputMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="500.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.loginController">
+<AnchorPane fx:id="langInputMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="500.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <children>
       <TextField fx:id="userNameTxt" layoutX="125.0" layoutY="49.0">
          <font>
@@ -19,7 +19,7 @@
             <DropShadow />
          </effect>
       </TextField>
-      <TextField fx:id="passTxt" layoutX="125.0" layoutY="86.0">
+      <TextField fx:id="passTxt" layoutX="125.0" layoutY="86.0" onKeyPressed="#handleLogin">
          <font>
             <Font name="SansSerif Regular" size="14.0" />
          </font>
@@ -27,7 +27,7 @@
             <DropShadow />
          </effect>
       </TextField>
-      <Button fx:id="loginBtn" layoutX="391.0" layoutY="49.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="73.0" style="-fx-background-color: daecfe;" text="Login">
+      <Button fx:id="loginBtn" layoutX="391.0" layoutY="49.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="26.0" prefWidth="73.0" style="-fx-background-color: daecfe;" text="Login">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -35,7 +35,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="resetBtn" layoutX="391.0" layoutY="107.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: daecfe;" text="Reset">
+      <Button fx:id="resetBtn" layoutX="391.0" layoutY="107.0" mnemonicParsing="false" onAction="#handleReset" prefHeight="26.0" prefWidth="74.0" style="-fx-background-color: daecfe;" text="Reset">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -71,7 +71,7 @@
             <Font name="SansSerif Bold" size="14.0" />
          </font>
       </Label>
-      <SplitMenuButton layoutX="43.0" layoutY="187.0" mnemonicParsing="false" style="-fx-background-color: daecfe;" text="Language">
+      <SplitMenuButton fx:id="languageMenu" layoutX="43.0" layoutY="187.0" mnemonicParsing="false" style="-fx-background-color: daecfe;" text="Language">
         <items>
           <MenuItem fx:id="englishLangSelection" mnemonicParsing="false" text="English" />
           <MenuItem fx:id="frenchLangSelection" mnemonicParsing="false" text="French" />
