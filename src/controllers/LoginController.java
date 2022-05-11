@@ -75,33 +75,34 @@ public class LoginController implements Initializable {
                     stage.show();
                     stage.centerOnScreen();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
                 }
             } else {
-
-                loginFailed();
-
-                if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle(resourceBundle.getString("loginError"));
-                    alert.setHeaderText(resourceBundle.getString("incorrect"));
-                    alert.setContentText(resourceBundle.getString("tryAgain"));
-                    alert.showAndWait();
+                try {
+                    UsersDAO.validLogin(userNameTxt.getText(), passTxt.getText());
+                    if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle(resourceBundle.getString("loginError"));
+                        alert.setHeaderText(resourceBundle.getString("incorrect"));
+                        alert.setContentText(resourceBundle.getString("tryAgain"));
+                        alert.showAndWait();
+                    }
+                } catch (SQLException sqlException) {
+                    sqlException.printStackTrace();
                 }
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
-
-    private void usernamePresent(String username) {
+        private void usernamePresent(String username) {
         if (username.isEmpty()) {
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(resourceBundle.getString("loginError"));
-                alert.setHeaderText("noUser");
-                alert.setContentText("tryAgain");
+                alert.setHeaderText(resourceBundle.getString("noUser"));
+                alert.setContentText(resourceBundle.getString("tryAgain"));
                 alert.showAndWait();
             }
         }
@@ -112,8 +113,8 @@ public class LoginController implements Initializable {
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(resourceBundle.getString("loginError"));
-                alert.setHeaderText("noPassword");
-                alert.setContentText("tryAgain");
+                alert.setHeaderText(resourceBundle.getString("noPassword"));
+                alert.setContentText(resourceBundle.getString("tryAgain"));
                 alert.showAndWait();
             }
         }
@@ -137,7 +138,7 @@ public class LoginController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resource) {
 
         resourceBundle = ResourceBundle.getBundle("Language/language", Locale.getDefault());
 
