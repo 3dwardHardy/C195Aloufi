@@ -1,6 +1,5 @@
 package database;
 
-import Models.Users;
 import helper.JDBC;
 
 import java.sql.PreparedStatement;
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 public class UsersDAO {
 
     static String currentUser;
-    public boolean validLogin(String userName, String password) throws SQLException {
+    public static boolean validLogin(String userName, String password) throws SQLException {
         try {
             String sqlStatement = "SELECT * FROM users WHERE User_Name = ? AND Password = ?;";
             PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
