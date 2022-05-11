@@ -178,4 +178,31 @@ public class LoginController implements Initializable {
         resetBtn.setText(resource.getString("reset"));
         exitBtn.setText(resource.getString("exit"));
     }
+
+    public void handleEnglish(ActionEvent actionEvent) {
+        ResourceBundle  resource = ResourceBundle.getBundle("Properties/English");
+        userLabel.setText(resource.getString("username"));
+        passLabel.setText(resource.getString("password"));
+        timeZoneLabel.setText(resource.getString("timezone"));
+        languageMenu.setText(resource.getString("language"));
+        englishLangSelection.setText(resource.getString("english"));
+        frenchLangSelection.setText(resource.getString("french"));
+        loginBtn.setText(resource.getString("login"));
+        resetBtn.setText(resource.getString("reset"));
+        exitBtn.setText(resource.getString("exit"));
+
+    }
+
+    public void handleFrench(ActionEvent actionEvent) {
+        ResourceBundle  resource = ResourceBundle.getBundle("Properties/French");
+        userLabel.setText(resource.getString("username"));
+        passLabel.setText(resource.getString("password"));
+        timeZoneLabel.setText(resource.getString("timezone"));
+        languageMenu.setText(resource.getString("language"));
+        englishLangSelection.setText(resource.getString("english"));
+        frenchLangSelection.setText(resource.getString("french"));
+        loginBtn.setText(resource.getString("login"));
+        resetBtn.setText(resource.getString("reset"));
+        exitBtn.setText(resource.getString("exit"));
+    }
 }
