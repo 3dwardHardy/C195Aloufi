@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="500.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.loginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="500.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <children>
       <TextField fx:id="userNameTxt" layoutX="125.0" layoutY="49.0">
          <font>
@@ -66,8 +66,8 @@
       </Label>
       <SplitMenuButton fx:id="languageMenu" layoutX="43.0" layoutY="187.0" mnemonicParsing="false" style="-fx-background-color: daecfe;" text="Language">
         <items>
-          <MenuItem fx:id="englishLangSelection" mnemonicParsing="false" text="English" />
-          <MenuItem fx:id="frenchLangSelection" mnemonicParsing="false" text="French" />
+          <MenuItem fx:id="englishLangSelection" mnemonicParsing="false" onAction="#handleEnglish" text="English" />
+          <MenuItem fx:id="frenchLangSelection" mnemonicParsing="false" onAction="#handleFrench" text="French" />
         </items>
          <font>
             <Font name="SansSerif Bold" size="14.0" />
@@ -80,6 +80,9 @@
          <effect>
             <DropShadow />
          </effect>
+         <font>
+            <Font name="SansSerif Regular" size="14.0" />
+         </font>
       </PasswordField>
    </children>
 </AnchorPane>
