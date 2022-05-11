@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 public class MainScreenController implements Initializable {
 
     @FXML
-    private TableView <Appointments> appointmentsTableView;
+    private TableView<Appointments> appointmentsTableView;
 
     @FXML
     private TableColumn<Appointments, Integer> apptId;
@@ -88,22 +88,20 @@ public class MainScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             appointments = AppointmentsDAO.getAppts();
-        appointmentsTableView.setItems(appointments);
-        apptId.setCellValueFactory(new PropertyValueFactory<>("apptId"));
-        title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        description.setCellValueFactory(new PropertyValueFactory<>("description"));
-        location.setCellValueFactory(new PropertyValueFactory<>("location"));
-        contactId.setCellValueFactory(new PropertyValueFactory<>("contactId"));
-        type.setCellValueFactory(new PropertyValueFactory<>("type"));
-        startDateTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-        endDateTime.setCellValueFactory(new PropertyValueFactory<>("endTime"));
-        customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        userId.setCellValueFactory(new PropertyValueFactory<>("userId"));
-
-    } catch (
-    SQLException e) {
-        e.printStackTrace();
+            appointmentsTableView.setItems(appointments);
+            apptId.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+            title.setCellValueFactory(new PropertyValueFactory<>("title"));
+            description.setCellValueFactory(new PropertyValueFactory<>("description"));
+            location.setCellValueFactory(new PropertyValueFactory<>("location"));
+            contactId.setCellValueFactory(new PropertyValueFactory<>("contactId"));
+            type.setCellValueFactory(new PropertyValueFactory<>("type"));
+            startDateTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+            endDateTime.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+            customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            userId.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        } catch (
+                SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
-
-    }
