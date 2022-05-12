@@ -23,7 +23,7 @@ public class CustomerMenuController implements Initializable {
     private TableColumn<Customers, Integer> customerId;
 
     @FXML
-    public TableColumn<Customers, String> customerName;
+    private TableColumn<Customers, String> customerName;
 
     @FXML
     private TableColumn<Customers, String> address;
@@ -61,7 +61,7 @@ public class CustomerMenuController implements Initializable {
             customers = CustomersDAO.getAllCustomers();
             customerTableView.setItems(customers);
             customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-            customerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            customerName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
             address.setCellValueFactory(new PropertyValueFactory<>("address"));
             postalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
             country.setCellValueFactory(new PropertyValueFactory<>("country"));
