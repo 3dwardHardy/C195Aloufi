@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifyCustomerController">
    <children>
       <Button fx:id="saveBtn" layoutX="405.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: daecfe;" text="Save">
          <font>
@@ -69,7 +69,7 @@
             <Font name="SansSerif Bold" size="18.0" />
          </font>
       </Label>
-      <ComboBox fx:id="modCountryCombo" layoutX="300.0" layoutY="301.0" prefWidth="150.0">
+      <ComboBox fx:id="modCountryCombo" layoutX="300.0" layoutY="301.0" onAction="#handleFilterStates" prefWidth="150.0">
          <effect>
             <DropShadow />
          </effect>
