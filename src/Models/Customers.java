@@ -1,5 +1,7 @@
 package Models;
 
+import java.lang.constant.Constable;
+
 public class Customers {
     private int customerId;
 
@@ -90,5 +92,9 @@ public class Customers {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Constable getCountryId() {
+        return country;
     }
 }

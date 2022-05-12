@@ -1,11 +1,10 @@
 package database;
 
 import Models.Customers;
+import Models.FirstLevelDivisions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.PickResult;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,4 +69,30 @@ public class CustomersDAO {
         preparedStatement.setInt(1, customerId);
         preparedStatement.execute();
     }
+
+    public static void updateCustomer (int customerId, String name, String address, String postalCode,
+                                       String phone, int divisionId) {
+
+            try {
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+
+                String sqlStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, " +
+                        "Phone = ?, Last_Update = ?, Last_Updated_By = ?,  Division_ID = ? WHERE Customer_ID = ?";
+
+                PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+                preparedStatement.setString(1, name);
+                preparedStatement.setString(2, address);
+                preparedStatement.setString(3, postalCode);
+                preparedStatement.setString(4, phone);
+                preparedStatement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now().format(timeFormatter)));
+                preparedStatement.setString(6, UsersDAO.getCurrentUserName());
+                preparedStatement.setInt(7,divisionId);
+                preparedStatement.setInt(8, customerId);
+                preparedStatement.executeUpdate();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+                JDBC.closeConnection();
+            }
+        }
 }

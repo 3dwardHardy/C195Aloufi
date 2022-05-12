@@ -33,17 +33,14 @@ public class CountriesDAO {
             try {
                 String sqlStatement = "SELECT Country_ID, Country FROM countries WHERE Country_ID = ?";
                 PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+                ResultSet resultSet = preparedStatement.executeQuery();
 
-                preparedStatement.setInt(1, countryId);
-                preparedStatement.execute();
-
-                ResultSet resultSet = preparedStatement.getResultSet();
-
-                resultSet.next();
-                int setCountryId = resultSet.getInt("Country_ID");
-                String country1 = resultSet.getString("Country");
-                Countries countryName = new Countries(setCountryId, country1);
-                return countryName;
+                while (resultSet.next()) {
+                    int setCountryId = resultSet.getInt("Country_ID");
+                    String country1 = resultSet.getString("Country");
+                    Countries country = new Countries(setCountryId, country1);
+                    return country;
+                }
 
             } catch (SQLException sqlException) {
                 sqlException.printStackTrace();

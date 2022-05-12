@@ -69,12 +69,12 @@
             <Font name="SansSerif Bold" size="18.0" />
          </font>
       </Label>
-      <ComboBox fx:id="modCountryCombo" layoutX="300.0" layoutY="301.0" onAction="#handleFilterStates" prefWidth="150.0">
+      <ComboBox fx:id="countryCombo" layoutX="300.0" layoutY="301.0" onAction="#handleFilterStates" prefWidth="150.0">
          <effect>
             <DropShadow />
          </effect>
       </ComboBox>
-      <ComboBox fx:id="modStateCombo" layoutX="626.0" layoutY="301.0" prefWidth="150.0">
+      <ComboBox fx:id="stateCombo" layoutX="626.0" layoutY="301.0" prefWidth="150.0">
          <effect>
             <DropShadow />
          </effect>

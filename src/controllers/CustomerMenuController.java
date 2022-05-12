@@ -75,13 +75,22 @@ public class CustomerMenuController implements Initializable {
         stage.centerOnScreen();
     }
 
-    public void handleModCustomer(ActionEvent actionEvent) throws IOException{
-        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
-        Parent scene = FXMLLoader.load(getClass().getResource("/modifyCustomer.FXML"));
-        stage.setTitle("Modify A Customer Profile");
-        stage.setScene(new Scene(scene));
-        stage.show();
-        stage.centerOnScreen();
+    public void handleModCustomer(ActionEvent actionEvent) throws IOException {
+        ModifyCustomerController.retrieveCustomer(customerTableView.getSelectionModel().getSelectedItem());
+        if (customerTableView.getSelectionModel().getSelectedItem() != null) {
+            Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+            Parent scene = FXMLLoader.load(getClass().getResource("/modifyCustomer.FXML"));
+            stage.setTitle("Modify A Customer Profile");
+            stage.setScene(new Scene(scene));
+            stage.show();
+            stage.centerOnScreen();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Modify Customer Error");
+            alert.setHeaderText("You did not select a customer!");
+            alert.setContentText("Please make a selection and try again.");
+            alert.showAndWait();
+        }
     }
 
     public void handleDeleteCustomer(ActionEvent actionEvent) throws IOException, SQLException {

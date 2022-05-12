@@ -174,7 +174,5 @@ public class AddCustomerController implements Initializable {
 
         ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getFirstLevel();
         stateCombo.setItems(firstLevelDivisions);
-
-
     }
 }
