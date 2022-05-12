@@ -1,17 +1,23 @@
 package controllers;
 
 import Models.Customers;
+import database.AppointmentsDAO;
 import database.CustomersDAO;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CustomerMenuController implements Initializable {
@@ -69,6 +75,80 @@ public class CustomerMenuController implements Initializable {
             phone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
+        }
+    }
+
+    public void handleAddCustomer(ActionEvent actionEvent) throws IOException {
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/addCustomer.FXML"));
+        stage.setTitle("Create New Customer Profile");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
+    }
+
+    public void handleModCustomer(ActionEvent actionEvent) throws IOException{
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/modifyCustomer.FXML"));
+        stage.setTitle("Modify A Customer Profile");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
+    }
+
+    public void handleDeleteCustomer(ActionEvent actionEvent) throws IOException{
+        if (customerTableView.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Customer Delete");
+            alert.setHeaderText("Are sure you wish to delete customer: " + customerName.getText() + "?");
+            alert.setContentText("If yes, press OK to proceed deleting the profile.");
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if(result.isPresent()) {
+                if (result.get() == ButtonType.OK) {
+                    if (AppointmentsDAO.checkForAppts(customerTableView.getSelectionModel().getSelectedItem().getCustomerId()) > 0) {
+                        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+                        alert1.setTitle("Appointments Present");
+                        alert1.setHeaderText("This customer has an existing appointment!");
+                        alert1.setContentText("You must delete the appointment before the customer profile can be removed.");
+                        alert1.showAndWait();
+                    }
+                    else {
+                        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                        alert2.setTitle("Customer Removed");
+                        alert2.setHeaderText("The customer profile has been deleted.");
+                        alert2.setContentText("Customer " + customerName.getText() + "has been removed from the database.");
+                        alert2.showAndWait();
+                    }
+                }
+                else {
+                    customerTableView.getSelectionModel().clearSelection();
+                }
+            }
+            Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+            Parent scene = FXMLLoader.load(getClass().getResource("/customerMenu.FXML"));
+            stage.setTitle("Customer Menu");
+            stage.setScene(new Scene(scene));
+            stage.show();
+            stage.centerOnScreen();
+        }
+
+    }
+
+    public void handleCancel(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Cancel");
+        alert.setHeaderText("Are sure you wish to exit the Customer Menu?");
+        alert.setContentText("If yes, press OK to return to the main screen.");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ButtonType.OK) {
+            Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+            Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
+            stage.setTitle("Appointment Management System");
+            stage.setScene(new Scene(scene));
+            stage.show();
+            stage.centerOnScreen();
         }
     }
 }

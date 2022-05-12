@@ -34,8 +34,28 @@ public class AppointmentsDAO {
                     resultSet.getInt("User_ID"),
                     resultSet.getString("Contact_Name"));
             appointments.add(appts);
-            }
-        return appointments;
         }
+        return appointments;
     }
+
+    public static int checkForAppts(int customerId) {
+        ObservableList<Integer> appointments = FXCollections.observableArrayList();
+        try {
+            String sqlStatement = "SELECT Appointment_ID FROM appointments WHERE Customer_ID = ?";
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int appointmentId = resultSet.getInt("Appointment_ID");
+                appointments.add(appointmentId);
+
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return appointments.size();
+    }
+}
 

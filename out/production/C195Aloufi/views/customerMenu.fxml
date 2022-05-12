@@ -29,7 +29,7 @@
             <DropShadow />
          </effect>
       </TableView>
-      <Button fx:id="addCustomerBtn" layoutX="34.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Add Customer">
+      <Button fx:id="addCustomerBtn" layoutX="34.0" layoutY="579.0" mnemonicParsing="false" onAction="#handleAddCustomer" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Add Customer">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -37,7 +37,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="modCustomerBtn" layoutX="245.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Modify Customer">
+      <Button fx:id="modCustomerBtn" layoutX="245.0" layoutY="579.0" mnemonicParsing="false" onAction="#handleModCustomer" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Modify Customer">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -45,7 +45,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="deleteCustomerBtn" layoutX="491.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Delete Customer">
+      <Button fx:id="deleteCustomerBtn" layoutX="491.0" layoutY="579.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Delete Customer">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -53,7 +53,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="cancelBtn" layoutX="703.0" layoutY="579.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Cancel">
+      <Button fx:id="cancelBtn" layoutX="703.0" layoutY="579.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="26.0" prefWidth="138.0" style="-fx-background-color: daecfe;" text="Cancel">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
