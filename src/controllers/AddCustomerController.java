@@ -2,6 +2,7 @@ package controllers;
 
 import Models.Countries;
 import Models.FirstLevelDivisions;
+import database.CountriesDAO;
 import database.FirstLevelDivisionDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,18 +41,21 @@ public class AddCustomerController implements Initializable {
     private ComboBox<Countries> countryCombo;
 
     @FXML
-    private ComboBox<String> stateCombo;
+    private ComboBox<FirstLevelDivisions> stateCombo;
 
-    public void handleFirstLevelDivision(ActionEvent actionEvent) {
-        ObservableList<String> stateList = FXCollections.observableArrayList();
-        ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getStatesByCountry(countryCombo.getSelectionModel().getSelectedItem());
-        if (firstLevelDivisions != null) {
-            for (FirstLevelDivisions firstLevel : firstLevelDivisions) {
-                stateList.add(firstLevel.getFirstLevel());
-            }
+    public void handleFirstLevelDivision(ActionEvent actionEvent) throws SQLException{
+        int countryId = countryCombo.getSelectionModel().getSelectedItem().getCountryId();
+        if (countryId == 0) {
+            ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.getFirstLevel();
+            stateCombo.setItems(divisions);
         }
-        stateCombo.setItems(stateList);
+        else {
+            ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.returnDivisionCountry(countryId);
+            stateCombo.setItems(divisions);
+        }
+
     }
+
 
     public void handleSave(ActionEvent actionEvent) {
     }
@@ -61,9 +65,9 @@ public class AddCustomerController implements Initializable {
         customerNameTxt.setText("");
         customerAddressTxt.setText("");
         postalTxt.setText("");
+        customerPhoneTxt.setText("");
         countryCombo.getSelectionModel().clearSelection();
         stateCombo.getSelectionModel().clearSelection();
-        customerPhoneTxt.setText("");
     }
 
     public void handleCancel(ActionEvent actionEvent) throws IOException {
@@ -84,6 +88,11 @@ public class AddCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ObservableList<Countries> countries = CountriesDAO.getCountryId();
+        countryCombo.setItems(countries);
+
+        ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getFirstLevel();
+        stateCombo.setItems(firstLevelDivisions);
 
 
     }

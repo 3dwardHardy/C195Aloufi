@@ -8,8 +8,58 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddCustomerController">
    <children>
+      <TextField fx:id="customerIdTxt" disable="true" editable="false" layoutX="300.0" layoutY="106.0" prefHeight="26.0" prefWidth="150.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="customerNameTxt" layoutX="300.0" layoutY="154.0" prefHeight="26.0" prefWidth="150.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="customerAddressTxt" layoutX="300.0" layoutY="205.0" prefHeight="26.0" prefWidth="150.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="postalTxt" layoutX="300.0" layoutY="253.0" prefHeight="26.0" prefWidth="150.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="countryCombo" layoutX="300.0" layoutY="301.0" onAction="#handleFirstLevelDivision" prefWidth="150.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ComboBox>
+      <TextField fx:id="CustomerPhoneTxt" layoutX="300.0" layoutY="354.0" prefHeight="26.0" prefWidth="150.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <font>
+            <Font name="SansSerif Regular" size="12.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="stateCombo" layoutX="626.0" layoutY="301.0" prefWidth="150.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ComboBox>
       <Button fx:id="saveBtn" layoutX="405.0" layoutY="431.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: daecfe;" text="Save">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
@@ -69,56 +119,6 @@
             <Font name="SansSerif Bold" size="18.0" />
          </font>
       </Label>
-      <ComboBox fx:id="countryCombo" layoutX="300.0" layoutY="301.0" prefWidth="150.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </ComboBox>
-      <ComboBox fx:id="stateCombo" layoutX="626.0" layoutY="301.0" prefWidth="150.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </ComboBox>
-      <TextField fx:id="customerIdTxt" disable="true" editable="false" layoutX="300.0" layoutY="106.0" prefHeight="26.0" prefWidth="150.0">
-         <effect>
-            <DropShadow />
-         </effect>
-         <font>
-            <Font name="SansSerif Regular" size="12.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="customerNameTxt" layoutX="300.0" layoutY="154.0" prefHeight="26.0" prefWidth="150.0">
-         <effect>
-            <DropShadow />
-         </effect>
-         <font>
-            <Font name="SansSerif Regular" size="12.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="customerAddressTxt" layoutX="300.0" layoutY="205.0" prefHeight="26.0" prefWidth="150.0">
-         <effect>
-            <DropShadow />
-         </effect>
-         <font>
-            <Font name="SansSerif Regular" size="12.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="postalTxt" layoutX="300.0" layoutY="253.0" prefHeight="26.0" prefWidth="150.0">
-         <effect>
-            <DropShadow />
-         </effect>
-         <font>
-            <Font name="SansSerif Regular" size="12.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="CustomerPhoneTxt" layoutX="300.0" layoutY="354.0" prefHeight="26.0" prefWidth="150.0">
-         <effect>
-            <DropShadow />
-         </effect>
-         <font>
-            <Font name="SansSerif Regular" size="12.0" />
-         </font>
-      </TextField>
       <Label layoutX="101.0" layoutY="45.0" text="Add A New Customer Profile">
          <font>
             <Font name="SansSerif Bold" size="24.0" />

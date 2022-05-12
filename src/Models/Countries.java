@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class Countries {
     private int countryId;
 
-    private String Country;
+    private String country;
 
     private LocalDateTime createdDate;
 
@@ -16,9 +16,7 @@ public class Countries {
 
     private String lastUpdatedby;
 
-    private String lastUpdated;
 
-    private String lastUpdate;
 
     public int getCountryId() {
         return countryId;
@@ -29,11 +27,11 @@ public class Countries {
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String country) {
-        Country = country;
+        this.country = country;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -44,18 +42,39 @@ public class Countries {
         this.createdDate = createdDate;
     }
 
-    private String getLastUpdated {
-        return getLastUpdated;
+
+    public String getCreatedBy() {
+        return createdBy;
     }
 
-    public void setLastUpdated(String lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
-    public String getGetLastUpdated() {
-        return getLastUpdated;
+    public Timestamp getLastUpdate() {
+        return lastUpdate;
     }
-    private String = ()?
 
-    private String;
+    public void setLastUpdate(Timestamp lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public String getLastUpdatedby() {
+        return lastUpdatedby;
+    }
+
+    public void setLastUpdatedby(String lastUpdatedby) {
+        this.lastUpdatedby = lastUpdatedby;
+    }
+
+    public Countries(int countryId, String country) {
+        this.countryId = countryId;
+        this.country = country;
+    }
+
+    @Override
+    public String toString() {
+        return (country);
+    }
+
 }
