@@ -46,18 +46,6 @@ public class CustomerMenuController implements Initializable {
     @FXML
     private TableColumn<Customers, String> phone;
 
-    @FXML
-    private Button addCustomerBtn;
-
-    @FXML
-    private Button modCustomerBtn;
-
-    @FXML
-    private Button deleteCustomerBtn;
-
-    @FXML
-    private Button cancelBtn;
-
     static ObservableList<Customers> customers;
 
 
