@@ -4,7 +4,6 @@ import Models.Countries;
 import Models.FirstLevelDivisions;
 import database.CountriesDAO;
 import database.FirstLevelDivisionDAO;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
