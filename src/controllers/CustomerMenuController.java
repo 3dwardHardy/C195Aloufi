@@ -84,11 +84,12 @@ public class CustomerMenuController implements Initializable {
         stage.centerOnScreen();
     }
 
-    public void handleDeleteCustomer(ActionEvent actionEvent) throws IOException{
+    public void handleDeleteCustomer(ActionEvent actionEvent) throws IOException, SQLException {
         if (customerTableView.getSelectionModel().getSelectedItem() != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm Customer Delete");
-            alert.setHeaderText("Are sure you wish to delete customer: " + customerName.getText() + "?");
+            alert.setHeaderText("Are sure you wish to delete customer: " + customerTableView.getSelectionModel()
+                    .getSelectedItem().getCustomerName() + "?");
             alert.setContentText("If yes, press OK to proceed deleting the profile.");
             Optional<ButtonType> result = alert.showAndWait();
 
@@ -105,8 +106,11 @@ public class CustomerMenuController implements Initializable {
                         Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                         alert2.setTitle("Customer Removed");
                         alert2.setHeaderText("The customer profile has been deleted.");
-                        alert2.setContentText("Customer " + customerName.getText() + "has been removed from the database.");
+                        alert2.setContentText("Customer " + customerTableView.getSelectionModel().
+                                getSelectedItem().getCustomerName() + " has been removed from the database.");
                         alert2.showAndWait();
+                        CustomersDAO.deleteCustomer(customerTableView.getSelectionModel().
+                                getSelectedItem().getCustomerId());
                     }
                 }
                 else {
@@ -120,7 +124,14 @@ public class CustomerMenuController implements Initializable {
             stage.show();
             stage.centerOnScreen();
         }
-
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Delete Customer Error");
+            alert.setHeaderText("You did not select a customer to delete.");
+            alert.setContentText("Please select the profile you wish to remove and try again.");
+            alert.showAndWait();
+            return;
+        }
     }
 
     public void handleCancel(ActionEvent actionEvent) throws IOException {

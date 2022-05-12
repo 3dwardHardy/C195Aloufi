@@ -5,6 +5,7 @@ import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.PickResult;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,5 +62,12 @@ public class CustomersDAO {
             sqlException.printStackTrace();
             JDBC.closeConnection();
         }
+    }
+
+    public static void deleteCustomer (int customerId) throws SQLException {
+        String sqlStatement = "DElETE FROM customers WHERE Customer_ID = ?;";
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+        preparedStatement.setInt(1, customerId);
+        preparedStatement.execute();
     }
 }

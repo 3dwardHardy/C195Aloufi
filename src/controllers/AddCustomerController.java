@@ -131,7 +131,7 @@ public class AddCustomerController implements Initializable {
                 alert.setHeaderText("The customer profile for Customer: " + customerNameTxt.getText() + " has been created.");
                 alert.showAndWait();
                 Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("customerMenu.FXML")));
+                scene = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/customerMenu.FXML")));
                 stage.setScene(new Scene(scene));
                 stage.show();
             }
