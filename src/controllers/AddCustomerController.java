@@ -4,7 +4,6 @@ import Models.Countries;
 import Models.FirstLevelDivisions;
 import database.CountriesDAO;
 import database.FirstLevelDivisionDAO;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,19 +42,19 @@ public class AddCustomerController implements Initializable {
     @FXML
     private ComboBox<FirstLevelDivisions> stateCombo;
 
-    public void handleFirstLevelDivision(ActionEvent actionEvent) throws SQLException{
-        int countryId = countryCombo.getSelectionModel().getSelectedItem().getCountryId();
-        if (countryId == 0) {
+    public void handleFirstLevelDivision(ActionEvent actionEvent) throws SQLException {
+        try {
             ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.getFirstLevel();
             stateCombo.setItems(divisions);
-        }
-        else {
-            ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.returnDivisionCountry(countryId);
-            stateCombo.setItems(divisions);
-        }
 
+
+            ObservableList<FirstLevelDivisions> division = FirstLevelDivisionDAO.returnDivisionCountry
+                    (countryCombo.getSelectionModel().getSelectedItem().getCountryId());
+            stateCombo.setItems(division);
+        } catch (NullPointerException nullPointerException) {
+            stateCombo.setItems(null);
+        }
     }
-
 
     public void handleSave(ActionEvent actionEvent) {
     }
