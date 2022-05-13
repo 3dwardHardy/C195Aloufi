@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class AddAppointmentController {
+
+
     public void handleSave(ActionEvent actionEvent) {
     }
 
@@ -33,5 +35,6 @@ public class AddAppointmentController {
     }
 
     public void handleClear(ActionEvent actionEvent) {
+
     }
 }
