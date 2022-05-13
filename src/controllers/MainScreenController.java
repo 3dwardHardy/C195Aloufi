@@ -70,11 +70,22 @@ public class MainScreenController implements Initializable {
         stage.centerOnScreen();
     }
 
-    public void handleAddAppt(ActionEvent actionEvent) {
-
+    public void handleAddAppt(ActionEvent actionEvent) throws IOException{
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/addAppointment.FXML"));
+        stage.setTitle("Add A New Appointment");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
     }
 
-    public void handleModifyAppt(ActionEvent actionEvent) {
+    public void handleModifyAppt(ActionEvent actionEvent) throws IOException{
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/modifyAppointment.FXML"));
+        stage.setTitle("Modify An Existing Appointment");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
     }
 
     public void handleReports(ActionEvent actionEvent) {
