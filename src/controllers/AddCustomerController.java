@@ -155,7 +155,7 @@ public class AddCustomerController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Cancel");
         alert.setHeaderText("Are sure you wish to cancel creating this customer profile?");
-        alert.setContentText("If yes, press OK to return to the main screen.");
+        alert.setContentText("If yes, press OK to return to the customer menu.");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());

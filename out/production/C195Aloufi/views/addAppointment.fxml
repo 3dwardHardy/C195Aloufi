@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -87,26 +86,6 @@
             <Font name="SansSerif Bold" size="18.0" />
          </font>
       </Label>
-      <Spinner fx:id="startHourSpinner" layoutX="549.0" layoutY="226.0" prefHeight="26.0" prefWidth="70.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </Spinner>
-      <Spinner fx:id="startMinSpinner" layoutX="650.0" layoutY="226.0" prefHeight="26.0" prefWidth="70.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </Spinner>
-      <Spinner fx:id="endHourSpinner" layoutX="549.0" layoutY="396.0" prefHeight="26.0" prefWidth="70.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </Spinner>
-      <Spinner fx:id="endMinSpinner" layoutX="650.0" layoutY="396.0" prefHeight="26.0" prefWidth="70.0">
-         <effect>
-            <DropShadow />
-         </effect>
-      </Spinner>
       <ComboBox fx:id="userIdCombo" layoutX="214.0" layoutY="502.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
@@ -186,5 +165,7 @@
             <DropShadow />
          </effect>
       </Button>
+      <ComboBox fx:id="startTimeCombo" layoutX="549.0" layoutY="227.0" prefHeight="26.0" prefWidth="175.0" />
+      <ComboBox fx:id="endTimeCombo" layoutX="550.0" layoutY="397.0" prefHeight="26.0" prefWidth="175.0" />
    </children>
 </AnchorPane>
