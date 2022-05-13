@@ -61,7 +61,7 @@
             <Font name="SansSerif Bold" size="18.0" />
          </font>
       </Label>
-      <DatePicker fx:id="modStartDate" layoutX="549.0" layoutY="178.0">
+      <DatePicker fx:id="startDate" layoutX="549.0" layoutY="178.0">
          <effect>
             <DropShadow />
          </effect>
@@ -76,7 +76,7 @@
             <Font name="SansSerif Bold" size="18.0" />
          </font>
       </Label>
-      <DatePicker fx:id="modEndDate" layoutX="549.0" layoutY="337.0">
+      <DatePicker fx:id="endDate" layoutX="549.0" layoutY="337.0">
          <effect>
             <DropShadow />
          </effect>
@@ -86,22 +86,22 @@
             <Font name="SansSerif Bold" size="18.0" />
          </font>
       </Label>
-      <ComboBox fx:id="modUserIdCombo" layoutX="214.0" layoutY="502.0" prefHeight="26.0" prefWidth="175.0">
+      <ComboBox fx:id="userIdCombo" layoutX="214.0" layoutY="502.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>
       </ComboBox>
-      <ComboBox fx:id="modCustomerIdCombo" layoutX="214.0" layoutY="451.0" prefHeight="26.0" prefWidth="175.0">
+      <ComboBox fx:id="customerIdCombo" layoutX="214.0" layoutY="451.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>
       </ComboBox>
-      <ComboBox fx:id="modContactCombo" layoutX="214.0" layoutY="337.0" prefHeight="26.0" prefWidth="175.0">
+      <ComboBox fx:id="contactCombo" layoutX="214.0" layoutY="337.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>
       </ComboBox>
-      <TextField fx:id="modAppointmentIdTxt" disable="true" editable="false" layoutX="214.0" layoutY="125.0" prefHeight="26.0" prefWidth="175.0">
+      <TextField fx:id="appointmentIdTxt" disable="true" editable="false" layoutX="214.0" layoutY="125.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>
@@ -109,7 +109,7 @@
             <Font name="SansSerif Regular" size="12.0" />
          </font>
       </TextField>
-      <TextField fx:id="modTitleTxt" layoutX="214.0" layoutY="178.0" prefHeight="26.0" prefWidth="175.0">
+      <TextField fx:id="titleTxt" layoutX="214.0" layoutY="178.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>
@@ -117,7 +117,7 @@
             <Font name="SansSerif Regular" size="12.0" />
          </font>
       </TextField>
-      <TextField fx:id="modDescriptionTxt" layoutX="214.0" layoutY="227.0" prefHeight="26.0" prefWidth="175.0">
+      <TextField fx:id="descriptionTxt" layoutX="214.0" layoutY="227.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>
@@ -125,7 +125,7 @@
             <Font name="SansSerif Regular" size="12.0" />
          </font>
       </TextField>
-      <TextField fx:id="modLocationTxt" layoutX="214.0" layoutY="285.0" prefHeight="26.0" prefWidth="175.0">
+      <TextField fx:id="locationTxt" layoutX="214.0" layoutY="285.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>
@@ -133,7 +133,7 @@
             <Font name="SansSerif Regular" size="12.0" />
          </font>
       </TextField>
-      <TextField fx:id="modTypeTxt" layoutX="214.0" layoutY="396.0" prefHeight="26.0" prefWidth="175.0">
+      <TextField fx:id="typeTxt" layoutX="214.0" layoutY="396.0" prefHeight="26.0" prefWidth="175.0">
          <effect>
             <DropShadow />
          </effect>

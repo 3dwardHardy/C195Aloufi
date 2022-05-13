@@ -1,7 +1,5 @@
 package Models;
 
-import java.lang.constant.Constable;
-
 public class Customers {
     private int customerId;
 
@@ -17,7 +15,7 @@ public class Customers {
 
     private String phone;
 
-    public Customers (
+    public Customers(
             int customerId,
             String customerName,
             String address,
@@ -36,6 +34,10 @@ public class Customers {
 
     public Customers() {
 
+    }
+
+    public Customers(int customerId) {
+        this.customerId = customerId;
     }
 
     public int getCustomerId() {
@@ -94,7 +96,8 @@ public class Customers {
         this.phone = phone;
     }
 
-    public Constable getCountryId() {
-        return country;
+    @Override
+    public String toString() {
+        return (customerName);
     }
 }

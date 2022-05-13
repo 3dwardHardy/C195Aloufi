@@ -63,36 +63,51 @@ public class CustomersDAO {
         }
     }
 
-    public static void deleteCustomer (int customerId) throws SQLException {
+    public static void deleteCustomer(int customerId) throws SQLException {
         String sqlStatement = "DElETE FROM customers WHERE Customer_ID = ?;";
         PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
         preparedStatement.setInt(1, customerId);
         preparedStatement.execute();
     }
 
-    public static void updateCustomer (int customerId, String name, String address, String postalCode,
-                                       String phone, int divisionId) {
+    public static void updateCustomer(int customerId, String name, String address, String postalCode,
+                                      String phone, int divisionId) {
 
-            try {
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        try {
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
 
-                String sqlStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, " +
-                        "Phone = ?, Last_Update = ?, Last_Updated_By = ?,  Division_ID = ? WHERE Customer_ID = ?";
+            String sqlStatement = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, " +
+                    "Phone = ?, Last_Update = ?, Last_Updated_By = ?,  Division_ID = ? WHERE Customer_ID = ?";
 
-                PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
 
-                preparedStatement.setString(1, name);
-                preparedStatement.setString(2, address);
-                preparedStatement.setString(3, postalCode);
-                preparedStatement.setString(4, phone);
-                preparedStatement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now().format(timeFormatter)));
-                preparedStatement.setString(6, UsersDAO.getCurrentUserName());
-                preparedStatement.setInt(7,divisionId);
-                preparedStatement.setInt(8, customerId);
-                preparedStatement.executeUpdate();
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-                JDBC.closeConnection();
-            }
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, address);
+            preparedStatement.setString(3, postalCode);
+            preparedStatement.setString(4, phone);
+            preparedStatement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now().format(timeFormatter)));
+            preparedStatement.setString(6, UsersDAO.getCurrentUserName());
+            preparedStatement.setInt(7, divisionId);
+            preparedStatement.setInt(8, customerId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            JDBC.closeConnection();
         }
+    }
+
+    public static ObservableList<Customers> getCustomerID() throws SQLException {
+        ObservableList<Customers> customers = FXCollections.observableArrayList();
+        String sqlStatement = "SELECT * FROM customers;";
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+
+            Customers customers1 = new Customers(
+                    resultSet.getInt("Customer_ID"));
+            customers.add(customers1);
+        }
+        return customers;
+    }
 }
