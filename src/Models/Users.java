@@ -12,6 +12,11 @@ public class Users {
 
     private String password;
 
+    public Users(int userId, String userName) {
+        this.userId = userId;
+        this.userName = userName;
+    }
+
     /**
      *@ getters and setters for user class
      */
@@ -43,6 +48,11 @@ public class Users {
     public Users (String userName, String password) {
         this.userName = userName;
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return userName;
     }
 
 }

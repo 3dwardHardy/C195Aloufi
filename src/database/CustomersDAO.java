@@ -98,14 +98,14 @@ public class CustomersDAO {
 
     public static ObservableList<Customers> getCustomerID() throws SQLException {
         ObservableList<Customers> customers = FXCollections.observableArrayList();
-        String sqlStatement = "SELECT * FROM customers;";
+        String sqlStatement = "SELECT Customer_ID, Customer_Name FROM customers;";
         PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
 
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-
-            Customers customers1 = new Customers(
-                    resultSet.getInt("Customer_ID"));
+            int customerId = resultSet.getInt("Customer_ID");
+            String customerName = resultSet.getString("Customer_Name");
+            Customers customers1 = new Customers(customerId,customerName);
             customers.add(customers1);
         }
         return customers;

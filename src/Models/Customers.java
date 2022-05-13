@@ -40,6 +40,11 @@ public class Customers {
         this.customerId = customerId;
     }
 
+    public Customers(int customerId, String customerName) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+    }
+
     public int getCustomerId() {
         return customerId;
     }

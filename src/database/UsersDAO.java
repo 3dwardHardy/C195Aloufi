@@ -1,6 +1,10 @@
 package database;
 
+import Models.Customers;
+import Models.Users;
 import helper.JDBC;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,5 +39,20 @@ public class UsersDAO {
 
     public static String getCurrentUserName() {
         return currentUser;
+    }
+
+    public static ObservableList<Users> getUserID() throws SQLException {
+        ObservableList<Users> users = FXCollections.observableArrayList();
+        String sqlStatement = "SELECT User_ID, User_Name FROM users;";
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            int userId = resultSet.getInt("User_ID");
+            String userName = resultSet.getString("User_Name");
+            Users user = new Users (userId,userName);
+            users.add(user);
+        }
+        return users;
     }
 }

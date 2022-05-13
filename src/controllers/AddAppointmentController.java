@@ -1,7 +1,11 @@
 package controllers;
 
+import Models.Contacts;
 import Models.Customers;
+import Models.Users;
+import database.ContactsDAO;
 import database.CustomersDAO;
+import database.UsersDAO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,13 +39,13 @@ public class AddAppointmentController implements Initializable {
     private TextField typeTxt;
 
     @FXML
-    private ComboBox<String> contactCombo;
+    private ComboBox<Contacts> contactCombo;
 
     @FXML
     private ComboBox<Customers> customerIdCombo;
 
     @FXML
-    private ComboBox<String> userIdCombo;
+    private ComboBox<Users> userIdCombo;
 
     @FXML
     private ComboBox<String> startTimeCombo;
@@ -197,6 +201,14 @@ public class AddAppointmentController implements Initializable {
         try {
             ObservableList<Customers> customers = CustomersDAO.getCustomerID();
             customerIdCombo.setItems(customers);
+
+            ObservableList<Users> users = UsersDAO.getUserID();
+            userIdCombo.setItems(users);
+
+            ObservableList<Contacts> contacts = ContactsDAO.getContactID();
+            contactCombo.setItems(contacts);
+
+
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
