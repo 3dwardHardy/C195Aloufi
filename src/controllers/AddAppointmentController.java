@@ -22,9 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -64,6 +62,13 @@ public class AddAppointmentController implements Initializable {
 
     @FXML
     private DatePicker endDate;
+
+    private ZonedDateTime conversionEST(LocalDateTime time) {
+        return ZonedDateTime.of(time, ZoneId.of("America/New_York"));
+    }
+
+    private ZonedDateTime sDTimeConvert;
+    private ZonedDateTime eDTimeConvert;
 
 
     public void handleSave(ActionEvent actionEvent) throws SQLException {
@@ -194,34 +199,66 @@ public class AddAppointmentController implements Initializable {
             LocalDateTime selectedStart;
             LocalDateTime selectedEnd;
 
-            try {
-                ObservableList<Appointments> appts = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
-                for (Appointments appointments : appts) {
-                    selectedStart = appointments.getStartDate().atTime(appointments.getStartTime().toLocalTime());
-                    selectedEnd = appointments.getEndDate().atTime(appointments.getEndTime().toLocalTime());
+            ObservableList<Appointments> appts = AppointmentsDAO.getApptsByCustomerID
+                    (customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
+            for (Appointments appointments : appts) {
+                selectedStart = appointments.getStartDate().atTime(appointments.getStartTime().toLocalTime());
+                selectedEnd = appointments.getEndDate().atTime(appointments.getEndTime().toLocalTime());
 
-                    if (selectedStart.isAfter(startDateTime) && selectedStart.isBefore(endDateTime)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Add Appointment Error");
-                        alert.setHeaderText("This appointment overlaps with another!");
-                        alert.setContentText("Please change the time and try again.");
-                        alert.showAndWait();
-                        return;
-                    } else if (selectedEnd.isAfter(startDateTime) && selectedEnd.isBefore(endDateTime)) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Add Appointment Error");
-                        alert.setHeaderText("This appointment overlaps with another!");
-                        alert.setContentText("Please change the time and try again.");
-                        alert.showAndWait();
-                        return;
+                if (selectedStart.isAfter(startDateTime) && selectedStart.isBefore(endDateTime)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("This appointment overlaps with another!");
+                    alert.setContentText("Please change the time and try again.");
+                    alert.showAndWait();
+                    return;
+                }
+                if (selectedEnd.isAfter(startDateTime) && selectedEnd.isBefore(endDateTime)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("This appointment overlaps with another!");
+                    alert.setContentText("Please change the time and try again.");
+                    alert.showAndWait();
+                    return;
+                    }
+                sDTimeConvert = conversionEST(LocalDateTime.of(startDate.getValue(),
+                        LocalTime.parse(startTimeCombo.getSelectionModel().getSelectedItem())));
+                eDTimeConvert = conversionEST(LocalDateTime.of(endDate.getValue(),
+                        LocalTime.parse(endTimeCombo.getSelectionModel().getSelectedItem())));
+
+                if (sDTimeConvert.toLocalTime().isAfter(LocalTime.of(22, 0))) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("Appointments must be within operating hours!");
+                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
+                    alert.showAndWait();
+                    return;
                     }
 
+                if (eDTimeConvert.toLocalTime().isAfter(LocalTime.of(22, 0))) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("Appointments must be within operating hours!");
+                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
+                    return;
+                    }
 
+                if (sDTimeConvert.toLocalTime().isBefore(LocalTime.of(8, 0))) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("Appointments must be within operating hours!");
+                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
+                    return;
+                    }
+
+                if (eDTimeConvert.toLocalTime().isBefore(LocalTime.of(8, 0))) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("Appointments must be within operating hours!");
+                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
+                    return;
+                    }
                 }
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
         } catch (Exception exception) {
             exception.printStackTrace();
         }
