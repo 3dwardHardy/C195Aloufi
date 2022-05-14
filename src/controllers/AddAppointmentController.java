@@ -182,9 +182,7 @@ public class AddAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            /*
-            may need to update the datebase call for the cust id combo
-             */
+
             ObservableList<Appointments> timeList = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
             String fullStartTime = startDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + (startTimeCombo.getValue() + ":00");
             Timestamp startTimeStamp = Timestamp.valueOf(fullStartTime);
