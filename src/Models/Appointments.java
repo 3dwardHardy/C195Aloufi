@@ -71,6 +71,10 @@ public Appointments (int apptId,
     this.contactName = contactName;
 }
 
+    public Appointments(int customer_id) {
+
+    }
+
     public int getApptId() {
         return apptId;
     }
@@ -178,5 +182,6 @@ public Appointments (int apptId,
     public void setAppointments(ObservableList<Appointments> appointments) {
         this.appointments = appointments;
     }
+
 }
 

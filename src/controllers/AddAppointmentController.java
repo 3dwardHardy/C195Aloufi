@@ -1,11 +1,14 @@
 package controllers;
 
+import Models.Appointments;
 import Models.Contacts;
 import Models.Customers;
 import Models.Users;
+import database.AppointmentsDAO;
 import database.ContactsDAO;
 import database.CustomersDAO;
 import database.UsersDAO;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +22,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -159,6 +165,63 @@ public class AddAppointmentController implements Initializable {
                 return;
             }
 
+            LocalTime start = LocalTime.parse(startTimeCombo.getSelectionModel().getSelectedItem());
+            LocalTime end = LocalTime.parse(endTimeCombo.getSelectionModel().getSelectedItem());
+
+            if (end.isBefore(start)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Add Appointment Error");
+                alert.setHeaderText("The end time cannot be before the appointment start time!");
+                alert.setContentText("Please check the times for this appointment and try again.");
+                alert.showAndWait();
+                return;
+            }
+            LocalDate startDateValue = startDate.getValue();
+            LocalDate endDateValue = endDate.getValue();
+
+            if (!startDateValue.equals(endDateValue)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Add Appointment Alert");
+                alert.setHeaderText("Appointments cannot span days.");
+                alert.setContentText("Appointments must start and end on the same date.");
+                alert.showAndWait();
+                return;
+            }
+
+            LocalDateTime startDateTime = startDateValue.atTime(start);
+            LocalDateTime endDateTime = endDateValue.atTime(end);
+
+            LocalDateTime selectedStart;
+            LocalDateTime selectedEnd;
+
+            try {
+                ObservableList<Appointments> appts = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
+                for (Appointments appointments : appts) {
+                    selectedStart = appointments.getStartDate().atTime(appointments.getStartTime().toLocalTime());
+                    selectedEnd = appointments.getEndDate().atTime(appointments.getEndTime().toLocalTime());
+
+                    if (selectedStart.isAfter(startDateTime) && selectedStart.isBefore(endDateTime)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Add Appointment Error");
+                        alert.setHeaderText("This appointment overlaps with another!");
+                        alert.setContentText("Please change the time and try again.");
+                        alert.showAndWait();
+                        return;
+                    } else if (selectedEnd.isAfter(startDateTime) && selectedEnd.isBefore(endDateTime)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Add Appointment Error");
+                        alert.setHeaderText("This appointment overlaps with another!");
+                        alert.setContentText("Please change the time and try again.");
+                        alert.showAndWait();
+                        return;
+                    }
+
+
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -208,6 +271,18 @@ public class AddAppointmentController implements Initializable {
             ObservableList<Contacts> contacts = ContactsDAO.getContactID();
             contactCombo.setItems(contacts);
 
+            ObservableList<String> time = FXCollections.observableArrayList();
+            LocalTime start = LocalTime.of(7,0);
+            LocalTime end = LocalTime.of(23,0);
+
+            time.add(start.toString());
+            while (start.isBefore(end)) {
+                start = start.plusMinutes(15);
+                time.add(start.toString());
+            }
+
+            startTimeCombo.setItems(time);
+            endTimeCombo.setItems(time);
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();

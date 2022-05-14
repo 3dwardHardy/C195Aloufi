@@ -57,5 +57,23 @@ public class AppointmentsDAO {
         }
         return appointments.size();
     }
-}
+
+    public static ObservableList<Appointments> getApptsByCustomerID(int customerID) throws SQLException {
+        ObservableList<Appointments> appointments = FXCollections.observableArrayList();
+        String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=" +
+                "c.Contact_ID WHERE Customer_ID=?;";
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+        preparedStatement.setInt(1, customerID);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Appointments appt = new Appointments(resultSet.getInt("Customer_ID"));
+
+                appointments.add(appt);
+            }
+            return appointments;
+
+        }
+    }
 
