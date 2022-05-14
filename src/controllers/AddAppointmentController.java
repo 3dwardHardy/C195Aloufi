@@ -197,7 +197,7 @@ public class AddAppointmentController implements Initializable {
             ZonedDateTime startZoneTime = ZonedDateTime.of(setStartDate, setStartTime, localZone);
             ZonedDateTime endZoneTime = ZonedDateTime.of(setEndDate, setEndTime, localZone);
 
-            ZoneId estZoneId = ZoneId.of("America/Florida/Miami");
+            ZoneId estZoneId = ZoneId.of("US/Eastern");
             LocalDate officeOpenDate = LocalDate.parse(startDate.getValue().toString());
             LocalTime officeOpenTime = LocalTime.of(8, 00, 00);
             ZonedDateTime officeOpenZDT = ZonedDateTime.of(officeOpenDate, officeOpenTime, estZoneId);
@@ -208,45 +208,26 @@ public class AddAppointmentController implements Initializable {
             ZonedDateTime adjustedStart = officeOpenZDT.withZoneSameInstant(localZone);
             ZonedDateTime adjustedEnd = officeCloseZDT.withZoneSameInstant(localZone);
 
-            LocalDateTime setStart = startTimeStamp.toLocalDateTime();
-            LocalDateTime setEnd = endTimeStamp.toLocalDateTime();
+            LocalDateTime newStart = startTimeStamp.toLocalDateTime();
+            LocalDateTime newEnd = endTimeStamp.toLocalDateTime();
 
-            for (Appointments appts : timeList) {
-                LocalDateTime apptStart = appts.getStartDate().toLocalDateTime();
-                LocalDateTime apptEnd = appts.getEndDate().toLocalDateTime();
 
-                if ((setStart.isAfter(apptStart) && setStart.isBefore(apptEnd)) || setStart.isEqual(apptStart)) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("This appointment is set at the time as another!");
-                    alert.setContentText("Appointments cannot overlap, change your entry and try again.");
-                    alert.showAndWait();
-                    return;
-                } else if ((setEnd.isAfter(apptStart) && setEnd.isBefore(apptEnd)) || setEnd.isEqual(apptStart)) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("This appointment is set at the time as another!");
-                    alert.setContentText("Appointments cannot overlap, change your entry and try again.");
-                    alert.showAndWait();
-                    return;
-                }
-            }
             if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) && ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
                 if (startTimeStamp.before(endTimeStamp)) {
-                    appointments.setStartDate(startTimeStamp);
-                    appointments.setEndDate(endTimeStamp);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("The Start time must be before the appointment end time!");
-                    alert.setContentText("Please adjust the time for the appointment.");
-                    alert.showAndWait();
-                    return;
-                }
-            } else {
-                Conversions.outOfOfficeHours();
-                return;
+                appointments.setStartTime(Timestamp.valueOf(fullStartTime));
+                appointments.setEndTime(Timestamp.valueOf(fullStartTime));
+              } else {
+                   Alert alert = new Alert(Alert.AlertType.ERROR);
+                   alert.setTitle("Add Appointment Error");
+                   alert.setHeaderText("The Start time must be before the appointment end time!");
+                   alert.setContentText("Please adjust the time for the appointment.");
+                   alert.showAndWait();
+                   return;
             }
+            } else {
+             Conversions.outOfOfficeHours();
+             return;
+           }
 
             AppointmentsDAO.createAppt(appointments);
 

@@ -21,8 +21,8 @@
             <TableColumn fx:id="location" editable="false" prefWidth="96.800048828125" text="LOCATION" />
             <TableColumn fx:id="contactId" editable="false" prefWidth="115.99993896484375" text="CONTACT" />
             <TableColumn fx:id="type" editable="false" prefWidth="120.0" text="TYPE" />
-            <TableColumn fx:id="startDateTime" editable="false" minWidth="0.0" prefWidth="119.20001220703125" text="START DATE TIME" />
-            <TableColumn fx:id="endDateTime" editable="false" minWidth="0.0" prefWidth="105.60003662109375" text="END DATE TIME" />
+            <TableColumn fx:id="startTime" editable="false" minWidth="0.0" prefWidth="119.20001220703125" text="START DATE TIME" />
+            <TableColumn fx:id="endTime" editable="false" minWidth="0.0" prefWidth="105.60003662109375" text="END DATE TIME" />
             <TableColumn fx:id="customerId" editable="false" prefWidth="88.0" text="CUSTOMER ID" />
             <TableColumn fx:id="userId" editable="false" prefWidth="51.199951171875" text="USER ID" />
         </columns>

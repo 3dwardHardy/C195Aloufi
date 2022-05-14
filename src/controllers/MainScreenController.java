@@ -19,7 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
 
@@ -48,10 +49,10 @@ public class MainScreenController implements Initializable {
     private TableColumn<Appointments, String> type;
 
     @FXML
-    private TableColumn<Appointments, LocalDateTime> startDateTime;
+    private TableColumn<Appointments, Timestamp> startTime;
 
     @FXML
-    private TableColumn<Appointments, LocalDateTime> endDateTime;
+    private TableColumn<Appointments, Timestamp> endTime;
 
     @FXML
     private TableColumn<Appointments, Integer> customerId;
@@ -60,6 +61,7 @@ public class MainScreenController implements Initializable {
     private TableColumn<Appointments, Integer> userId;
 
     static ObservableList<Appointments> appointments;
+
 
     public void handleCustomerMenu(ActionEvent actionEvent) throws IOException {
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
@@ -127,8 +129,8 @@ public class MainScreenController implements Initializable {
             location.setCellValueFactory(new PropertyValueFactory<>("location"));
             contactId.setCellValueFactory(new PropertyValueFactory<>("contactName"));
             type.setCellValueFactory(new PropertyValueFactory<>("type"));
-            startDateTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-            endDateTime.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+            startTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+            endTime.setCellValueFactory(new PropertyValueFactory<>("endTime"));
             customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             userId.setCellValueFactory(new PropertyValueFactory<>("userId"));
         } catch (

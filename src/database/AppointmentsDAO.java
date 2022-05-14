@@ -1,18 +1,14 @@
 package database;
 
 import Models.Appointments;
-import Models.Contacts;
 import helper.Conversions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ResourceBundle;
 
 public class AppointmentsDAO {
 
@@ -70,7 +66,18 @@ public class AppointmentsDAO {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while (resultSet.next()) {
-            Appointments appt = new Appointments(resultSet.getInt("Customer_ID"));
+            Appointments appt = new Appointments(
+                    resultSet.getInt("Customer_ID"),
+                    resultSet.getString("Title"),
+                    resultSet.getString("Description"),
+                    resultSet.getString("Location"),
+                    resultSet.getInt("Contact_ID"),
+                    resultSet.getString("Type"),
+                    resultSet.getTimestamp("Start"),
+                    resultSet.getTimestamp("End"),
+                    resultSet.getInt("Customer_ID"),
+                    resultSet.getInt("User_ID"),
+                    resultSet.getString("Contact_Name"));
 
             appointments.add(appt);
         }
@@ -90,8 +97,8 @@ public class AppointmentsDAO {
             preparedStatement.setString(2, appointments.getDescription());
             preparedStatement.setString(3, appointments.getLocation());
             preparedStatement.setString(4, appointments.getType());
-            preparedStatement.setTimestamp(5, appointments.getStartDate());
-            preparedStatement.setTimestamp(6, appointments.getEndDate());
+            preparedStatement.setTimestamp(5, appointments.getStartTime());
+            preparedStatement.setTimestamp(6, appointments.getEndTime());
             preparedStatement.setTimestamp(7, Conversions.getCurrentTimestamp());
             preparedStatement.setString(8, UsersDAO.getCurrentUserName());
             preparedStatement.setTimestamp(9, Conversions.getCurrentTimestamp());
