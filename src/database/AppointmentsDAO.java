@@ -1,13 +1,17 @@
 package database;
 
 import Models.Appointments;
+import Models.Contacts;
+import helper.Conversions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
 public class AppointmentsDAO {
@@ -26,10 +30,8 @@ public class AppointmentsDAO {
                     resultSet.getString("Location"),
                     resultSet.getInt("Contact_ID"),
                     resultSet.getString("Type"),
-                    resultSet.getDate("Start").toLocalDate(),
-                    resultSet.getTimestamp("Start").toLocalDateTime(),
-                    resultSet.getDate("End").toLocalDate(),
-                    resultSet.getTimestamp("End").toLocalDateTime(),
+                    resultSet.getTimestamp("Start"),
+                    resultSet.getTimestamp("End"),
                     resultSet.getInt("Customer_ID"),
                     resultSet.getInt("User_ID"),
                     resultSet.getString("Contact_Name"));
@@ -67,13 +69,40 @@ public class AppointmentsDAO {
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
-                Appointments appt = new Appointments(resultSet.getInt("Customer_ID"));
+        while (resultSet.next()) {
+            Appointments appt = new Appointments(resultSet.getInt("Customer_ID"));
 
-                appointments.add(appt);
-            }
-            return appointments;
-
+            appointments.add(appt);
         }
+        return appointments;
+
     }
 
+    public static void createAppt(Appointments appointments) {
+
+        try {
+            String sqlStatement = "INSERT into appointments (Appointment_ID, Title, Description, Location, Type, " +
+                    "Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
+                    "VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+            preparedStatement.setString(1, appointments.getTitle());
+            preparedStatement.setString(2, appointments.getDescription());
+            preparedStatement.setString(3, appointments.getLocation());
+            preparedStatement.setString(4, appointments.getType());
+            preparedStatement.setTimestamp(5, appointments.getStartDate());
+            preparedStatement.setTimestamp(6, appointments.getEndDate());
+            preparedStatement.setTimestamp(7, Conversions.getCurrentTimestamp());
+            preparedStatement.setString(8, UsersDAO.getCurrentUserName());
+            preparedStatement.setTimestamp(9, Conversions.getCurrentTimestamp());
+            preparedStatement.setString(10, UsersDAO.getCurrentUserName());
+            preparedStatement.setInt(11, appointments.getCustomerId());
+            preparedStatement.setInt(12, appointments.getUserId());
+            preparedStatement.setInt(13, appointments.getContactId());
+            preparedStatement.execute();
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+}

@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -66,9 +67,6 @@ public class AddAppointmentController implements Initializable {
     private ZonedDateTime conversionEST(LocalDateTime time) {
         return ZonedDateTime.of(time, ZoneId.of("America/New_York"));
     }
-
-    private ZonedDateTime sDTimeConvert;
-    private ZonedDateTime eDTimeConvert;
 
 
     public void handleSave(ActionEvent actionEvent) throws SQLException {
@@ -168,103 +166,42 @@ public class AddAppointmentController implements Initializable {
                 alert.setContentText("Please select an end time for this appointment.");
                 alert.showAndWait();
                 return;
-            }
-
-            LocalTime start = LocalTime.parse(startTimeCombo.getSelectionModel().getSelectedItem());
-            LocalTime end = LocalTime.parse(endTimeCombo.getSelectionModel().getSelectedItem());
-
-            if (end.isBefore(start)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Add Appointment Error");
-                alert.setHeaderText("The end time cannot be before the appointment start time!");
-                alert.setContentText("Please check the times for this appointment and try again.");
-                alert.showAndWait();
-                return;
-            }
-            LocalDate startDateValue = startDate.getValue();
-            LocalDate endDateValue = endDate.getValue();
-
-            if (!startDateValue.equals(endDateValue)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Add Appointment Alert");
-                alert.setHeaderText("Appointments cannot span days.");
-                alert.setContentText("Appointments must start and end on the same date.");
-                alert.showAndWait();
-                return;
-            }
-
-            LocalDateTime startDateTime = startDateValue.atTime(start);
-            LocalDateTime endDateTime = endDateValue.atTime(end);
-
-            LocalDateTime selectedStart;
-            LocalDateTime selectedEnd;
-
-            ObservableList<Appointments> appts = AppointmentsDAO.getApptsByCustomerID
-                    (customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
-            for (Appointments appointments : appts) {
-                selectedStart = appointments.getStartDate().atTime(appointments.getStartTime().toLocalTime());
-                selectedEnd = appointments.getEndDate().atTime(appointments.getEndTime().toLocalTime());
-
-                if (selectedStart.isAfter(startDateTime) && selectedStart.isBefore(endDateTime)) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("This appointment overlaps with another!");
-                    alert.setContentText("Please change the time and try again.");
+            } else {
+                try {
+                    Appointments appointments = new Appointments();
+                    appointments.setTitle(titleTxt.getText());
+                    appointments.setDescription(descriptionTxt.getText());
+                    appointments.setLocation(locationTxt.getText());
+                    appointments.setContactId(contactCombo.getValue().getContactId());
+                    appointments.setType(typeTxt.getText());
+                    appointments.setCustomerId(customerIdCombo.getValue().getCustomerId());
+                    appointments.setUserId(userIdCombo.getValue().getUserId());
+                    appointments.setStartDate(Timestamp.valueOf(LocalDateTime.of(startDate.getValue(), LocalTime.parse
+                            (startTimeCombo.getSelectionModel().getSelectedItem()))));
+                    appointments.setEndDate(Timestamp.valueOf(LocalDateTime.of(endDate.getValue(), LocalTime.parse
+                            (endTimeCombo.getSelectionModel().getSelectedItem()))));
+                    AppointmentsDAO.createAppt(appointments);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Appointment Created");
+                    alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
+                    alert.setContentText("The appointment has been added to the schedule.");
                     alert.showAndWait();
-                    return;
+                    Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+                    Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
+                    stage.setTitle("Appointment Management System");
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                    stage.centerOnScreen();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
-                if (selectedEnd.isAfter(startDateTime) && selectedEnd.isBefore(endDateTime)) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("This appointment overlaps with another!");
-                    alert.setContentText("Please change the time and try again.");
-                    alert.showAndWait();
-                    return;
-                    }
-                sDTimeConvert = conversionEST(LocalDateTime.of(startDate.getValue(),
-                        LocalTime.parse(startTimeCombo.getSelectionModel().getSelectedItem())));
-                eDTimeConvert = conversionEST(LocalDateTime.of(endDate.getValue(),
-                        LocalTime.parse(endTimeCombo.getSelectionModel().getSelectedItem())));
-
-                if (sDTimeConvert.toLocalTime().isAfter(LocalTime.of(22, 0))) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("Appointments must be within operating hours!");
-                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
-                    alert.showAndWait();
-                    return;
-                    }
-
-                if (eDTimeConvert.toLocalTime().isAfter(LocalTime.of(22, 0))) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("Appointments must be within operating hours!");
-                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
-                    return;
-                    }
-
-                if (sDTimeConvert.toLocalTime().isBefore(LocalTime.of(8, 0))) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("Appointments must be within operating hours!");
-                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
-                    return;
-                    }
-
-                if (eDTimeConvert.toLocalTime().isBefore(LocalTime.of(8, 0))) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("Appointments must be within operating hours!");
-                    alert.setContentText("Appointments must be within the business hours of 8AM - 10PM EST.");
-                    return;
-                    }
-                }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void handleCancel(ActionEvent actionEvent) throws IOException {
+        public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Cancel");
         alert.setHeaderText("Are sure you wish to cancel creating this appointment?");

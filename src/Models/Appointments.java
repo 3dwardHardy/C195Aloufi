@@ -2,6 +2,7 @@ package Models;
 
 import javafx.collections.ObservableList;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -22,11 +23,11 @@ private String type;
 
 private LocalDateTime startTime;
 
-private LocalDate startDate;
+private Timestamp startDate;
 
 private LocalDateTime endTime;
 
-private LocalDate endDate;
+private Timestamp endDate;
 
 private LocalDateTime createDate;
 
@@ -49,9 +50,9 @@ public Appointments (int apptId,
                      String location,
                      int contactId,
                      String type,
-                     LocalDate startDate,
+                     Timestamp startDate,
                      LocalDateTime startTime,
-                     LocalDate endDate,
+                     Timestamp endDate,
                      LocalDateTime endTime,
                      int customerId,
                      int userId,
@@ -72,6 +73,34 @@ public Appointments (int apptId,
 }
 
     public Appointments(int customer_id) {
+
+    }
+
+    public Appointments(int apptId,
+                        String title,
+                        String description,
+                        String location,
+                        int contactId,
+                        String type,
+                        Timestamp startDate,
+                        Timestamp endDate,
+                        int customerId,
+                        int userId,
+                        String contactName) {
+    this.apptId = apptId;
+    this.title = title;
+    this.description = description;
+    this.location = location;
+    this.contactId = contactId;
+    this.type = type;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.customerId = customerId;
+    this.userId = userId;
+    this.contactName = contactName;
+    }
+
+    public Appointments() {
 
     }
 
@@ -115,11 +144,11 @@ public Appointments (int apptId,
         this.type = type;
     }
 
-    public LocalDate getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
@@ -127,11 +156,11 @@ public Appointments (int apptId,
         return startTime;
     }
 
-    public LocalDate getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 
