@@ -1,6 +1,7 @@
 package database;
 
 import Models.Contacts;
+import Models.Customers;
 import Models.Users;
 import helper.JDBC;
 import javafx.collections.FXCollections;
@@ -21,9 +22,28 @@ public class ContactsDAO {
         while (resultSet.next()) {
             int contactId = resultSet.getInt("Contact_ID");
             String contactName = resultSet.getString("Contact_Name");
-            Contacts contact = new Contacts (contactId,contactName);
+            Contacts contact = new Contacts(contactId, contactName);
             contacts.add(contact);
         }
         return contacts;
+    }
+
+    public static Contacts getContactName(int contactId) throws SQLException {
+        try {
+            String sqlStatement = "SELECT Contact_ID, Contact_Name FROM contacts WHERE Contact_ID = ?";
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, contactId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int selectedContactId = resultSet.getInt("Contact_ID");
+                String contactName = resultSet.getString("Contact_Name");
+                Contacts contacts = new Contacts(selectedContactId, contactName);
+                return contacts;
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
     }
 }
