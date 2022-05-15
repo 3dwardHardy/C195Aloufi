@@ -134,7 +134,7 @@ public class MainScreenController implements Initializable {
                 Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                 alert1.setTitle("Appointment Deleted");
                 alert1.setHeaderText("Appointment delete was successful.");
-                alert1.setContentText("Successfully removed Appt ID: " + selectedAppt.getApptId() + " for Appt type: " + selectedAppt.getType() +".");
+                alert1.setContentText("Successfully removed Appointment ID: " + selectedAppt.getApptId() + " for Appointment TYPE: " + selectedAppt.getType() +".");
                 alert1.showAndWait();
 
                 appointments = AppointmentsDAO.getAppts();
