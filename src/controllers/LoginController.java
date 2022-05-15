@@ -211,11 +211,11 @@ public class LoginController implements Initializable {
 
         try {
             PreparedStatement ps = JDBC.connection.prepareStatement(
-                    "SELECT appointment.appointmentId, appointment.customerId, appointment.title, appointment.description, "
-                            + "appointment.`start`, appointment.`end`, customer.customerId, customer.customerName, appointment.createdBy "
-                            + "FROM appointment, customer "
-                            + "WHERE appointment.customerId = customer.customerId AND appointment.createdBy = ? "
-                            + "ORDER BY `start`");
+                    "SELECT appointments.Appointment_ID, appointments.Customer_ID, appointments.Title, appointments.Description, "
+                            + "appointments.`Start`, appointments.`End`, customers.Customer_ID, customers.Customer_Name, appointments.Created_By "
+                            + "FROM appointments, customers "
+                            + "WHERE appointments.Customer_ID = customers.Customer_ID AND appointments.Created_By = ? "
+                            + "ORDER BY `Start`");
             ps.setString(1, Users.getUserName());
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -237,12 +237,12 @@ public class LoginController implements Initializable {
                 /**
                  * pulls data needed to perform method
                  */
-                int appointmentId = rs.getInt("appointmentId");
-                String title = rs.getString("title");
-                String type = rs.getString("description");
-                String customerName = rs.getString("customerName");
-                int customerId = rs.getInt("customerId");
-                String user = rs.getString("createdBy");
+                int appointmentId = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String type = rs.getString("Description");
+                String customerName = rs.getString("Customer_Name");
+                int customerId = rs.getInt("Customer_Id");
+                String user = rs.getString("Created_By");
 
                 /**
                  * inserts the appointments into an observable list
