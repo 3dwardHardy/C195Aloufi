@@ -297,6 +297,8 @@ public class ModifyAppointmentController implements Initializable {
             startDate.setValue(selected.getStartTime().toLocalDateTime().toLocalDate());
             endTimeCombo.setValue(selected.getEndTime().toString());
             endDate.setValue(selected.getEndTime().toLocalDateTime().toLocalDate());
+            Contacts contact = ContactsDAO.getContactName(selected.getContactId());
+            contactCombo.setValue(contact);
             Users user = UsersDAO.getUserID(selected.getUserId());
             userIdCombo.setValue(user);
             Customers customers = CustomersDAO.getCustomerName(selected.getCustomerId());
