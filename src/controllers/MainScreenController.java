@@ -81,12 +81,15 @@ public class MainScreenController implements Initializable {
     }
 
     public void handleModifyAppt(ActionEvent actionEvent) throws IOException{
-        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
-        Parent scene = FXMLLoader.load(getClass().getResource("/modifyAppointment.FXML"));
-        stage.setTitle("Modify An Existing Appointment");
-        stage.setScene(new Scene(scene));
-        stage.show();
-        stage.centerOnScreen();
+        if (appointmentsTableView.getSelectionModel().getSelectedItem() != null) {
+            ModifyAppointmentController.retrieveAppt(appointmentsTableView.getSelectionModel().getSelectedItem());
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Modify Appointment Error");
+            alert.setHeaderText("You did not select an appointment!");
+            alert.setContentText("Please make a selection and try again.");
+            alert.showAndWait();
+        }
     }
 
     public void handleReports(ActionEvent actionEvent) {

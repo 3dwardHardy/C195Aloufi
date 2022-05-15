@@ -115,7 +115,7 @@ public class AppointmentsDAO {
         }
     }
 
-    public static void deleteAppts(int appointmentId) throws SQLException{
+    public static void deleteAppts(int appointmentId) throws SQLException {
         String sqlStatement = "DELETE FROM appointments WHERE Appointment_ID = ?;";
         PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
 
@@ -123,6 +123,7 @@ public class AppointmentsDAO {
 
         preparedStatement.execute();
     }
+
     public static boolean checkForOverlappingAppointment(Timestamp startTime, Timestamp endTime, int customerID) {
         try {
             String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ? and Start <= ? and end >= ?";
@@ -133,10 +134,61 @@ public class AppointmentsDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             // If there is a result row, we know it’s an overlapping appointment
             return resultSet.next();
-        }
-        catch (SQLException exception) {
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return false;
     }
+
+    public static void updateAppointment(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userId, int contactId, int id) {
+
+        try {
+            String sqlStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
+
+            ps.setString(1, title);
+            ps.setString(2, description);
+            ps.setString(3, location);
+            ps.setString(4, type);
+            ps.setTimestamp(5, start);
+            ps.setTimestamp(6, end);
+            ps.setTimestamp(7, Conversions.getCurrentTimestamp());
+            ps.setString(8, UsersDAO.getCurrentUserName());
+            ps.setInt(9, customerId);
+            ps.setInt(10, userId);
+            ps.setInt(11, contactId);
+            ps.setInt(12, id);
+            ps.executeUpdate();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    public static ObservableList<Appointments> getApptsByApptId(int customerId) throws SQLException {
+        ObservableList<Appointments> appointments = FXCollections.observableArrayList();
+        String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Customer_ID=?;";
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+        preparedStatement.setInt(1, customerId);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Appointments newAppts = new Appointments(
+                    resultSet.getInt("Appointment_ID"),
+                    resultSet.getString("Title"),
+                    resultSet.getString("Description"),
+                    resultSet.getString("Location"),
+                    resultSet.getInt("Contact_ID"),
+                    resultSet.getString("Type"),
+                    resultSet.getTimestamp("Start"),
+                    resultSet.getTimestamp("End"),
+                    resultSet.getInt("Customer_ID"),
+                    resultSet.getInt("User_ID"),
+                    resultSet.getString("Contact_Name"));
+            appointments.add(newAppts);
+        }
+        return appointments;
+    }
+
 }
