@@ -55,6 +55,7 @@ public class ModifyCustomerController implements Initializable {
 
     Parent scene;
 
+
     public void handleSave(ActionEvent actionEvent) {
         try {
             if (modCustomerNameTxt.getText().isEmpty()) {
@@ -180,6 +181,7 @@ public class ModifyCustomerController implements Initializable {
         modCustomerAddressTxt.setText(selected.getAddress());
         modPostalTxt.setText(selected.getPostalCode());
         modPhoneTxt.setText(selected.getPhone());
+
 
 
         ObservableList<Countries> countries = CountriesDAO.getCountryId();

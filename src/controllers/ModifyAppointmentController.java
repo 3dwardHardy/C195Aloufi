@@ -32,10 +32,10 @@ import java.util.TimeZone;
 
 public class ModifyAppointmentController implements Initializable {
     @FXML
-    private TextField appointmentIdTxt;
+    private TextField apptIdTxt;
 
     @FXML
-    private TextField titleTxt;
+    private  TextField titleTxt;
 
     @FXML
     private TextField descriptionTxt;
@@ -69,9 +69,11 @@ public class ModifyAppointmentController implements Initializable {
 
     private static Appointments selected;
 
-    public static void retrieveAppt(Appointments appointments) {
+    public static void retrieveAppts (Appointments appointments) {
         selected = appointments;
     }
+
+
 
     public void handleSave(ActionEvent actionEvent) throws SQLException {
         try {
@@ -278,7 +280,6 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     public void handleClear(ActionEvent actionEvent) {
-        appointmentIdTxt.setText("");
         titleTxt.setText("");
         descriptionTxt.setText("");
         locationTxt.setText("");
@@ -293,7 +294,29 @@ public class ModifyAppointmentController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resourceBundle)  {
+        try {
+            apptIdTxt.setText(String.valueOf(selected.getApptId()));
+            titleTxt.setText(selected.getTitle());
+            descriptionTxt.setText(selected.getDescription());
+            locationTxt.setText(selected.getLocation());
+            typeTxt.setText(selected.getType());
+            startTimeCombo.setValue(selected.getStartTime().toString());
+            startDate.setValue(selected.getStartTime().toLocalDateTime().toLocalDate());
+            endTimeCombo.setValue(selected.getEndTime().toString());
+            endDate.setValue(selected.getEndTime().toLocalDateTime().toLocalDate());
+            Contacts contacts = ContactsDAO.getContactID().get(selected.getContactId());
+            contactCombo.setValue(contacts);
+            Users user = UsersDAO.getUserID().get(selected.getUserId());
+            userIdCombo.setValue(user);
+            Customers customer = CustomersDAO.getCustomerName().get(selected.getCustomerId());
+            customerIdCombo.setValue(customer);
+
+        }catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+
         try {
             ObservableList<Customers> customers = CustomersDAO.getCustomerID();
             customerIdCombo.setItems(customers);
@@ -321,5 +344,7 @@ public class ModifyAppointmentController implements Initializable {
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+
+
     }
 }

@@ -2,7 +2,6 @@ package Models;
 
 import javafx.collections.ObservableList;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -65,6 +64,7 @@ public ObservableList<Appointments> appointments;
     public Appointments() {
 
     }
+
 
     public int getApptId() {
         return apptId;
