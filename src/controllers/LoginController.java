@@ -114,9 +114,6 @@ public class LoginController implements Initializable {
             }
         }
          else {
-            apptList();
-            appointmentAlert();
-
             Logger.loginAttempts(username,password);
             Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
             Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
@@ -181,81 +178,6 @@ public class LoginController implements Initializable {
         loginBtn.setText(resource.getString("login"));
         resetBtn.setText(resource.getString("reset"));
         exitBtn.setText(resource.getString("exit"));
-    }
-    private void appointmentAlert() {
-
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime nowPlus15Min = now.plusMinutes(15);
-
-        FilteredList<Appointments> filteredData = new FilteredList<>(appointmentsObservableList);
-
-        /**
-         * lamba to neatly handle getting the appointmentss that occur within 15 mins.
-         */
-        filteredData.setPredicate(row -> {
-                    LocalDateTime rowDate = LocalDateTime.parse(row.getStartTime().toString().substring(0, 16), dtformat);
-                    return rowDate.isAfter(now.minusMinutes(1)) && rowDate.isBefore(nowPlus15Min);
-                }
-        );
-        if (filteredData.isEmpty()) {
-            MainScreenController.noCloseAppts();
-
-        } else {
-            String type = filteredData.get(0).getDescription();
-            String customer = String.valueOf(filteredData.get(0).getCustomerId());
-            String start = filteredData.get(0).getStartTime().toString().substring(0, 16);
-            MainScreenController.apptsIn15();
-        }
-    }
-    private void apptList() {
-
-        try {
-            PreparedStatement ps = JDBC.connection.prepareStatement(
-                    "SELECT appointments.Appointment_ID, appointments.Customer_ID, appointments.Title, appointments.Description, "
-                            + "appointments.`Start`, appointments.`End`, customers.Customer_ID, customers.Customer_Name, appointments.Created_By "
-                            + "FROM appointments, customers "
-                            + "WHERE appointments.Customer_ID = customers.Customer_ID AND appointments.Created_By = ? "
-                            + "ORDER BY `Start`");
-            ps.setString(1, Users.getUserName());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-
-                /**
-                 * coverts to local time.
-                 */
-                Timestamp timestampStart = rs.getTimestamp("start");
-                ZonedDateTime startUTC = timestampStart.toLocalDateTime().atZone(ZoneId.of("UTC"));
-                ZonedDateTime newLocalStart = startUTC.withZoneSameInstant(localZoneId);
-
-                /**
-                converts end time to local time
-                 */
-                Timestamp timestampEnd = rs.getTimestamp("end");
-                ZonedDateTime endUTC = timestampEnd.toLocalDateTime().atZone(ZoneId.of("UTC"));
-                ZonedDateTime newLocalEnd = endUTC.withZoneSameInstant(localZoneId);
-
-                /**
-                 * pulls data needed to perform method
-                 */
-                int appointmentId = rs.getInt("Appointment_ID");
-                String title = rs.getString("Title");
-                String type = rs.getString("Description");
-                String customerName = rs.getString("Customer_Name");
-                int customerId = rs.getInt("Customer_Id");
-                String user = rs.getString("Created_By");
-
-                /**
-                 * inserts the appointments into an observable list
-                 */
-                appointmentsObservableList.add(new Appointments(appointmentId, newLocalStart.toString(), newLocalEnd.toString(),
-                        title, type, customerId, customerName, user));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }
