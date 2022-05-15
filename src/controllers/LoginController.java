@@ -1,6 +1,7 @@
 package controllers;
 
 import database.UsersDAO;
+import helper.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +18,6 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static database.UsersDAO.validLogin;
 
 public class LoginController implements Initializable {
     @FXML
@@ -88,6 +88,7 @@ public class LoginController implements Initializable {
         }
 
         if (!validLogon) {
+            Logger.loginAttempts(username,password);
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle(resourceBundle.getString("loginError"));
@@ -97,6 +98,7 @@ public class LoginController implements Initializable {
             }
         }
          else {
+            Logger.loginAttempts(username,password);
             Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
             Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
             stage.setTitle("Appointment Management System");
@@ -105,14 +107,6 @@ public class LoginController implements Initializable {
             stage.centerOnScreen();
         }
     }
-
-    //private void loginSuccess() {
-
-    //}
-
-   // private void loginFailed() {
-
-   // }
 
     public void handleReset(ActionEvent actionEvent) {
         userNameTxt.setText("");
