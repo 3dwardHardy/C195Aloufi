@@ -77,7 +77,7 @@ public class ModifyAppointmentController implements Initializable {
 
     public void handleSave(ActionEvent actionEvent) throws SQLException {
         try {
-            Appointments appointments = new Appointments();
+            String title =titleTxt.getText();
             if (titleTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -85,10 +85,9 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setContentText("Please enter a valid title for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {
-                appointments.setTitle(titleTxt.getText());
             }
 
+            String description = descriptionTxt.getText();
             if (descriptionTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -96,9 +95,8 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setContentText("Please enter a valid description for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {
-                appointments.setDescription(descriptionTxt.getText());
             }
+            String location = locationTxt.getText();
             if (locationTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -106,8 +104,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setContentText("Please enter a valid location for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {
-                appointments.setLocation(locationTxt.getText());
             }
             if (contactCombo.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -116,9 +112,8 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setContentText("Please select a contact for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {
-                appointments.setContactId(Integer.parseInt(contactCombo.getValue().toString()));
             }
+            String type = typeTxt.getText();
             if (typeTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -126,8 +121,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setContentText("Please enter a valid type for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {
-                appointments.setType(typeTxt.getText());
             }
             if (customerIdCombo.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -136,8 +129,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setContentText("Please select a customer ID for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {
-                appointments.setCustomerId(Integer.parseInt(customerIdCombo.getValue().toString()));
             }
             if (userIdCombo.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -146,8 +137,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.setContentText("Please select a user ID for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {
-                appointments.setUserId(Integer.parseInt(userIdCombo.getValue().toString()));
             }
             if (startDate.getValue() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -189,6 +178,11 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
+            int apptId = Integer.parseInt(apptIdTxt.getText());
+            int customerId = (customerIdCombo.getValue().getCustomerId());
+            int userId = (userIdCombo.getValue().getUserId());
+            ObservableList<Appointments> customerAppts = AppointmentsDAO.getApptsByCustomerID(customerId);
+            int contactId = (contactCombo.getValue().getContactId());
 
 
             ObservableList<Appointments> timeList = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
@@ -219,8 +213,8 @@ public class ModifyAppointmentController implements Initializable {
 
             if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) && ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
                 if (startTimeStamp.before(endTimeStamp)) {
-                    appointments.setStartTime(Timestamp.valueOf(fullStartTime));
-                    appointments.setEndTime(Timestamp.valueOf(fullStartTime));
+                    AppointmentsDAO.updateAppointment(title, description,location, type, startTimeStamp, endTimeStamp, customerId,userId,contactId, apptId);
+
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Add Appointment Error");
@@ -241,8 +235,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             } else {
-                AppointmentsDAO.createAppt(appointments);
-
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Appointment Created");
                 alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
@@ -305,10 +297,10 @@ public class ModifyAppointmentController implements Initializable {
             startDate.setValue(selected.getStartTime().toLocalDateTime().toLocalDate());
             endTimeCombo.setValue(selected.getEndTime().toString());
             endDate.setValue(selected.getEndTime().toLocalDateTime().toLocalDate());
-            Contacts contacts = ContactsDAO.getContactID().get(selected.getContactId());
-            contactCombo.setValue(contacts);
-            Users user = UsersDAO.getUserID().get(selected.getUserId());
+            Users user = UsersDAO.getUserID(selected.getUserId());
             userIdCombo.setValue(user);
+            Customers customers = CustomersDAO.getCustomerName(selected.getCustomerId());
+            customerIdCombo.setValue(customers);
 
 
         }catch (SQLException sqlException) {

@@ -55,4 +55,24 @@ public class UsersDAO {
         }
         return users;
     }
-}
+
+    public static Users getUserID(int userId) {
+            try {
+                String sqlStatement = "SELECT User_ID, User_Name FROM users WHERE User_ID = ?";
+                PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+                preparedStatement.setInt(1, userId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    int selectedUserId = resultSet.getInt("User_ID");
+                    String userName1 = resultSet.getString("User_Name");
+                    Users user = new Users(selectedUserId, userName1);
+                    return user;
+                }
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            return null;
+        }
+    }
+

@@ -140,10 +140,14 @@ public class AppointmentsDAO {
         return false;
     }
 
-    public static void updateAppointment(String title, String description, String location, String type, Timestamp start, Timestamp end, int customerId, int userId, int contactId, int id) {
+    public static void updateAppointment(String title, String description, String location, String type,
+                                         Timestamp start, Timestamp end, int customerId,
+                                         int userId, int contactId, int apptId) {
 
         try {
-            String sqlStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
+            String sqlStatement = "UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, " +
+                    "Start = ?, End = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, " +
+                    "User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?";
             PreparedStatement ps = JDBC.connection.prepareStatement(sqlStatement);
 
             ps.setString(1, title);
@@ -157,7 +161,7 @@ public class AppointmentsDAO {
             ps.setInt(9, customerId);
             ps.setInt(10, userId);
             ps.setInt(11, contactId);
-            ps.setInt(12, id);
+            ps.setInt(12, apptId);
             ps.executeUpdate();
 
         } catch (SQLException sqlException) {
