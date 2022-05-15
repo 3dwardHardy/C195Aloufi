@@ -23,9 +23,15 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
+import java.time.temporal.TemporalAccessor;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -77,7 +83,6 @@ public class ModifyAppointmentController implements Initializable {
 
     public void handleSave(ActionEvent actionEvent) throws SQLException {
         try {
-            String title =titleTxt.getText();
             if (titleTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -86,8 +91,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-
-            String description = descriptionTxt.getText();
             if (descriptionTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -96,7 +99,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            String location = locationTxt.getText();
             if (locationTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -105,7 +107,7 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            if (contactCombo.getSelectionModel().isEmpty()) {
+            if (contactCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a contact!");
@@ -113,7 +115,6 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            String type = typeTxt.getText();
             if (typeTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -122,7 +123,7 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            if (customerIdCombo.getSelectionModel().isEmpty()) {
+            if (customerIdCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a customer ID!");
@@ -130,7 +131,7 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            if (userIdCombo.getSelectionModel().isEmpty()) {
+            if (userIdCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a user ID!");
@@ -146,7 +147,7 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            if (startTimeCombo.getSelectionModel().isEmpty()) {
+            if (startTimeCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a start time!");
@@ -170,83 +171,99 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-            if (endTimeCombo.getSelectionModel().isEmpty()) {
+            if (endTimeCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select an end time!");
                 alert.setContentText("Please select an end time for this appointment.");
                 alert.showAndWait();
                 return;
-            }
-            int apptId = Integer.parseInt(apptIdTxt.getText());
-            int customerId = (customerIdCombo.getValue().getCustomerId());
-            int userId = (userIdCombo.getValue().getUserId());
-            ObservableList<Appointments> customerAppts = AppointmentsDAO.getApptsByCustomerID(customerId);
-            int contactId = (contactCombo.getValue().getContactId());
+            } else {;
+                int apptId = Integer.parseInt(apptIdTxt.getText());
+                int customerId = (customerIdCombo.getValue().getCustomerId());
+                ObservableList<Appointments> customerAppts = AppointmentsDAO.getApptsByCustomerID(customerId);
 
 
-            ObservableList<Appointments> timeList = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
-            String fullStartTime = startDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + (startTimeCombo.getValue() + ":00");
-            Timestamp startTimeStamp = Timestamp.valueOf(fullStartTime);
-            String fullEndTime = endDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + (endTimeCombo.getValue() + ":00");
-            Timestamp endTimeStamp = Timestamp.valueOf(fullEndTime);
-            Boolean apptConflict = AppointmentsDAO.checkForOverlappingAppointment(startTimeStamp, endTimeStamp, (customerIdCombo.getValue().getCustomerId()));
+                ObservableList<Appointments> timeList = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.
+                        getSelectionModel().getSelectedItem().getCustomerId());
+                String fullStartTime = startDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " +
+                        (startTimeCombo.getValue() + ":00");
+                Timestamp startTimeStamp = Timestamp.valueOf(fullStartTime);
+                String fullEndTime = endDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " +
+                        (endTimeCombo.getValue() + ":00");
+                Timestamp endTimeStamp = Timestamp.valueOf(fullEndTime);
+                Boolean apptConflict = AppointmentsDAO.checkForOverlappingAppointment(startTimeStamp, endTimeStamp, (customerIdCombo.getValue().getCustomerId()));
 
-            LocalDate setStartDate = LocalDate.parse(startDate.getValue().toString());
-            LocalTime setStartTime = LocalTime.parse(startTimeCombo.getValue());
-            LocalDate setEndDate = LocalDate.parse(endDate.getValue().toString());
-            LocalTime setEndTime = LocalTime.parse(endTimeCombo.getValue());
-            ZoneId localZone = ZoneId.of(TimeZone.getDefault().getID());
-            ZonedDateTime startZoneTime = ZonedDateTime.of(setStartDate, setStartTime, localZone);
-            ZonedDateTime endZoneTime = ZonedDateTime.of(setEndDate, setEndTime, localZone);
+                LocalDate setStartDate = LocalDate.parse(startDate.getValue().toString());
+                LocalTime setStartTime = LocalTime.parse(startTimeCombo.getValue());
+                LocalDate setEndDate = LocalDate.parse(endDate.getValue().toString());
+                LocalTime setEndTime = LocalTime.parse(endTimeCombo.getValue());
+                ZoneId localZone = ZoneId.of(TimeZone.getDefault().getID());
+                ZonedDateTime startZoneTime = ZonedDateTime.of(setStartDate, setStartTime, localZone);
+                ZonedDateTime endZoneTime = ZonedDateTime.of(setEndDate, setEndTime, localZone);
 
-            ZoneId estZoneId = ZoneId.of("US/Eastern");
-            LocalDate officeOpenDate = LocalDate.parse(startDate.getValue().toString());
-            LocalTime officeOpenTime = LocalTime.of(8, 00, 00);
-            ZonedDateTime officeOpenZDT = ZonedDateTime.of(officeOpenDate, officeOpenTime, estZoneId);
-            LocalDate officeCloseDate = LocalDate.parse(endDate.getValue().toString());
-            LocalTime officeCloseTime = LocalTime.of(22, 00, 00);
-            ZonedDateTime officeCloseZDT = ZonedDateTime.of(officeCloseDate, officeCloseTime, localZone);
+                ZoneId estZoneId = ZoneId.of("US/Eastern");
+                LocalDate officeOpenDate = LocalDate.parse(startDate.getValue().toString());
+                LocalTime officeOpenTime = LocalTime.of(8, 00, 00);
+                ZonedDateTime officeOpenZDT = ZonedDateTime.of(officeOpenDate, officeOpenTime, estZoneId);
+                LocalDate officeCloseDate = LocalDate.parse(endDate.getValue().toString());
+                LocalTime officeCloseTime = LocalTime.of(22, 00, 00);
+                ZonedDateTime officeCloseZDT = ZonedDateTime.of(officeCloseDate, officeCloseTime, localZone);
 
-            ZonedDateTime adjustedStart = officeOpenZDT.withZoneSameInstant(localZone);
-            ZonedDateTime adjustedEnd = officeCloseZDT.withZoneSameInstant(localZone);
+                ZonedDateTime adjustedStart = officeOpenZDT.withZoneSameInstant(localZone);
+                ZonedDateTime adjustedEnd = officeCloseZDT.withZoneSameInstant(localZone);
 
-            if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) && ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
-                if (startTimeStamp.before(endTimeStamp)) {
-                    AppointmentsDAO.updateAppointment(title, description,location, type, startTimeStamp, endTimeStamp, customerId,userId,contactId, apptId);
+                if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) &&
+                        ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
+                    if (startTimeStamp.before(endTimeStamp)) {
 
+                        AppointmentsDAO.updateAppointment(titleTxt.getText(),
+                                descriptionTxt.getText(),
+                                locationTxt.getText(),
+                                typeTxt.getText(),
+                                Timestamp.valueOf(startDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) +
+                                        " " + startTimeCombo.getValue() + ":00"),
+                                Timestamp.valueOf(endDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) +
+                                        " " + endTimeCombo.getValue() + ":00"),
+                                customerIdCombo.getValue().getCustomerId(),
+                                userIdCombo.getValue().getUserId(),
+                                contactCombo.getValue().getContactId(),
+                                apptId);
+
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Add Appointment Error");
+                        alert.setHeaderText("The Start time must be before the appointment end time!");
+                        alert.setContentText("Please adjust the time for the appointment.");
+                        alert.showAndWait();
+                        return;
+                    }
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("The Start time must be before the appointment end time!");
-                    alert.setContentText("Please adjust the time for the appointment.");
-                    alert.showAndWait();
+                    Conversions.outOfOfficeHours();
                     return;
                 }
-            } else {
-                Conversions.outOfOfficeHours();
-                return;
-            }
-            if (apptConflict == true) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Add Appointment Error");
-                alert.setHeaderText("This appointment overlaps another appointment.");
-                alert.setContentText("Please adjust the times and try again.");
-                alert.showAndWait();
-                return;
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Appointment Created");
-                alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
-                alert.setContentText("The appointment has been added to the schedule.");
-                alert.showAndWait();
+                if (apptConflict == true) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("This appointment overlaps another appointment.");
+                    alert.setContentText("Please adjust the times and try again.");
+                    alert.showAndWait();
+                    return;
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Appointment Created");
+                    alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
+                    alert.setContentText("The appointment has been added to the schedule.");
+                    alert.showAndWait();
 
-                Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
-                Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
-                stage.setTitle("Appointment Management System");
-                stage.setScene(new Scene(scene));
-                stage.show();
-                stage.centerOnScreen();
+                    Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+                    Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
+                    stage.setTitle("Appointment Management System");
+                    stage.setScene(new Scene(scene));
+                    stage.show();
+                    stage.centerOnScreen();
+
+                }
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -293,9 +310,7 @@ public class ModifyAppointmentController implements Initializable {
             descriptionTxt.setText(selected.getDescription());
             locationTxt.setText(selected.getLocation());
             typeTxt.setText(selected.getType());
-            startTimeCombo.setValue(selected.getStartTime().toString());
             startDate.setValue(selected.getStartTime().toLocalDateTime().toLocalDate());
-            endTimeCombo.setValue(selected.getEndTime().toString());
             endDate.setValue(selected.getEndTime().toLocalDateTime().toLocalDate());
             Contacts contact = ContactsDAO.getContactName(selected.getContactId());
             contactCombo.setValue(contact);
@@ -303,6 +318,9 @@ public class ModifyAppointmentController implements Initializable {
             userIdCombo.setValue(user);
             Customers customers = CustomersDAO.getCustomerName(selected.getCustomerId());
             customerIdCombo.setValue(customers);
+
+            startTimeCombo.getSelectionModel().select(String.valueOf(selected.getStartTime().toLocalDateTime().toLocalTime()));;
+            endTimeCombo.getSelectionModel().select(String.valueOf(selected.getEndTime().toLocalDateTime().toLocalTime()));
 
 
         }catch (SQLException sqlException) {
