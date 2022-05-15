@@ -10,9 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -21,6 +19,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -116,6 +115,35 @@ public class MainScreenController implements Initializable {
     }
 
     public void handleApptDelete(ActionEvent actionEvent) {
+        Appointments selectedAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
+        if (selectedAppt == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("");
+            alert.setHeaderText("");
+            alert.setContentText("");
+            alert.showAndWait();
+        } else if (selectedAppt != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Delete Appointment");
+            alert.setHeaderText("Do you wish to delete this appointment?");
+            alert.setContentText("This will remove the appointment from the database. Press OK to confirm.");
+            Optional<ButtonType> result = alert.showAndWait();
+
+            try {
+                AppointmentsDAO.deleteAppts(appointmentsTableView.getSelectionModel().getSelectedItem().getApptId());
+                Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
+                alert1.setTitle("Appointment Deleted");
+                alert1.setHeaderText("Appointment delete was successful.");
+                alert1.setContentText("Successfully removed Appt ID: " + selectedAppt.getApptId() + " for Appt type: " + selectedAppt.getType() +".");
+                alert1.showAndWait();
+
+                appointments = AppointmentsDAO.getAppts();
+                appointmentsTableView.setItems(appointments);
+                appointmentsTableView.refresh();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+        }
     }
 
     @Override

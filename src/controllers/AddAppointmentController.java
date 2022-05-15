@@ -183,11 +183,13 @@ public class AddAppointmentController implements Initializable {
                 return;
             }
 
+
             ObservableList<Appointments> timeList = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
             String fullStartTime = startDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + (startTimeCombo.getValue() + ":00");
             Timestamp startTimeStamp = Timestamp.valueOf(fullStartTime);
             String fullEndTime = endDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + (endTimeCombo.getValue() + ":00");
             Timestamp endTimeStamp = Timestamp.valueOf(fullEndTime);
+            boolean apptConflicts = AppointmentsDAO.apptsConflict(startTimeStamp,endTimeStamp,customerIdCombo.getValue().getCustomerId(), -1);
 
             LocalDate setStartDate = LocalDate.parse(startDate.getValue().toString());
             LocalTime setStartTime = LocalTime.parse(startTimeCombo.getValue());
@@ -208,26 +210,34 @@ public class AddAppointmentController implements Initializable {
             ZonedDateTime adjustedStart = officeOpenZDT.withZoneSameInstant(localZone);
             ZonedDateTime adjustedEnd = officeCloseZDT.withZoneSameInstant(localZone);
 
-            LocalDateTime newStart = startTimeStamp.toLocalDateTime();
-            LocalDateTime newEnd = endTimeStamp.toLocalDateTime();
+            if (apptConflicts) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Add Appointment Error");
+                alert.setHeaderText("An appointment conflict exists!");
+                alert.setContentText("There is another appointment at this time. Please choose a new time.");
+
+                alert.showAndWait();
+                return;
+            }
 
 
             if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) && ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
                 if (startTimeStamp.before(endTimeStamp)) {
-                appointments.setStartTime(Timestamp.valueOf(fullStartTime));
-                appointments.setEndTime(Timestamp.valueOf(fullStartTime));
-              } else {
-                   Alert alert = new Alert(Alert.AlertType.ERROR);
-                   alert.setTitle("Add Appointment Error");
-                   alert.setHeaderText("The Start time must be before the appointment end time!");
-                   alert.setContentText("Please adjust the time for the appointment.");
-                   alert.showAndWait();
-                   return;
-            }
+                    appointments.setStartTime(Timestamp.valueOf(fullStartTime));
+                    appointments.setEndTime(Timestamp.valueOf(fullStartTime));
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Add Appointment Error");
+                    alert.setHeaderText("The Start time must be before the appointment end time!");
+                    alert.setContentText("Please adjust the time for the appointment.");
+                    alert.showAndWait();
+                    return;
+                }
             } else {
-             Conversions.outOfOfficeHours();
-             return;
-           }
+                Conversions.outOfOfficeHours();
+                return;
+            }
+
 
             AppointmentsDAO.createAppt(appointments);
 

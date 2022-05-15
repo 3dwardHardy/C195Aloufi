@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class AppointmentsDAO {
 
@@ -111,5 +112,41 @@ public class AppointmentsDAO {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+    }
+    public static boolean apptsConflict (Timestamp startTime, Timestamp endTime, int customerId, int appointmentId)  {
+
+        boolean apptConflicts = false;
+
+        try {
+
+            String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ? AND Appointment_ID <> ? AND (? = start OR ? = end) or ( ? < start and ? > end) or (? > start AND ? < end) or (? > start AND ? < end)";
+
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, customerId);
+            preparedStatement.setInt(2, appointmentId);
+            preparedStatement.setTimestamp(3, startTime);
+            preparedStatement.setTimestamp(4, endTime);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                apptConflicts = true;
+            }
+            else {
+                apptConflicts = false;
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return apptConflicts;
+    }
+
+    public static void deleteAppts(int appointmentId) throws SQLException{
+        String sqlStatement = "DELETE FROM appointments WHERE Appointment_ID = ?;";
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+        preparedStatement.setInt(1, appointmentId);
+
+        preparedStatement.execute();
     }
 }
