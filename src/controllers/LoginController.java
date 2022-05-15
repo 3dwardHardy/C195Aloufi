@@ -1,7 +1,10 @@
 package controllers;
 
+import Models.Appointments;
+import database.AppointmentsDAO;
 import database.UsersDAO;
 import helper.Logger;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -99,6 +102,7 @@ public class LoginController implements Initializable {
         }
          else {
             Logger.loginAttempts(username,password);
+            AppointmentsDAO.apptIn15();
             Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
             Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
             stage.setTitle("Appointment Management System");
@@ -162,4 +166,5 @@ public class LoginController implements Initializable {
         resetBtn.setText(resource.getString("reset"));
         exitBtn.setText(resource.getString("exit"));
     }
+
 }
