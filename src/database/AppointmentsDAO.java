@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class AppointmentsDAO {
 
@@ -113,35 +114,6 @@ public class AppointmentsDAO {
             exception.printStackTrace();
         }
     }
-    public static boolean apptsConflict (Timestamp startTime, Timestamp endTime, int customerId, int appointmentId)  {
-
-        boolean apptConflicts = false;
-
-        try {
-
-            String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ? AND Appointment_ID = ? AND " +
-                    "(? = Start OR ? = End) or ( ? < Start and ? > End) or (? > Start AND ? < End) or " +
-                    "(? > Start AND ? < End);";
-
-            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, customerId);
-            preparedStatement.setInt(2, appointmentId);
-            preparedStatement.setTimestamp(3, startTime);
-            preparedStatement.setTimestamp(4, endTime);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                apptConflicts = true;
-            }
-            else {
-                apptConflicts = false;
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return apptConflicts;
-    }
 
     public static void deleteAppts(int appointmentId) throws SQLException{
         String sqlStatement = "DELETE FROM appointments WHERE Appointment_ID = ?;";
@@ -150,5 +122,21 @@ public class AppointmentsDAO {
         preparedStatement.setInt(1, appointmentId);
 
         preparedStatement.execute();
+    }
+    public static boolean checkForOverlappingAppointment(Timestamp startTime, Timestamp endTime, int customerID) {
+        try {
+            String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ? and Start <= ? and end >= ?";
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, customerID);
+            preparedStatement.setObject(2, endTime);
+            preparedStatement.setObject(3, startTime);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            // If there is a result row, we know it’s an overlapping appointment
+            return resultSet.next();
+        }
+        catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return false;
     }
 }

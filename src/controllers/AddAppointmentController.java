@@ -189,7 +189,7 @@ public class AddAppointmentController implements Initializable {
             Timestamp startTimeStamp = Timestamp.valueOf(fullStartTime);
             String fullEndTime = endDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + (endTimeCombo.getValue() + ":00");
             Timestamp endTimeStamp = Timestamp.valueOf(fullEndTime);
-            boolean apptConflicts = AppointmentsDAO.apptsConflict(startTimeStamp,endTimeStamp,customerIdCombo.getValue().getCustomerId(), -1);
+            Boolean apptConflict = AppointmentsDAO.checkForOverlappingAppointment(startTimeStamp, endTimeStamp, customerIdCombo.getValue().getCustomerId());
 
             LocalDate setStartDate = LocalDate.parse(startDate.getValue().toString());
             LocalTime setStartTime = LocalTime.parse(startTimeCombo.getValue());
@@ -210,53 +210,50 @@ public class AddAppointmentController implements Initializable {
             ZonedDateTime adjustedStart = officeOpenZDT.withZoneSameInstant(localZone);
             ZonedDateTime adjustedEnd = officeCloseZDT.withZoneSameInstant(localZone);
 
-            if (apptConflicts) {
+                        if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) && ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
+                            if (startTimeStamp.before(endTimeStamp)) {
+                                appointments.setStartTime(Timestamp.valueOf(fullStartTime));
+                                appointments.setEndTime(Timestamp.valueOf(fullStartTime));
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Add Appointment Error");
+                                alert.setHeaderText("The Start time must be before the appointment end time!");
+                                alert.setContentText("Please adjust the time for the appointment.");
+                                alert.showAndWait();
+                                return;
+                            }
+                        } else {
+                            Conversions.outOfOfficeHours();
+                            return;
+                        }
+            if (apptConflict == true) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
-                alert.setHeaderText("An appointment conflict exists!");
-                alert.setContentText("There is another appointment at this time. Please choose a new time.");
-
+                alert.setHeaderText("This appointment overlaps another appointment.");
+                alert.setContentText("Please adjust the times and try again.");
                 alert.showAndWait();
                 return;
-            }
-
-
-            if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) && ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
-                if (startTimeStamp.before(endTimeStamp)) {
-                    appointments.setStartTime(Timestamp.valueOf(fullStartTime));
-                    appointments.setEndTime(Timestamp.valueOf(fullStartTime));
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Add Appointment Error");
-                    alert.setHeaderText("The Start time must be before the appointment end time!");
-                    alert.setContentText("Please adjust the time for the appointment.");
-                    alert.showAndWait();
-                    return;
-                }
             } else {
-                Conversions.outOfOfficeHours();
-                return;
-            }
+                AppointmentsDAO.createAppt(appointments);
 
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Appointment Created");
+                alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
+                alert.setContentText("The appointment has been added to the schedule.");
+                alert.showAndWait();
 
-            AppointmentsDAO.createAppt(appointments);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Appointment Created");
-            alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
-            alert.setContentText("The appointment has been added to the schedule.");
-            alert.showAndWait();
-
-            Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
-            Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
-            stage.setTitle("Appointment Management System");
-            stage.setScene(new Scene(scene));
-            stage.show();
-            stage.centerOnScreen();
-        } catch (SQLException | IOException e) {
-            throw new RuntimeException(e);
+                Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+                Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
+                stage.setTitle("Appointment Management System");
+                stage.setScene(new Scene(scene));
+                stage.show();
+                stage.centerOnScreen();
+                    }
+        }catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
     }
+
         public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Cancel");
@@ -272,6 +269,7 @@ public class AddAppointmentController implements Initializable {
             stage.centerOnScreen();
         }
     }
+
 
     public void handleClear(ActionEvent actionEvent) {
         appointmentIdTxt.setText("");
