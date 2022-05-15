@@ -95,6 +95,24 @@ public class CustomersDAO {
         }
     }
 
+    public static Customers getCustomerName(int customerId) throws SQLException {
+        try {
+            String sqlStatement = "SELECT Customer_ID, Customer_Name FROM customers WHERE Customer_ID = ?";
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int selectedCustomerId = resultSet.getInt("Customer_ID");
+                String customerName = resultSet.getString("Customer_Name");
+                Customers customers = new Customers(selectedCustomerId, customerName);
+                return customers;
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
+    }
     public static ObservableList<Customers> getCustomerID() throws SQLException {
         ObservableList<Customers> customers = FXCollections.observableArrayList();
         String sqlStatement = "SELECT Customer_ID, Customer_Name FROM customers;";

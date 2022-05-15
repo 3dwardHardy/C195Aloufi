@@ -309,6 +309,8 @@ public class ModifyAppointmentController implements Initializable {
             contactCombo.setValue(contacts);
             Users user = UsersDAO.getUserID().get(selected.getUserId());
             userIdCombo.setValue(user);
+            Customers customers = CustomersDAO.getCustomerName(selected.getCustomerId());
+            customerIdCombo.setValue(customers);
 
 
         }catch (SQLException sqlException) {
