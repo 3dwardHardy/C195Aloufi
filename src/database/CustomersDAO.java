@@ -1,7 +1,6 @@
 package database;
 
 import Models.Customers;
-import Models.FirstLevelDivisions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,6 +106,7 @@ public class CustomersDAO {
             String customerName = resultSet.getString("Customer_Name");
             Customers customers1 = new Customers(customerId,customerName);
             customers.add(customers1);
+
         }
         return customers;
     }
