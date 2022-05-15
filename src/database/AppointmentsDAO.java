@@ -119,7 +119,9 @@ public class AppointmentsDAO {
 
         try {
 
-            String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ? AND Appointment_ID <> ? AND (? = start OR ? = end) or ( ? < start and ? > end) or (? > start AND ? < end) or (? > start AND ? < end)";
+            String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ? AND Appointment_ID = ? AND " +
+                    "(? = Start OR ? = End) or ( ? < Start and ? > End) or (? > Start AND ? < End) or " +
+                    "(? > Start AND ? < End);";
 
             PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
             preparedStatement.setInt(1, customerId);
