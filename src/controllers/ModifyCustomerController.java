@@ -85,7 +85,7 @@ public class ModifyCustomerController implements Initializable {
                 return;
             }
 
-            if (countryCombo.getSelectionModel().isEmpty()) {
+            if (countryCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Customer Error");
                 alert.setHeaderText("You did not enter a country!");
@@ -94,7 +94,7 @@ public class ModifyCustomerController implements Initializable {
                 return;
             }
 
-            if (stateCombo.getSelectionModel().isEmpty()) {
+            if (stateCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Customer Error");
                 alert.setHeaderText("You did not enter a state/province!");
@@ -184,6 +184,9 @@ public class ModifyCustomerController implements Initializable {
         try {
             Countries country = CountriesDAO.getCountry(selected.getCountry());
             countryCombo.setValue(country);
+
+            FirstLevelDivisions divisions = FirstLevelDivisionDAO.getState(selected.getDivisionId());
+            stateCombo.setValue(divisions);
 
 
             ObservableList<Countries> countries = CountriesDAO.getCountryId();
