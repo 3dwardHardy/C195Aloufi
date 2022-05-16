@@ -98,7 +98,13 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    public void handleReports(ActionEvent actionEvent) {
+    public void handleReports(ActionEvent actionEvent) throws IOException{
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/reportMenu.FXML"));
+        stage.setTitle("Report Selection");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
     }
 
     public void handleLogout(ActionEvent actionEvent) throws IOException {
