@@ -1,6 +1,8 @@
 package database;
 
 import Models.Appointments;
+import Models.Users;
+import controllers.LoginController;
 import helper.Conversions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
@@ -11,6 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class AppointmentsDAO {
 

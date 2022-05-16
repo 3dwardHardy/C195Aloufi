@@ -1,6 +1,11 @@
 package Models;
 
+
+
+
 public class Users {
+
+
 
     /**
      *@ declarations for user class
@@ -28,6 +33,8 @@ public class Users {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    public static Integer getUserId;
 
     public String getUserName() {
         return userName;
