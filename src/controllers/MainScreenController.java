@@ -192,6 +192,9 @@ public class MainScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        viewAllBtn.setToggleGroup(ViewGroup);
+        viewMonthBtn.setToggleGroup(ViewGroup);
+        viewWeekBtn.setToggleGroup(ViewGroup);
         try {
             appointments = AppointmentsDAO.getAppts();
             appointmentsTableView.setItems(appointments);
