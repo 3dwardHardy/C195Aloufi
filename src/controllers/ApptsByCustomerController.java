@@ -27,7 +27,7 @@ public class ApptsByCustomerController implements Initializable {
     private TableView<Appointments> customerTableView;
 
     @FXML
-    private TableColumn<Appointments, Integer> apptId;
+    private TableColumn<Appointments, Integer> customerId;
 
     @FXML
     private TableColumn<Appointments, String> title;
@@ -61,11 +61,11 @@ public class ApptsByCustomerController implements Initializable {
     }
 
     public void handleGenerate(ActionEvent actionEvent) throws SQLException {
-        int customerId = customerCombo.getSelectionModel().getSelectedItem().getCustomerId();
+        int customerIds = customerCombo.getSelectionModel().getSelectedItem().getCustomerId();
 
-        if(customerId > 0){
-            customerTableView.setItems(AppointmentsDAO.getApptsByCustomerID(customerId));
-            apptId.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+        if(customerIds > 0){
+            customerTableView.setItems(AppointmentsDAO.getApptsByCustomerID(customerIds));
+            customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             title.setCellValueFactory(new PropertyValueFactory<>("title"));
             description.setCellValueFactory(new PropertyValueFactory<>("description"));
             type.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -81,7 +81,7 @@ public class ApptsByCustomerController implements Initializable {
             ObservableList<Customers> customers = CustomersDAO.getCustomerID();
             customerCombo.setItems(customers);
 
-            apptId.setCellValueFactory(new PropertyValueFactory<>("apptId"));
+            customerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             title.setCellValueFactory(new PropertyValueFactory<>("title"));
             description.setCellValueFactory(new PropertyValueFactory<>("description"));
             type.setCellValueFactory(new PropertyValueFactory<>("type"));

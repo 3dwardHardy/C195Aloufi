@@ -23,7 +23,7 @@
       </ComboBox>
       <TableView fx:id="customerTableView" layoutX="19.0" layoutY="75.0" prefHeight="345.0" prefWidth="719.0" style="-fx-background-color: daecfe;">
         <columns>
-          <TableColumn fx:id="apptId" prefWidth="99.99996566772461" text="Appointment ID" />
+          <TableColumn fx:id="customerId" prefWidth="99.99996566772461" text="Customer ID" />
           <TableColumn fx:id="title" prefWidth="107.20001220703125" text="Title" />
             <TableColumn fx:id="type" prefWidth="88.00001525878906" text="Type" />
             <TableColumn fx:id="description" prefWidth="140.79998779296875" text="Description" />
