@@ -1,20 +1,16 @@
 package database;
 
 import Models.Appointments;
-import controllers.MainScreenController;
 import helper.Conversions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
-
+import java.time.LocalDateTime;
 
 public class AppointmentsDAO {
 
@@ -172,4 +168,31 @@ public class AppointmentsDAO {
             sqlException.printStackTrace();
         }
     }
+
+    public static ObservableList<Appointments> getApptsByApptId(int customerId) throws SQLException {
+        ObservableList<Appointments> appointments = FXCollections.observableArrayList();
+        String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Customer_ID=?;";
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+
+        preparedStatement.setInt(1, customerId);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Appointments newAppts = new Appointments(
+                    resultSet.getInt("Appointment_ID"),
+                    resultSet.getString("Title"),
+                    resultSet.getString("Description"),
+                    resultSet.getString("Location"),
+                    resultSet.getInt("Contact_ID"),
+                    resultSet.getString("Type"),
+                    resultSet.getTimestamp("Start"),
+                    resultSet.getTimestamp("End"),
+                    resultSet.getInt("Customer_ID"),
+                    resultSet.getInt("User_ID"),
+                    resultSet.getString("Contact_Name"));
+            appointments.add(newAppts);
+        }
+        return appointments;
+    }
+
 }

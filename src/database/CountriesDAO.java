@@ -1,7 +1,6 @@
 package database;
 
 import Models.Countries;
-import Models.Customers;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -49,23 +48,4 @@ public class CountriesDAO {
 
             return null;
         }
-
-    public static Countries getCountry(String country) throws SQLException {
-        try {
-            String sqlStatement = "SELECT Country, Country_ID FROM countries WHERE Country = ?";
-            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, country);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                String selectedCountry = resultSet.getString("Country");
-                int countryId = resultSet.getInt("Country_ID");
-                Countries chosenCountry = new Countries(countryId, selectedCountry);
-                return chosenCountry;
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return null;
-    }
     }

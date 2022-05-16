@@ -175,20 +175,4 @@ public class MainScreenController implements Initializable {
             e.printStackTrace();
         }
     }
-
-        public static void apptsIn15() {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("ALERT");
-            alert.setHeaderText("You have appointments soon!");
-            alert.setContentText("You have an appointment that starts within the next 15 minutes.");
-            alert.showAndWait();
-        }
-
-        public static void noCloseAppts () {
-            Alert alert =new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("ALERT");
-            alert.setHeaderText("You have no immediate appointments!");
-            alert.setContentText("You do not have any appointments starting within the next 15 minutes.");
-            alert.showAndWait();
-        }
 }

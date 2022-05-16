@@ -85,7 +85,7 @@ public class ModifyCustomerController implements Initializable {
                 return;
             }
 
-            if (countryCombo.getValue().equals(null)) {
+            if (countryCombo.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Customer Error");
                 alert.setHeaderText("You did not enter a country!");
@@ -94,7 +94,7 @@ public class ModifyCustomerController implements Initializable {
                 return;
             }
 
-            if (stateCombo.getValue().equals(null)) {
+            if (stateCombo.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Customer Error");
                 alert.setHeaderText("You did not enter a state/province!");
@@ -130,7 +130,8 @@ public class ModifyCustomerController implements Initializable {
                 stage.setScene(new Scene(scene));
                 stage.show();
             }
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
             exception.printStackTrace();
         }
     }
@@ -173,31 +174,22 @@ public class ModifyCustomerController implements Initializable {
             stateCombo.setItems(null);
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        modCustomerIdTxt.setText(String.valueOf(selected.getCustomerId()));
+        modCustomerIdTxt.setText(String.valueOf(selected.getCustomerId( )));
         modCustomerNameTxt.setText(selected.getCustomerName());
         modCustomerAddressTxt.setText(selected.getAddress());
         modPostalTxt.setText(selected.getPostalCode());
         modPhoneTxt.setText(selected.getPhone());
-        try {
-            Countries country = CountriesDAO.getCountry(selected.getCountry());
-            countryCombo.setValue(country);
-
-            FirstLevelDivisions divisions = FirstLevelDivisionDAO.getState(selected.getDivisionId());
-            stateCombo.setValue(divisions);
 
 
-            ObservableList<Countries> countries = CountriesDAO.getCountryId();
-            countryCombo.setItems(countries);
 
-            ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getFirstLevel();
-            stateCombo.setItems(firstLevelDivisions);
+        ObservableList<Countries> countries = CountriesDAO.getCountryId();
+        countryCombo.setItems(countries);
+
+        ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getFirstLevel();
+        stateCombo.setItems(firstLevelDivisions);
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

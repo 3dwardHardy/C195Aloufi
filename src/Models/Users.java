@@ -8,7 +8,7 @@ public class Users {
 
     private int userId;
 
-    private static String userName;
+    private String userName;
 
     private String password;
 
@@ -16,7 +16,6 @@ public class Users {
         this.userId = userId;
         this.userName = userName;
     }
-
 
     /**
      *@ getters and setters for user class
@@ -30,7 +29,7 @@ public class Users {
         this.userId = userId;
     }
 
-    public static String getUserName() {
+    public String getUserName() {
         return userName;
     }
 

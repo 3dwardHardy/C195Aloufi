@@ -43,8 +43,6 @@ private String contactName;
 
 public ObservableList<Appointments> appointments;
 
-public String currentUser;
-
 
 
     public Appointments(int apptId, String title, String description, String location, int contactId,
@@ -65,9 +63,6 @@ public String currentUser;
 
     public Appointments() {
 
-    }
-
-    public Appointments(int appointmentId, String toString, String toString1, String title, String type, int customerId, String customerName, String user) {
     }
 
 
@@ -182,11 +177,6 @@ public String currentUser;
     public void setAppointments(ObservableList<Appointments> appointments) {
         this.appointments = appointments;
     }
-
-    public String getCurrentUser() {
-        return currentUser;
-    }
-
 
 }
 

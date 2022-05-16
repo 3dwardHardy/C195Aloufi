@@ -85,7 +85,7 @@ public class ModifyAppointmentController implements Initializable {
         try {
             if (titleTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not enter a title!");
                 alert.setContentText("Please enter a valid title for this appointment.");
                 alert.showAndWait();
@@ -93,7 +93,7 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (descriptionTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not enter a description!");
                 alert.setContentText("Please enter a valid description for this appointment.");
                 alert.showAndWait();
@@ -101,7 +101,7 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (locationTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not enter a location!");
                 alert.setContentText("Please enter a valid location for this appointment.");
                 alert.showAndWait();
@@ -109,7 +109,7 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (contactCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a contact!");
                 alert.setContentText("Please select a contact for this appointment.");
                 alert.showAndWait();
@@ -117,7 +117,7 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (typeTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not enter a type!");
                 alert.setContentText("Please enter a valid type for this appointment.");
                 alert.showAndWait();
@@ -125,7 +125,7 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (customerIdCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a customer ID!");
                 alert.setContentText("Please select a customer ID for this appointment.");
                 alert.showAndWait();
@@ -133,7 +133,7 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (userIdCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a user ID!");
                 alert.setContentText("Please select a user ID for this appointment.");
                 alert.showAndWait();
@@ -141,15 +141,15 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (startDate.getValue() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a date!");
                 alert.setContentText("Please select a date for this appointment.");
                 alert.showAndWait();
                 return;
             }
-            if (startTimeCombo.getValue().isEmpty()) {
+            if (startTimeCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select a start time!");
                 alert.setContentText("Please select a start time for this appointment.");
                 alert.showAndWait();
@@ -157,7 +157,7 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (endDate.getValue() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select an end date!");
                 alert.setContentText("Please select an end date for this appointment.");
                 alert.showAndWait();
@@ -165,20 +165,21 @@ public class ModifyAppointmentController implements Initializable {
             }
             if (endDate.getValue().isBefore(startDate.getValue())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("The end date cannot be before the start date!");
                 alert.setContentText("Please check your entry and try again.");
                 alert.showAndWait();
                 return;
             }
-            if (endTimeCombo.getValue().isEmpty()) {
+            if (endTimeCombo.getValue().equals(null)) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Modify Appointment Error");
+                alert.setTitle("Add Appointment Error");
                 alert.setHeaderText("You did not select an end time!");
                 alert.setContentText("Please select an end time for this appointment.");
                 alert.showAndWait();
                 return;
-            } else {;
+            } else {
+                ;
                 int apptId = Integer.parseInt(apptIdTxt.getText());
                 int customerId = (customerIdCombo.getValue().getCustomerId());
                 ObservableList<Appointments> customerAppts = AppointmentsDAO.getApptsByCustomerID(customerId);
@@ -232,7 +233,7 @@ public class ModifyAppointmentController implements Initializable {
 
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Modify Appointment Error");
+                        alert.setTitle("Add Appointment Error");
                         alert.setHeaderText("The Start time must be before the appointment end time!");
                         alert.setContentText("Please adjust the time for the appointment.");
                         alert.showAndWait();
@@ -242,7 +243,6 @@ public class ModifyAppointmentController implements Initializable {
                     Conversions.outOfOfficeHours();
                     return;
                 }
-
                 if (apptConflict == true) {
                     if (selected.getApptId() == Integer.parseInt(apptIdTxt.getText())) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -257,36 +257,18 @@ public class ModifyAppointmentController implements Initializable {
                         stage.setScene(new Scene(scene));
                         stage.show();
                         stage.centerOnScreen();
+
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Modify Appointment Error");
+                        alert.setTitle("Add Appointment Error");
                         alert.setHeaderText("This appointment overlaps another appointment.");
                         alert.setContentText("Please adjust the times and try again.");
                         alert.showAndWait();
-                        return;
                     }
                 }
-
-                else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Appointment Created");
-                    alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
-                    alert.setContentText("The appointment has been added to the schedule.");
-                    alert.showAndWait();
-
-                    Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
-                    Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
-                    stage.setTitle("Appointment Management System");
-                    stage.setScene(new Scene(scene));
-                    stage.show();
-                    stage.centerOnScreen();
-
-                }
             }
-        } catch (SQLException sqlException) {
+        }catch (SQLException | IOException sqlException) {
             sqlException.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
