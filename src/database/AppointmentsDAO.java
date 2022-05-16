@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -258,60 +259,62 @@ public class AppointmentsDAO {
     public static ObservableList<Appointments> getApptsMonth() throws SQLException {
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();
 
-        LocalDateTime todaysDate = LocalDateTime.now();
-        LocalDateTime theLastMonth = todaysDate.minusDays(30);
+        try {
 
-        String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Start < ? AND Start > ?;";
+            String sqlStatement = "SELECT * from appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID" +
+                    " WHERE MONTH(start) = MONTH(NOW()) AND YEAR(start) = YEAR(NOW());";
 
-        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
-        preparedStatement.setDate(1, java.sql.Date.valueOf(todaysDate.toLocalDate()));
-        preparedStatement.setDate(2, java.sql.Date.valueOf(theLastMonth.toLocalDate()));
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            Appointments newList = new Appointments(
-                    resultSet.getInt("Appointment_ID"),
-                    resultSet.getString("Title"),
-                    resultSet.getString("Description"),
-                    resultSet.getString("Location"),
-                    resultSet.getInt("Contact_ID"),
-                    resultSet.getString("Type"),
-                    resultSet.getTimestamp("Start"),
-                    resultSet.getTimestamp("End"),
-                    resultSet.getInt("Customer_ID"),
-                    resultSet.getInt("User_ID"),
-                    resultSet.getString("Contact_Name"));
-            appointments.add(newList);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Appointments newList = new Appointments(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getInt("Contact_ID"),
+                        resultSet.getString("Type"),
+                        resultSet.getTimestamp("Start"),
+                        resultSet.getTimestamp("End"),
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getString("Contact_Name"));
+                appointments.add(newList);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return appointments;
     }
 
-    public static ObservableList<Appointments> getApptsWeek() throws SQLException{
+    public static ObservableList<Appointments> getApptsWeek() throws SQLException {
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();
 
-        LocalDateTime todaysDate = LocalDateTime.now();
-        LocalDateTime forLastWeek = todaysDate.minusDays(7);
+        try {
 
-        String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Start < ? AND Start > ?;";
-        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
-        preparedStatement.setDate(1, java.sql.Date.valueOf(todaysDate.toLocalDate()));
-        preparedStatement.setDate(2, java.sql.Date.valueOf(forLastWeek.toLocalDate()));
+            String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c " +
+                    "ON a.Contact_ID=c.Contact_ID WHERE YEARWEEK(start) = YEARWEEK(NOW())";
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
 
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            Appointments newList = new Appointments(
-                    resultSet.getInt("Appointment_ID"),
-                    resultSet.getString("Title"),
-                    resultSet.getString("Description"),
-                    resultSet.getString("Location"),
-                    resultSet.getInt("Contact_ID"),
-                    resultSet.getString("Type"),
-                    resultSet.getTimestamp("Start"),
-                    resultSet.getTimestamp("End"),
-                    resultSet.getInt("Customer_ID"),
-                    resultSet.getInt("User_ID"),
-                    resultSet.getString("Contact_Name"));
-            appointments.add(newList);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Appointments newList = new Appointments(
+                        resultSet.getInt("Appointment_ID"),
+                        resultSet.getString("Title"),
+                        resultSet.getString("Description"),
+                        resultSet.getString("Location"),
+                        resultSet.getInt("Contact_ID"),
+                        resultSet.getString("Type"),
+                        resultSet.getTimestamp("Start"),
+                        resultSet.getTimestamp("End"),
+                        resultSet.getInt("Customer_ID"),
+                        resultSet.getInt("User_ID"),
+                        resultSet.getString("Contact_Name"));
+                appointments.add(newList);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return appointments;
     }
