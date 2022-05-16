@@ -29,7 +29,7 @@
             <TableColumn fx:id="description" prefWidth="140.79998779296875" text="Description" />
             <TableColumn fx:id="start" prefWidth="97.5999755859375" text="Start Date Time" />
             <TableColumn fx:id="end" prefWidth="106.39996337890625" text="End Date Time" />
-            <TableColumn fx:id="customerId" prefWidth="75.199951171875" text="Customer ID" />
+            <TableColumn fx:id="contactId" prefWidth="75.199951171875" text="Contact ID" />
         </columns>
          <effect>
             <DropShadow />
@@ -43,7 +43,7 @@
             <DropShadow />
          </effect>
       </Button>
-      <Button fx:id="generatReportBtn" layoutX="28.0" layoutY="454.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: daecfe;" text="Generate Report">
+      <Button fx:id="generateReportBtn" layoutX="28.0" layoutY="454.0" mnemonicParsing="false" onAction="#handleGenerate" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: daecfe;" text="Generate Report">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
