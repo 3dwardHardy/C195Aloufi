@@ -200,4 +200,53 @@ public class AppointmentsDAO {
         return appointments;
     }
 
+    public static ObservableList<Appointments> getApptsByTypeMonth(String type, int month) {
+
+            ObservableList<Appointments> appts = FXCollections.observableArrayList();
+
+            try {
+                String sqlStatement = "SELECT Appointment_ID, Start, Customer_ID from appointments WHERE Type = ? AND MONTH(Start) = ?";
+
+                PreparedStatement preparedStatement= JDBC.connection.prepareStatement(sqlStatement);
+
+                preparedStatement.setString(1, type);
+                preparedStatement.setInt(2, month);
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    int apptId = resultSet.getInt("Appointment_ID");
+                    Timestamp startTime = resultSet.getTimestamp("Start");
+                    int customerId = resultSet.getInt("Customer_ID");
+
+                    Appointments apts = new Appointments(apptId, startTime, customerId);
+
+                    appts.add(apts);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return appts;
+        }
+
+    public static ObservableList<String> getApptsByType() {
+        ObservableList<String> type = FXCollections.observableArrayList();
+
+        try{
+            String sql = "SELECT DISTINCT Type FROM appointments";
+            PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                String types = rs.getString("Type");
+                type.add(types);
+            }
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return type;
+    }
 }

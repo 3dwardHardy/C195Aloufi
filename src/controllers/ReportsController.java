@@ -11,7 +11,13 @@ import java.io.IOException;
 
 public class ReportsController {
 
-    public void handleByTypeMonth(ActionEvent actionEvent) {
+    public void handleByTypeMonth(ActionEvent actionEvent) throws IOException{
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/typeMonthReport.FXML"));
+        stage.setTitle("Report By Type and Month");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
     }
 
     public void handleByContact(ActionEvent actionEvent) {
