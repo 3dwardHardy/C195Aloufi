@@ -78,18 +78,18 @@
             <DropShadow />
          </effect>
       </Button>
-      <RadioButton fx:id="viewCustomerBtn" layoutX="703.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleCustomerView" text="View By Customer">
+      <RadioButton fx:id="viewWeekBtn" layoutX="700.0" layoutY="57.0" mnemonicParsing="false" text="View This Week">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
+         <effect>
+            <Glow />
+         </effect>
          <toggleGroup>
             <ToggleGroup fx:id="ViewGroup" />
          </toggleGroup>
-         <effect>
-            <Glow />
-         </effect>
       </RadioButton>
-      <RadioButton fx:id="viewWeekBtn" layoutX="572.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleWeekView" text="View This Week" toggleGroup="$ViewGroup">
+      <RadioButton fx:id="viewMonthBtn" layoutX="517.0" layoutY="57.0" mnemonicParsing="false" text="View This Month" toggleGroup="$ViewGroup">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>
@@ -97,15 +97,7 @@
             <Glow />
          </effect>
       </RadioButton>
-      <RadioButton fx:id="viewMonthBtn" layoutX="435.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleMonthView" text="View This Month" toggleGroup="$ViewGroup">
-         <font>
-            <Font name="SansSerif Bold" size="14.0" />
-         </font>
-         <effect>
-            <Glow />
-         </effect>
-      </RadioButton>
-      <RadioButton fx:id="viewAllBtn" layoutX="355.0" layoutY="57.0" mnemonicParsing="false" onAction="#handleAllView" selected="true" text="View All" toggleGroup="$ViewGroup">
+      <RadioButton fx:id="viewAllBtn" layoutX="385.0" layoutY="57.0" mnemonicParsing="false" selected="true" text="View All" toggleGroup="$ViewGroup">
          <font>
             <Font name="SansSerif Bold" size="14.0" />
          </font>

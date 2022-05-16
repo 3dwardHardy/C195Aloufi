@@ -59,6 +59,18 @@ public class MainScreenController implements Initializable {
     @FXML
     private TableColumn<Appointments, Integer> userId;
 
+    @FXML
+    private ToggleGroup ViewGroup;
+
+    @FXML
+    private RadioButton viewAllBtn;
+
+    @FXML
+    private RadioButton viewMonthBtn;
+
+    @FXML
+    private RadioButton viewWeekBtn;
+
     static ObservableList<Appointments> appointments;
 
 
@@ -106,6 +118,35 @@ public class MainScreenController implements Initializable {
         stage.show();
         stage.centerOnScreen();
     }
+    @FXML
+    void ViewGroup (ActionEvent event) {
+
+        if (viewAllBtn.isSelected()) {
+            try {
+                appointments = AppointmentsDAO.getAppts();
+                appointmentsTableView.setItems(appointments);
+                appointmentsTableView.refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (ViewGroup.getSelectedToggle().equals(viewMonthBtn)) {
+            try {
+                appointments = AppointmentsDAO.getApptsMonth();
+                appointmentsTableView.setItems(appointments);
+                appointmentsTableView.refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (ViewGroup.getSelectedToggle().equals(viewWeekBtn)) {
+            try {
+                appointments = AppointmentsDAO.getApptsWeek();
+                appointmentsTableView.setItems(appointments);
+                appointmentsTableView.refresh();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void handleLogout(ActionEvent actionEvent) throws IOException {
         JDBC.closeConnection();
@@ -115,18 +156,6 @@ public class MainScreenController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
         stage.centerOnScreen();
-    }
-
-    public void handleCustomerView(ActionEvent actionEvent) {
-    }
-
-    public void handleWeekView(ActionEvent actionEvent) {
-    }
-
-    public void handleMonthView(ActionEvent actionEvent) {
-    }
-
-    public void handleAllView(ActionEvent actionEvent) {
     }
 
     public void handleApptDelete(ActionEvent actionEvent) {
