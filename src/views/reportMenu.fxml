@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="304.0" style="-fx-background-color: a1cfff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReportsController">
+   <children>
+      <Label layoutX="102.0" layoutY="36.0" text="Reports">
+         <font>
+            <Font name="SansSerif Bold" size="24.0" />
+         </font>
+      </Label>
+      <Button fx:id="handleByTypeMonth" layoutX="39.0" layoutY="110.0" mnemonicParsing="false" style="-fx-background-color: daecfe;" text="Appointments By Type/Month">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="handleByContact" layoutX="39.0" layoutY="174.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="218.0" style="-fx-background-color: daecfe;" text="Appointments By Contact">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="handleByCustomer" layoutX="39.0" layoutY="240.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="218.0" style="-fx-background-color: daecfe;" text="Appointments By Customer">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+      <Button fx:id="handleBack" layoutX="39.0" layoutY="304.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="218.0" style="-fx-background-color: daecfe;" text="Back To Main Screen">
+         <font>
+            <Font name="SansSerif Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Button>
+   </children>
+</AnchorPane>
