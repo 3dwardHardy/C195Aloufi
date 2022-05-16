@@ -72,6 +72,18 @@ public ObservableList<Appointments> appointments;
 
     }
 
+    public Appointments(int apptId, String title, String description, String type,
+                        Timestamp startTime, Timestamp endTime, int customerId, int contactId) {
+        this.apptId = apptId;
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.customerId = customerId;
+        this.contactId = contactId;
+    }
+
 
     public int getApptId() {
         return apptId;

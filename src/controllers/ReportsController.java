@@ -20,7 +20,13 @@ public class ReportsController {
         stage.centerOnScreen();
     }
 
-    public void handleByContact(ActionEvent actionEvent) {
+    public void handleByContact(ActionEvent actionEvent) throws IOException {
+        Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
+        Parent scene = FXMLLoader.load(getClass().getResource("/apptsByContact.FXML"));
+        stage.setTitle("Report By Contact");
+        stage.setScene(new Scene(scene));
+        stage.show();
+        stage.centerOnScreen();
     }
 
     public void handleByCustomer(ActionEvent actionEvent) throws IOException{

@@ -174,31 +174,37 @@ public class AppointmentsDAO {
         }
     }
 
-    public static ObservableList<Appointments> getApptsByApptId(int customerId) throws SQLException {
-        ObservableList<Appointments> appointments = FXCollections.observableArrayList();
-        String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID WHERE Customer_ID=?;";
-        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+    public static ObservableList<Appointments> getApptsByContactId(int contactId) {
 
-        preparedStatement.setInt(1, customerId);
+    ObservableList<Appointments> appts = FXCollections.observableArrayList();
 
+        try {
+        String sql = "SELECT Appointment_ID, Title, Description, Type, Start, End, Customer_ID from appointments WHERE Contact_ID = ?";
+
+        PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sql);
+        preparedStatement.setInt(1, contactId);
         ResultSet resultSet = preparedStatement.executeQuery();
+
         while (resultSet.next()) {
-            Appointments newAppts = new Appointments(
-                    resultSet.getInt("Appointment_ID"),
-                    resultSet.getString("Title"),
-                    resultSet.getString("Description"),
-                    resultSet.getString("Location"),
-                    resultSet.getInt("Contact_ID"),
-                    resultSet.getString("Type"),
-                    resultSet.getTimestamp("Start"),
-                    resultSet.getTimestamp("End"),
-                    resultSet.getInt("Customer_ID"),
-                    resultSet.getInt("User_ID"),
-                    resultSet.getString("Contact_Name"));
-            appointments.add(newAppts);
+            int apptId = resultSet.getInt("Appointment_ID");
+            String title = resultSet.getString("Title");
+            String description = resultSet.getString("Description");
+            String type = resultSet.getString("Type");
+            Timestamp startDate = resultSet.getTimestamp("Start");
+            Timestamp endDate = resultSet.getTimestamp("End");
+            int customerId = resultSet.getInt("Customer_ID");
+            Appointments apts = new Appointments(apptId, title, description, type, startDate, endDate, customerId, contactId);
+
+            appts.add(apts);
         }
-        return appointments;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+        return appts;
+
+}
+
 
     public static ObservableList<Appointments> getApptsByTypeMonth(String type, int month) {
 
