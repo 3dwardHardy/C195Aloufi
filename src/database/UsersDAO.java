@@ -1,6 +1,5 @@
 package database;
 
-import Models.Customers;
 import Models.Users;
 import helper.JDBC;
 import javafx.collections.FXCollections;

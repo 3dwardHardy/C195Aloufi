@@ -1,13 +1,10 @@
 package database;
 
 import Models.Contacts;
-import Models.Customers;
-import Models.Users;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import javax.sql.rowset.serial.SerialException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,12 +1,6 @@
 package Models;
 
-
-
-
 public class Users {
-
-
-
     /**
      *@ declarations for user class
      */

@@ -1,7 +1,5 @@
 package Models;
 
-import javafx.collections.ObservableList;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 

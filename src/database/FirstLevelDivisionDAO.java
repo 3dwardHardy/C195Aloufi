@@ -1,6 +1,5 @@
 package database;
 
-import Models.Countries;
 import Models.FirstLevelDivisions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
