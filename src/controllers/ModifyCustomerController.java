@@ -52,10 +52,13 @@ public class ModifyCustomerController implements Initializable {
     public static void retrieveCustomer(Customers customer) {
         selected = customer;
     }
-
     Parent scene;
 
-
+    /**
+     * This handles the save button on click action. It gathers all the appointment data while ensuring all form fields contain
+     * a value. Otherwise, will generate errors advising the user what customer info is missing.
+     * @param actionEvent
+     */
     public void handleSave(ActionEvent actionEvent) {
         try {
             if (modCustomerNameTxt.getText().isEmpty()) {
@@ -112,7 +115,13 @@ public class ModifyCustomerController implements Initializable {
                 return;
 
             } else {
-
+                /**
+                 * This sends the form data to the method to insert it into the database as a record. Upon gathering the information
+                 * the program will show a message for the user that the new customer record has been created.
+                 * Once they go back to the main after a successful customer creation they will see
+                 * the new customer in the tableview.
+                 *
+                 */
                 CustomersDAO.updateCustomer(
                         Integer.parseInt(modCustomerIdTxt.getText()),
                         modCustomerNameTxt.getText(),
@@ -135,6 +144,11 @@ public class ModifyCustomerController implements Initializable {
         }
     }
 
+    /**
+     * Upon selection of the clear button will wipe all existing data from the form,
+     * this allows the user to change all entries with a fresh form.
+     * @param actionEvent
+     */
     public void handleClear(ActionEvent actionEvent) {
         modCustomerIdTxt.setText("");
         modCustomerNameTxt.setText("");
@@ -145,6 +159,12 @@ public class ModifyCustomerController implements Initializable {
         stateCombo.getSelectionModel().clearSelection();
     }
 
+    /**
+     * This handles a cancel button click. It will first ask the user if they want to cancel modifying the customer record.
+     * Upon confirmation will close the screen without changing anything for the record and returns the user to the customer menu screen.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Cancel");
@@ -161,6 +181,11 @@ public class ModifyCustomerController implements Initializable {
         }
     }
 
+    /**
+     * This handles the filtering for the state/province combo box based on what country is selected.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void handleFilterStates(ActionEvent actionEvent) throws SQLException {
         try {
             ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.getFirstLevel();
@@ -176,6 +201,9 @@ public class ModifyCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /**
+         * This prepopulates the form with the selected customer information.
+         */
         modCustomerIdTxt.setText(String.valueOf(selected.getCustomerId()));
         modCustomerNameTxt.setText(selected.getCustomerName());
         modCustomerAddressTxt.setText(selected.getAddress());
@@ -188,7 +216,9 @@ public class ModifyCustomerController implements Initializable {
             FirstLevelDivisions firstLevel = FirstLevelDivisionDAO.getState(selected.getDivisionId());
             stateCombo.setValue(firstLevel);
 
-
+            /**
+             * This populates the country and state/province combo boxes.
+             */
             ObservableList<Countries> countries = CountriesDAO.getCountryId();
             countryCombo.setItems(countries);
 

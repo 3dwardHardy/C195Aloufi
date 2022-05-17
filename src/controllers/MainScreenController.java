@@ -205,6 +205,12 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * This handles the logout button click and ensures the database connection is closed.
+     * It will also take the user back to an empty login screen.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleLogout(ActionEvent actionEvent) throws IOException {
         JDBC.closeConnection();
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
@@ -215,6 +221,12 @@ public class MainScreenController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * This handles appointment deletions by verifying that a selection was made and if no selection was made will
+     * generate a user error. It also gets the selected appointment and casts it to the modify appointment screen to
+     * prepopulate the form fields with the existing appointment information.
+     * @param actionEvent
+     */
     public void handleApptDelete(ActionEvent actionEvent) {
         Appointments selectedAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
         if (selectedAppt == null) {
@@ -247,6 +259,12 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * This sets up the toggle group to adjust the table view to the desired view.
+     * It also sets up the table values on the main screens launch.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewAllBtn.setToggleGroup(ViewGroup);
