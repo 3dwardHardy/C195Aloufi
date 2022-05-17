@@ -237,7 +237,7 @@ public class AddAppointmentController implements Initializable {
                         if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) && ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
                             if (startTimeStamp.before(endTimeStamp)) {
                                 appointments.setStartTime(Timestamp.valueOf(fullStartTime));
-                                appointments.setEndTime(Timestamp.valueOf(fullStartTime));
+                                appointments.setEndTime(Timestamp.valueOf(fullEndTime));
                             } else {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Add Appointment Error");
