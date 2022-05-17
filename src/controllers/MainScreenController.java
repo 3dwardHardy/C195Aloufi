@@ -136,18 +136,21 @@ public class MainScreenController implements Initializable {
             }
         } else if (ViewGroup.getSelectedToggle().equals(viewMonthBtn)) {
             ObservableList<Appointments> appts = AppointmentsDAO.getAppts();
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime month = now.plusMonths(1);
+            LocalDateTime startMonth = LocalDateTime.now().withDayOfMonth(1);
+            LocalDateTime endMonth = LocalDateTime.now().withDayOfMonth(31);
 
             /**
-             * lambda to filter appointment list to get appointments within month view,
-             * this shows all appointments with in the next 30 days.
-             * this greatly reduced my amount of code.
+             * Lambda to filter appointment list to get appointments within month view.
+             * this greatly reduced my amount of code, because previously I was using a long winded SQL function.
+             * which I noted out of the code to show the difference in methods.
              */
             FilteredList<Appointments> filterMonth = new FilteredList<>(appts);
             filterMonth.setPredicate(row -> {
                 LocalDateTime start = (row.getStartTime().toLocalDateTime());
-                return start.isAfter(now) && start.isBefore(month);
+                if (startMonth.isAfter(start) || endMonth.isBefore(start)) {
+                    return false;
+                }
+                return true;
             });
 
             appointmentsTableView.setItems(filterMonth);
@@ -155,15 +158,19 @@ public class MainScreenController implements Initializable {
 
         } else if (ViewGroup.getSelectedToggle().equals(viewWeekBtn)) {
             ObservableList<Appointments> appts = AppointmentsDAO.getAppts();
-            LocalDateTime current = LocalDateTime.now();
-            LocalDateTime currentWeek = current.plusWeeks(1);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime startWeek = now.minusWeeks(1);
+            LocalDateTime endWeek = now.plusWeeks(1);
             /**
              * lambda to filter by the next 7 days;  to generate within week appt view.
              */
             FilteredList<Appointments> appointmentsFilteredList = new FilteredList<>(appts);
             appointmentsFilteredList.setPredicate(row -> {
                 LocalDateTime start = (row.getStartTime().toLocalDateTime());
-                return start.isAfter(current) && start.isBefore(currentWeek);
+                if (startWeek.isAfter(start) || endWeek.isBefore(start)) {
+                    return false;
+                }
+                return true;
             });
             appointmentsTableView.setItems(appointmentsFilteredList);
         }
