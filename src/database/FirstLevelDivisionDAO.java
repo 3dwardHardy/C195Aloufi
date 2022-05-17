@@ -1,6 +1,5 @@
 package database;
 
-import Models.Countries;
 import Models.FirstLevelDivisions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
@@ -11,6 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class FirstLevelDivisionDAO {
+    /**
+     * Generates a list of all first level division names and id's.
+     * @return
+     */
     public static ObservableList<FirstLevelDivisions> getFirstLevel() {
         ObservableList<FirstLevelDivisions> states = FXCollections.observableArrayList();
 
@@ -32,26 +35,11 @@ public class FirstLevelDivisionDAO {
         return states;
     }
 
-    public static FirstLevelDivisions returnFirstLevelDivisions (int divisionId) {
-        try {
-            String sqlStatement = "SELECT DivisionID, Division FROM first_level_divisions WHERE Division_ID = ?";
-            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
-            preparedStatement.setInt(1, divisionId);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            resultSet.next();
-            int checkDivisionId = resultSet.getInt("Division_ID");
-            String division = resultSet.getString("Division");
-            FirstLevelDivisions firstLevel= new FirstLevelDivisions(checkDivisionId, division);
-            return firstLevel;
-        }
-        catch (SQLException sqlException){
-            sqlException.printStackTrace();
-        }
-        return null;
-    }
-
+    /**
+     * Generates a list we can call that only shows the first level divisions that match a specified country ID.
+     * @param countryId
+     * @return
+     */
     public static ObservableList<FirstLevelDivisions> returnDivisionCountry(int countryId) {
         ObservableList<FirstLevelDivisions> filterStates = FXCollections.observableArrayList();
         try {
@@ -72,6 +60,13 @@ public class FirstLevelDivisionDAO {
         }
         return filterStates;
     }
+
+    /**
+     * Creates a list that only gives the division name when the division Id matches what was selected.
+     * @param state
+     * @return
+     * @throws SQLException
+     */
     public static FirstLevelDivisions getState(int state) throws SQLException {
         try {
             String sqlStatement = "SELECT Division, Division_ID FROM first_level_divisions WHERE Division_ID = ?";

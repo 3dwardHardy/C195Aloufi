@@ -10,6 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ContactsDAO {
+    /**
+     * Creates a list with contact id's and contact names.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Contacts> getContactID() throws SQLException {
         ObservableList<Contacts> contacts = FXCollections.observableArrayList();
         String sqlStatement = "SELECT Contact_ID, Contact_Name FROM contacts;";
@@ -25,6 +30,12 @@ public class ContactsDAO {
         return contacts;
     }
 
+    /**
+     * This generates a list that allows us to view the contact name by the selected contact id.
+     * @param contactId
+     * @return
+     * @throws SQLException
+     */
     public static Contacts getContactName(int contactId) throws SQLException {
         try {
             String sqlStatement = "SELECT Contact_ID, Contact_Name FROM contacts WHERE Contact_ID = ?";

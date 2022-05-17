@@ -14,7 +14,11 @@ import java.sql.Timestamp;
 
 
 public class AppointmentsDAO {
-
+    /**
+     * This calls the database and returns the appointment info as a list.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointments> getAppts() throws SQLException {
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();
         String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=c.Contact_ID;";
@@ -39,6 +43,11 @@ public class AppointmentsDAO {
         return appointments;
     }
 
+    /**
+     * This checks for appointments by customer ID and returns the matching data as a list.
+     * @param customerId
+     * @return
+     */
     public static int checkForAppts(int customerId) {
         ObservableList<Integer> appointments = FXCollections.observableArrayList();
         try {
@@ -59,6 +68,12 @@ public class AppointmentsDAO {
         return appointments.size();
     }
 
+    /**
+     * This also searches by customerID by returns other relevent information.
+     * @param customerID
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Appointments> getApptsByCustomerID(int customerID) throws SQLException {
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();
         String sqlStatement = "SELECT * FROM appointments AS a INNER JOIN contacts AS c ON a.Contact_ID=" +
@@ -88,6 +103,10 @@ public class AppointmentsDAO {
 
     }
 
+    /**
+     * This handles pushing the newly acquired appointment data to the appointment database and inserts the appointment database.
+     * @param appointments
+     */
     public static void createAppt(Appointments appointments) {
 
         try {
@@ -116,6 +135,11 @@ public class AppointmentsDAO {
         }
     }
 
+    /**
+     * This handles deleting an appointment record and all its associated data from the database.
+     * @param appointmentId
+     * @throws SQLException
+     */
     public static void deleteAppts(int appointmentId) throws SQLException {
         String sqlStatement = "DELETE FROM appointments WHERE Appointment_ID = ?;";
         PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
@@ -125,6 +149,13 @@ public class AppointmentsDAO {
         preparedStatement.execute();
     }
 
+    /**
+     * This check the database records to ensure that appointment start and end times do not overlap.
+     * @param startTime
+     * @param endTime
+     * @param customerID
+     * @return
+     */
     public static boolean checkForOverlappingAppointment(Timestamp startTime, Timestamp endTime, int customerID) {
         try {
             String sqlStatement = "SELECT * FROM appointments WHERE Customer_ID = ? and Start <= ? and end >= ?";
@@ -133,7 +164,7 @@ public class AppointmentsDAO {
             preparedStatement.setObject(2, endTime);
             preparedStatement.setObject(3, startTime);
             ResultSet resultSet = preparedStatement.executeQuery();
-            // If there is a result row, we know it’s an overlapping appointment
+
             return resultSet.next();
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -141,6 +172,20 @@ public class AppointmentsDAO {
         return false;
     }
 
+    /**
+     * This will update the appointment record in the database. It updates the record based on the values recieved from the
+     * modify appointment form.
+     * @param title
+     * @param description
+     * @param location
+     * @param type
+     * @param start
+     * @param end
+     * @param customerId
+     * @param userId
+     * @param contactId
+     * @param apptId
+     */
     public static void updateAppointment(String title, String description, String location, String type,
                                          Timestamp start, Timestamp end, int customerId,
                                          int userId, int contactId, int apptId) {
@@ -170,6 +215,11 @@ public class AppointmentsDAO {
         }
     }
 
+    /**
+     * This returns a list of appointments in the database by the contact ID.
+     * @param contactId
+     * @return
+     */
     public static ObservableList<Appointments> getApptsByContactId(int contactId) {
 
         ObservableList<Appointments> appts = FXCollections.observableArrayList();
@@ -201,7 +251,12 @@ public class AppointmentsDAO {
 
     }
 
-
+    /**
+     * This sql statement gathers the appointments by type and month and returns it as a list.
+     * @param type
+     * @param month
+     * @return
+     */
     public static ObservableList<Appointments> getApptsByTypeMonth(String type, int month) {
 
         ObservableList<Appointments> appts = FXCollections.observableArrayList();
@@ -231,6 +286,10 @@ public class AppointmentsDAO {
         return appts;
     }
 
+    /**
+     * Generates a list returning all the type values.
+     * @return
+     */
     public static ObservableList<String> getApptsByType() {
         ObservableList<String> type = FXCollections.observableArrayList();
 
@@ -250,6 +309,13 @@ public class AppointmentsDAO {
         }
         return type;
     }
+
+    /**
+     * I replaced both of the functions with lambda expressions. I left the code here as a note to show how much code I was able to save
+     * with the lamba's rather than writing out all of this. The lambda's perform the same objective on the data, but are much more
+     * efficient and use an existing function rather than having to create new functions.
+     * @return
+     * @throws SQLException
 
     public static ObservableList<Appointments> getApptsMonth() throws SQLException {
         ObservableList<Appointments> appointments = FXCollections.observableArrayList();
@@ -313,4 +379,5 @@ public class AppointmentsDAO {
         }
         return appointments;
     }
+    */
 }

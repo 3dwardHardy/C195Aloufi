@@ -13,6 +13,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class CustomersDAO {
+    /**
+     * Generates a list of all customers. While joining on other tables to get the data we needed for the functions that call
+     * this method.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Customers> getAllCustomers() throws SQLException {
         ObservableList<Customers> customers = FXCollections.observableArrayList();
 
@@ -36,6 +42,11 @@ public class CustomersDAO {
         return customers;
     }
 
+    /**
+     * Takes the data from the add customer form and inserts it into the customer database table as a new customer record.
+     * @param customers
+     * @throws SQLException
+     */
     public static void addNewCustomer(Customers customers) throws SQLException {
         try {
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
@@ -62,6 +73,11 @@ public class CustomersDAO {
         }
     }
 
+    /**
+     * Deletes a customer record in the customer database by the selected customer ID.
+     * @param customerId
+     * @throws SQLException
+     */
     public static void deleteCustomer(int customerId) throws SQLException {
         String sqlStatement = "DElETE FROM customers WHERE Customer_ID = ?;";
         PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
@@ -69,6 +85,16 @@ public class CustomersDAO {
         preparedStatement.execute();
     }
 
+    /**
+     * This sends the data recieved from the update customer form, and uses the update SQL command to
+     * update the customer record.
+     * @param customerId
+     * @param name
+     * @param address
+     * @param postalCode
+     * @param phone
+     * @param divisionId
+     */
     public static void updateCustomer(int customerId, String name, String address, String postalCode,
                                       String phone, int divisionId) {
 
@@ -95,6 +121,12 @@ public class CustomersDAO {
         }
     }
 
+    /**
+     * Generates a list linking the customer name to the customer ID.
+     * @param customerId
+     * @return
+     * @throws SQLException
+     */
     public static Customers getCustomerName(int customerId) throws SQLException {
         try {
             String sqlStatement = "SELECT Customer_ID, Customer_Name FROM customers WHERE Customer_ID = ?";
@@ -113,6 +145,12 @@ public class CustomersDAO {
         }
         return null;
     }
+
+    /**
+     * Generates a list of the customer Id's, and names.
+     * @return
+     * @throws SQLException
+     */
     public static ObservableList<Customers> getCustomerID() throws SQLException {
         ObservableList<Customers> customers = FXCollections.observableArrayList();
         String sqlStatement = "SELECT Customer_ID, Customer_Name FROM customers;";

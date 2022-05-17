@@ -11,6 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CountriesDAO {
+    /**
+     * Generates a list of countries and their id's.
+     * @return
+     */
     public static ObservableList<Countries> getCountryId(){
         ObservableList<Countries> countries = FXCollections.observableArrayList();
         try {
@@ -30,27 +34,12 @@ public class CountriesDAO {
         return countries;
     }
 
-    public static Countries returnCountryId(int countryId) {
-            try {
-                String sqlStatement = "SELECT Country_ID, Country FROM countries WHERE Country_ID = ?";
-                PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()) {
-                    int setCountryId = resultSet.getInt("Country_ID");
-                    String country1 = resultSet.getString("Country");
-                    Countries country = new Countries(setCountryId, country1);
-                    return country;
-                }
-
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
-
-            return null;
-        }
-
-    public static Countries getCountry(String country) throws SQLException {
+    /**
+     * Generates a list with data filtered by country.
+     * @param country
+     * @return
+     */
+    public static Countries getCountry(String country) {
         try {
             String sqlStatement = "SELECT Country, Country_ID FROM countries WHERE Country = ?";
             PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);

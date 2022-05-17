@@ -12,6 +12,14 @@ import java.sql.SQLException;
 public class UsersDAO {
 
     static String currentUser;
+
+    /**
+     * Checks the database for a matching username and password on an attempted login action.
+     * @param userName
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     public static boolean validLogin(String userName, String password) throws SQLException {
         try {
             String sqlStatement = "SELECT * FROM users WHERE User_Name = ? AND Password = ?;";
@@ -32,14 +40,24 @@ public class UsersDAO {
         return false;
     }
 
+    /**
+     * Sets the current username.
+     * @param userName
+     */
     public static void setCurrentUserName(String userName) {
         currentUser = userName;
     }
 
+    /**
+     * Gets the current username.
+     * @return
+     */
     public static String getCurrentUserName() {
         return currentUser;
     }
-
+    /**
+     * Creates a list of all username and user Id's.
+     */
     public static ObservableList<Users> getUserID() throws SQLException {
         ObservableList<Users> users = FXCollections.observableArrayList();
         String sqlStatement = "SELECT User_ID, User_Name FROM users;";
@@ -55,6 +73,11 @@ public class UsersDAO {
         return users;
     }
 
+    /**
+     * list of users where the user Id is selected.
+     * @param userId
+     * @return
+     */
     public static Users getUserID(int userId) {
             try {
                 String sqlStatement = "SELECT User_ID, User_Name FROM users WHERE User_ID = ?";
