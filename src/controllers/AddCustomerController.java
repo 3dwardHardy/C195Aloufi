@@ -24,6 +24,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
+    /**
+     * constructors for add customer controller class
+     */
     @FXML
     private TextField customerIdTxt;
 
@@ -52,7 +55,10 @@ public class AddCustomerController implements Initializable {
     /**
      * Handles the action of a country being selected and populates the state/province combo box with the associated values.
      * @param actionEvent
+     *If a country is selected via combo box
+     * changes box contents
      * @throws SQLException
+     *prints to stack trace in case of error
      */
     public void handleFirstLevelDivision(ActionEvent actionEvent) throws SQLException {
         try {
@@ -72,6 +78,7 @@ public class AddCustomerController implements Initializable {
      * Handles the save button onClick action to verify customer data has been input and pushed to the database function upon passing error
      * checks.
      * @param actionEvent
+     *handles on click
      */
     public void handleSave(ActionEvent actionEvent) {
         try {
@@ -157,6 +164,7 @@ public class AddCustomerController implements Initializable {
     /**
      * Clears the form on a clear button click.
      * @param actionEvent
+     * on user click
      */
     public void handleClear(ActionEvent actionEvent) {
         customerIdTxt.setText("");
@@ -172,7 +180,9 @@ public class AddCustomerController implements Initializable {
      * This handle the cancel button click. It will prompt the user for confirmation that they wish to leave and takes them
      * back to the customer menu. If no confirmation received stays on the add customer form screen.
      * @param actionEvent
+     *handles on click
      * @throws IOException
+     * in case of error prints to stack trace
      */
 
     public void handleCancel(ActionEvent actionEvent) throws IOException {
@@ -194,7 +204,9 @@ public class AddCustomerController implements Initializable {
     /**
      * These code blocks populate the country and state/province combo boxes.
      * @param url
+     * default
      * @param resourceBundle
+     *default
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

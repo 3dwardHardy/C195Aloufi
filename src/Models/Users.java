@@ -17,7 +17,7 @@ public class Users {
     }
 
     /**
-     *@ getters and setters for user class
+     * getters and setters for user class
      */
 
     public int getUserId(){

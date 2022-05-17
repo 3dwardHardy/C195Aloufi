@@ -30,7 +30,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
+
 public class AddAppointmentController implements Initializable {
+
     @FXML
     private TextField appointmentIdTxt;
 
@@ -70,9 +72,13 @@ public class AddAppointmentController implements Initializable {
 
     /**
      * This handles all the needed actions for gathering and setting up a new appointment.
+     *
      * @param actionEvent
-     * @throws SQLException
+     * On click save appointment
+     *
      * @throws IOException
+     * In case of error prints stack trace.
+     *
      */
     public void handleSave(ActionEvent actionEvent) throws IOException {
         try {
@@ -287,7 +293,9 @@ public class AddAppointmentController implements Initializable {
      * This method block handles the cancel buttons and if the user confirms cancellation returns them to the main screen
      * if they confirm they want to cancel appointment creation. Otherwise, keeps them on the creation screen if confirmation is not given.
      * @param actionEvent
+     * Handles Cancel button click
      * @throws IOException
+     *In case of error prints to stack trace.
      */
     public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -310,6 +318,7 @@ public class AddAppointmentController implements Initializable {
      * This code handles the clear button which wipes all entries from the form and selects all combo boxes and datepickers
      * to null values, giving the user a clean slate to work on so to speak.
      * @param actionEvent
+     *Handles clear on click
      */
     public void handleClear(ActionEvent actionEvent) {
         appointmentIdTxt.setText("");

@@ -46,17 +46,6 @@ public ObservableList<Appointments> appointments;
 
     /**
      * Appointment class constructors
-     * @param apptId
-     * @param title
-     * @param description
-     * @param location
-     * @param contactId
-     * @param type
-     * @param startTime
-     * @param endTime
-     * @param customerId
-     * @param userId
-     * @param contactName
      */
     public Appointments(int apptId, String title, String description, String location, int contactId,
                         String type, Timestamp startTime, Timestamp endTime, int customerId,
