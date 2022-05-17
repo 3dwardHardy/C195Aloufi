@@ -17,7 +17,7 @@ public class Logger {
         BufferedWriter writer = null;
 
         try {
-            writer = new BufferedWriter(new FileWriter("login_activity.txt"));
+            writer = new BufferedWriter(new FileWriter("login_activity.txt",true));
             boolean trackLogins = UsersDAO.validLogin(userName, password);
             String loginSuccess;
             if (trackLogins) {
