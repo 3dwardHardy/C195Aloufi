@@ -8,6 +8,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class Logger {
+    /**
+     * This handles writing all login attempts both successful and unsuccessful.
+     * @param userName
+     * @param password
+     */
     public static void loginAttempts(String userName, String password) {
         BufferedWriter writer = null;
 

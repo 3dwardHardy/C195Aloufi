@@ -1,6 +1,10 @@
 package Models;
 
 public class Customers {
+
+    /**
+     * Customer class declarations
+     */
     private int customerId;
 
     private String customerName;
@@ -15,6 +19,16 @@ public class Customers {
 
     private String phone;
 
+    /**
+     * Customer class constructors
+     * @param customerId
+     * @param customerName
+     * @param address
+     * @param postalCode
+     * @param country
+     * @param divisionId
+     * @param phone
+     */
     public Customers(
             int customerId,
             String customerName,
@@ -36,15 +50,15 @@ public class Customers {
 
     }
 
-    public Customers(int customerId) {
-        this.customerId = customerId;
-    }
-
     public Customers(int customerId, String customerName) {
         this.customerId = customerId;
         this.customerName = customerName;
     }
 
+    /**
+     * Customer class getter's and setter's
+     * @return
+     */
 
     public int getCustomerId() {
         return customerId;
@@ -102,6 +116,10 @@ public class Customers {
         this.phone = phone;
     }
 
+    /**
+     * returns customer name as a string
+     * @return
+     */
     @Override
     public String toString() {
         return (customerName);

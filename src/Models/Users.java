@@ -51,6 +51,10 @@ public class Users {
         this.password = password;
     }
 
+    /**
+     * sends username as a string
+     * @return
+     */
     @Override
     public String toString() {
         return userName;

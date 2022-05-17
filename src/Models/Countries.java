@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Countries {
+    /**
+     * declarations for Countries class
+     */
     private int countryId;
 
     private String country;
@@ -22,6 +25,10 @@ public class Countries {
         return countryId;
     }
 
+    /**
+     * Getter's and setter's for country class
+     * @param countryId
+     */
     public void setCountryId(int countryId) {
         this.countryId = countryId;
     }
@@ -72,6 +79,10 @@ public class Countries {
         this.country = country;
     }
 
+    /**
+     * allows country name to be sent as string
+     * @return
+     */
     @Override
     public String toString() {
         return (country);

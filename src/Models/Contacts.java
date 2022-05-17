@@ -1,13 +1,19 @@
 package Models;
 
 public class Contacts {
-
+    /**
+     * declarations for contact class
+     */
     private int contactId;
 
     private String contactName;
 
     private String email;
 
+    /**
+     * Contact class getters and setters
+     * @return
+     */
     public int getContactId() {
         return contactId;
     }
@@ -37,6 +43,10 @@ public class Contacts {
         this.contactName = contactName;
     }
 
+    /**
+     * allows the contact name to be returned as string
+     * @return
+     */
     @Override
     public String toString() {
         return contactName;

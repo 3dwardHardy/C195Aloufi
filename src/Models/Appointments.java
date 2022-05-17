@@ -44,7 +44,20 @@ private String contactName;
 public ObservableList<Appointments> appointments;
 
 
-
+    /**
+     * Appointment class constructors
+     * @param apptId
+     * @param title
+     * @param description
+     * @param location
+     * @param contactId
+     * @param type
+     * @param startTime
+     * @param endTime
+     * @param customerId
+     * @param userId
+     * @param contactName
+     */
     public Appointments(int apptId, String title, String description, String location, int contactId,
                         String type, Timestamp startTime, Timestamp endTime, int customerId,
                         int userId, String contactName) {
@@ -84,7 +97,10 @@ public ObservableList<Appointments> appointments;
         this.contactId = contactId;
     }
 
-
+    /**
+     * appointment class getters and setters.
+     * @return
+     */
     public int getApptId() {
         return apptId;
     }
@@ -189,10 +205,18 @@ public ObservableList<Appointments> appointments;
         this.contactName = contactName;
     }
 
+    /**
+     * get list call
+     * @return
+     */
     public ObservableList<Appointments> getAppointments() {
         return appointments;
     }
 
+    /**
+     * get list call
+     * @param appointments
+     */
     public void setAppointments(ObservableList<Appointments> appointments) {
         this.appointments = appointments;
     }
