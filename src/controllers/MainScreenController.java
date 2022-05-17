@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -159,8 +161,8 @@ public class MainScreenController implements Initializable {
         } else if (ViewGroup.getSelectedToggle().equals(viewWeekBtn)) {
             ObservableList<Appointments> appts = AppointmentsDAO.getAppts();
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime startWeek = now.minusWeeks(1);
-            LocalDateTime endWeek = now.plusWeeks(1);
+            LocalDateTime startWeek = now.with(DayOfWeek.MONDAY);
+            LocalDateTime endWeek = now.with(DayOfWeek.SUNDAY);
             /**
              * Lambda to filter by the next 7 days;  to generate within week appt view.
              * Also left original sql statement to show the amount of code saved by this lambda function.
