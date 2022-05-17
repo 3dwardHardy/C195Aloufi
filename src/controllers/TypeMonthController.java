@@ -38,12 +38,22 @@ public class TypeMonthController implements Initializable {
     @FXML
     private TextField monthTxt;
 
+    /**
+     * Sets the type combo box with all the types currently listed in the database.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<String> types = AppointmentsDAO.getApptsByType();
         typeCombo.setItems(types);
     }
 
+    /**
+     * Upon a user click will transport back to the report menu screen.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleBack(ActionEvent actionEvent) throws IOException {
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
         Parent scene = FXMLLoader.load(getClass().getResource("/reportMenu.FXML"));
@@ -53,9 +63,15 @@ public class TypeMonthController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * On user click this will fill the tableview with the user selected data.
+     * @param actionEvent
+     */
     public void handleGenerate(ActionEvent actionEvent) {
-
-            int month = Integer.parseInt(monthTxt.getText());
+        /**
+         * Verifies the user entered a month number to search by. I.E. 1- for January etc. Will generate an error if empty.
+         */
+        int month = Integer.parseInt(monthTxt.getText());
             if(monthTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -64,8 +80,10 @@ public class TypeMonthController implements Initializable {
                 alert.showAndWait();
                 return;
             }
-
-            String type = typeCombo.getSelectionModel().getSelectedItem();
+        /**
+         * Ensure a combo box selection or will generate and error.
+         */
+        String type = typeCombo.getSelectionModel().getSelectedItem();
             if(type == null){
                 Alert alert1 = new Alert(Alert.AlertType.ERROR);
                 alert1.setTitle("Error");
