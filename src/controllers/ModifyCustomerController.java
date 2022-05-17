@@ -130,8 +130,7 @@ public class ModifyCustomerController implements Initializable {
                 stage.setScene(new Scene(scene));
                 stage.show();
             }
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
         }
     }
@@ -174,22 +173,31 @@ public class ModifyCustomerController implements Initializable {
             stateCombo.setItems(null);
         }
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        modCustomerIdTxt.setText(String.valueOf(selected.getCustomerId( )));
+        modCustomerIdTxt.setText(String.valueOf(selected.getCustomerId()));
         modCustomerNameTxt.setText(selected.getCustomerName());
         modCustomerAddressTxt.setText(selected.getAddress());
         modPostalTxt.setText(selected.getPostalCode());
         modPhoneTxt.setText(selected.getPhone());
+        try {
+            Countries country = CountriesDAO.getCountry(selected.getCountry());
+            countryCombo.setValue(country);
+
+            FirstLevelDivisions firstLevel = FirstLevelDivisionDAO.getState(selected.getDivisionId());
+            stateCombo.setValue(firstLevel);
 
 
+            ObservableList<Countries> countries = CountriesDAO.getCountryId();
+            countryCombo.setItems(countries);
 
-        ObservableList<Countries> countries = CountriesDAO.getCountryId();
-        countryCombo.setItems(countries);
-
-        ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getFirstLevel();
-        stateCombo.setItems(firstLevelDivisions);
+            ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getFirstLevel();
+            stateCombo.setItems(firstLevelDivisions);
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

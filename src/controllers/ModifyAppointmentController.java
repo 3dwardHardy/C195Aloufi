@@ -74,9 +74,16 @@ public class ModifyAppointmentController implements Initializable {
     }
 
 
-
+    /**
+     * This code block gathers and sets appointment data on the selection of the save button.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void handleSave(ActionEvent actionEvent) throws SQLException {
         try {
+            /**
+             * exception handlers to ensure non null entries.
+             */
             if (titleTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Add Appointment Error");
@@ -173,12 +180,18 @@ public class ModifyAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             } else {
-                ;
+                /**
+                 * If exception handlers pass the else block collects the input data to send to the database.
+                 */
                 int apptId = Integer.parseInt(apptIdTxt.getText());
                 int customerId = (customerIdCombo.getValue().getCustomerId());
                 ObservableList<Appointments> customerAppts = AppointmentsDAO.getApptsByCustomerID(customerId);
 
-
+                /**
+                 * * this code block handles the  time zone conversions for appointments when the data is collected
+                 * from the add appointment form.
+                 * It also handles exception checking to ensure appointment overlap does not exist.
+                 */
                 ObservableList<Appointments> timeList = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.
                         getSelectionModel().getSelectedItem().getCustomerId());
                 String fullStartTime = startDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " +
@@ -189,6 +202,9 @@ public class ModifyAppointmentController implements Initializable {
                 Timestamp endTimeStamp = Timestamp.valueOf(fullEndTime);
                 Boolean apptConflict = AppointmentsDAO.checkForOverlappingAppointment(startTimeStamp, endTimeStamp, (customerIdCombo.getValue().getCustomerId()));
 
+                /**
+                 * Gathers the local date and time info.
+                 */
                 LocalDate setStartDate = LocalDate.parse(startDate.getValue().toString());
                 LocalTime setStartTime = LocalTime.parse(startTimeCombo.getValue());
                 LocalDate setEndDate = LocalDate.parse(endDate.getValue().toString());
@@ -197,6 +213,9 @@ public class ModifyAppointmentController implements Initializable {
                 ZonedDateTime startZoneTime = ZonedDateTime.of(setStartDate, setStartTime, localZone);
                 ZonedDateTime endZoneTime = ZonedDateTime.of(setEndDate, setEndTime, localZone);
 
+                /**
+                 * Sets the office hours values in the EST time zone.
+                 */
                 ZoneId estZoneId = ZoneId.of("US/Eastern");
                 LocalDate officeOpenDate = LocalDate.parse(startDate.getValue().toString());
                 LocalTime officeOpenTime = LocalTime.of(8, 00, 00);
@@ -204,14 +223,20 @@ public class ModifyAppointmentController implements Initializable {
                 LocalDate officeCloseDate = LocalDate.parse(endDate.getValue().toString());
                 LocalTime officeCloseTime = LocalTime.of(22, 00, 00);
                 ZonedDateTime officeCloseZDT = ZonedDateTime.of(officeCloseDate, officeCloseTime, localZone);
-
+                /**
+                 * This converts the office times to the local times zone to ensure scheduling cannot occur outside the
+                 * offices EST business hours.
+                 * also sets exception handlers to inform the user they cannot schedule out business hours.
+                 */
                 ZonedDateTime adjustedStart = officeOpenZDT.withZoneSameInstant(localZone);
                 ZonedDateTime adjustedEnd = officeCloseZDT.withZoneSameInstant(localZone);
 
                 if (((startZoneTime.isAfter(adjustedStart)) || (startZoneTime.equals(adjustedStart))) &&
                         ((endZoneTime.isBefore(adjustedEnd)) || (endZoneTime.equals(adjustedEnd)))) {
                     if (startTimeStamp.before(endTimeStamp)) {
-
+                        /**
+                         * this code calls the sql statement and sends it the update appointment data to update in the database.
+                         */
                         AppointmentsDAO.updateAppointment(titleTxt.getText(),
                                 descriptionTxt.getText(),
                                 locationTxt.getText(),
@@ -238,7 +263,14 @@ public class ModifyAppointmentController implements Initializable {
                     return;
                 }
                 if (apptConflict == true) {
+                    /**
+                     * This if statement was added to ensure that the appointment conflict message did not bother the appointment
+                     * creation process if the appointment was the same. before adding this if statement you could not update an appointment
+                     * and keep the time the same. This code ensures that does not happen anymore. It does this by comparing the apptId and if it
+                     * is the same will allow the appointment to be updated.
+                     */
                     if (selected.getApptId() == Integer.parseInt(apptIdTxt.getText())) {
+
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Appointment Created");
                         alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
@@ -266,6 +298,13 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
+    /**
+     * This code handles the cancel button. It will ask for confirmation then if confirmation recieved will send user back
+     * to the main screen. If confirmation not given returns the user to the appointment form screen.
+     * @param actionEvent
+     * @throws IOException
+     */
+
     public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Cancel");
@@ -282,6 +321,10 @@ public class ModifyAppointmentController implements Initializable {
         }
     }
 
+    /**
+     * This code clears the form for the user if they wish to have a blank form.
+     * @param actionEvent
+     */
     public void handleClear(ActionEvent actionEvent) {
         titleTxt.setText("");
         descriptionTxt.setText("");
@@ -299,6 +342,9 @@ public class ModifyAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)  {
         try {
+            /**
+             * This code populates the appointment form with the data obtained from the main screen.
+             */
             apptIdTxt.setText(String.valueOf(selected.getApptId()));
             titleTxt.setText(selected.getTitle());
             descriptionTxt.setText(selected.getDescription());
@@ -323,6 +369,9 @@ public class ModifyAppointmentController implements Initializable {
 
 
         try {
+            /**
+             * This code calls observable lists to populate the combo boxes.
+             */
             ObservableList<Customers> customers = CustomersDAO.getCustomerID();
             customerIdCombo.setItems(customers);
 
@@ -332,6 +381,9 @@ public class ModifyAppointmentController implements Initializable {
             ObservableList<Contacts> contacts = ContactsDAO.getContactID();
             contactCombo.setItems(contacts);
 
+            /**
+             * This populates the combo boxes with fifteen minute intervals for appointment creation/updating.
+             */
             ObservableList<String> time = FXCollections.observableArrayList();
             LocalTime start = LocalTime.of(7, 0, 0, 0);
             LocalTime end = LocalTime.of(23, 0, 0, 0);

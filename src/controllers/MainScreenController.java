@@ -4,6 +4,7 @@ import Models.Appointments;
 import database.AppointmentsDAO;
 import helper.JDBC;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -72,6 +75,9 @@ public class MainScreenController implements Initializable {
 
     static ObservableList<Appointments> appointments;
 
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+
 
     public void handleCustomerMenu(ActionEvent actionEvent) throws IOException {
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
@@ -118,7 +124,7 @@ public class MainScreenController implements Initializable {
         stage.centerOnScreen();
     }
     @FXML
-    void ViewGroup (ActionEvent event) {
+    void ViewGroup (ActionEvent event) throws SQLException {
 
         if (viewAllBtn.isSelected()) {
             try {
@@ -129,21 +135,37 @@ public class MainScreenController implements Initializable {
                 e.printStackTrace();
             }
         } else if (ViewGroup.getSelectedToggle().equals(viewMonthBtn)) {
-            try {
-                appointments = AppointmentsDAO.getApptsMonth();
-                appointmentsTableView.setItems(appointments);
-                appointmentsTableView.refresh();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ObservableList<Appointments> appts = AppointmentsDAO.getAppts();
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime month = now.plusMonths(1);
+
+            /**
+             * lambda to filter appointment list to get appointments within month view,
+             * this shows all appointments with in the next 30 days.
+             * this greatly reduced my amount of code.
+             */
+            FilteredList<Appointments> filterMonth = new FilteredList<>(appts);
+            filterMonth.setPredicate(row -> {
+                LocalDateTime start = (row.getStartTime().toLocalDateTime());
+                return start.isAfter(now) && start.isBefore(month);
+            });
+
+            appointmentsTableView.setItems(filterMonth);
+
+
         } else if (ViewGroup.getSelectedToggle().equals(viewWeekBtn)) {
-            try {
-                appointments = AppointmentsDAO.getApptsWeek();
-                appointmentsTableView.setItems(appointments);
-                appointmentsTableView.refresh();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ObservableList<Appointments> appts = AppointmentsDAO.getAppts();
+            LocalDateTime current = LocalDateTime.now();
+            LocalDateTime currentWeek = current.plusWeeks(1);
+            /**
+             * lambda to filter by the next 7 days;  to generate within week appt view.
+             */
+            FilteredList<Appointments> appointmentsFilteredList = new FilteredList<>(appts);
+            appointmentsFilteredList.setPredicate(row -> {
+                LocalDateTime start = (row.getStartTime().toLocalDateTime());
+                return start.isAfter(current) && start.isBefore(currentWeek);
+            });
+            appointmentsTableView.setItems(appointmentsFilteredList);
         }
     }
 

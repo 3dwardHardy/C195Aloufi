@@ -1,5 +1,6 @@
 package database;
 
+import Models.Countries;
 import Models.FirstLevelDivisions;
 import helper.JDBC;
 import javafx.collections.FXCollections;
@@ -70,5 +71,23 @@ public class FirstLevelDivisionDAO {
             sqlException.printStackTrace();
         }
         return filterStates;
+    }
+    public static FirstLevelDivisions getState(int state) throws SQLException {
+        try {
+            String sqlStatement = "SELECT Division, Division_ID FROM first_level_divisions WHERE Division_ID = ?";
+            PreparedStatement preparedStatement = JDBC.connection.prepareStatement(sqlStatement);
+            preparedStatement.setInt(1, state);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String selectedState = resultSet.getString("Division");
+                int divisionId = resultSet.getInt("Division_ID");
+                FirstLevelDivisions chosenDivision= new FirstLevelDivisions(divisionId, selectedState);
+                return chosenDivision;
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return null;
     }
 }

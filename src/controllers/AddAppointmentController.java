@@ -68,8 +68,17 @@ public class AddAppointmentController implements Initializable {
     private DatePicker endDate;
 
 
-    public void handleSave(ActionEvent actionEvent) throws SQLException, IOException {
+    /**
+     * This handles all the needed actions for gathering and setting up a new appointment.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
+    public void handleSave(ActionEvent actionEvent) throws IOException {
         try {
+            /**
+             * this if sequence handles the exceptions required to alert the user of missing data entries.
+             */
             Appointments appointments = new Appointments();
             if (titleTxt.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -183,7 +192,10 @@ public class AddAppointmentController implements Initializable {
                 return;
             }
 
-
+            /**
+             * this code block handles the  time zone conversions for appointments when the data is collected from the add appointment form.
+             * it also handles exception checking to ensure appointment overlap does not exist.
+             */
             ObservableList<Appointments> timeList = AppointmentsDAO.getApptsByCustomerID(customerIdCombo.getSelectionModel().getSelectedItem().getCustomerId());
             String fullStartTime = startDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " " + (startTimeCombo.getValue() + ":00");
             Timestamp startTimeStamp = Timestamp.valueOf(fullStartTime);
@@ -191,6 +203,9 @@ public class AddAppointmentController implements Initializable {
             Timestamp endTimeStamp = Timestamp.valueOf(fullEndTime);
             Boolean apptConflict = AppointmentsDAO.checkForOverlappingAppointment(startTimeStamp, endTimeStamp, customerIdCombo.getValue().getCustomerId());
 
+            /**
+             * Gathers the local date and time info.
+             */
             LocalDate setStartDate = LocalDate.parse(startDate.getValue().toString());
             LocalTime setStartTime = LocalTime.parse(startTimeCombo.getValue());
             LocalDate setEndDate = LocalDate.parse(endDate.getValue().toString());
@@ -198,6 +213,10 @@ public class AddAppointmentController implements Initializable {
             ZoneId localZone = ZoneId.of(TimeZone.getDefault().getID());
             ZonedDateTime startZoneTime = ZonedDateTime.of(setStartDate, setStartTime, localZone);
             ZonedDateTime endZoneTime = ZonedDateTime.of(setEndDate, setEndTime, localZone);
+
+            /**
+             * Sets the office hours values in the EST time zone.
+             */
 
             ZoneId estZoneId = ZoneId.of("US/Eastern");
             LocalDate officeOpenDate = LocalDate.parse(startDate.getValue().toString());
@@ -207,6 +226,11 @@ public class AddAppointmentController implements Initializable {
             LocalTime officeCloseTime = LocalTime.of(22, 00, 00);
             ZonedDateTime officeCloseZDT = ZonedDateTime.of(officeCloseDate, officeCloseTime, localZone);
 
+            /**
+             * This converts the office times to the local times zone to ensure scheduling cannot occur outside the
+             * offices EST business hours.
+             * also sets exception handlers to inform the user they cannot schedule out business hours.
+             */
             ZonedDateTime adjustedStart = officeOpenZDT.withZoneSameInstant(localZone);
             ZonedDateTime adjustedEnd = officeCloseZDT.withZoneSameInstant(localZone);
 
@@ -234,6 +258,9 @@ public class AddAppointmentController implements Initializable {
                 alert.showAndWait();
                 return;
             } else {
+                /**
+                 * Creates the new appointment if all exception handlers pass without error.
+                 */
                 AppointmentsDAO.createAppt(appointments);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -241,7 +268,9 @@ public class AddAppointmentController implements Initializable {
                 alert.setHeaderText("Appointment is scheduled for: " + customerIdCombo.getValue());
                 alert.setContentText("The appointment has been added to the schedule.");
                 alert.showAndWait();
-
+                /**
+                 * takes user back to main screen after appointment creation message is given.
+                 */
                 Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
                 Parent scene = FXMLLoader.load(getClass().getResource("/mainScreen.FXML"));
                 stage.setTitle("Appointment Management System");
@@ -254,7 +283,13 @@ public class AddAppointmentController implements Initializable {
         }
     }
 
-        public void handleCancel(ActionEvent actionEvent) throws IOException {
+    /**
+     * This method block handles the cancel buttons and if the user confirms cancellation returns them to the main screen
+     * if they confirm they want to cancel appointment creation. Otherwise, keeps them on the creation screen if confirmation is not given.
+     * @param actionEvent
+     * @throws IOException
+     */
+    public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Cancel");
         alert.setHeaderText("Are sure you wish to cancel creating this appointment?");
@@ -271,6 +306,11 @@ public class AddAppointmentController implements Initializable {
     }
 
 
+    /**
+     * This code handles the clear button which wipes all entries from the form and selects all combo boxes and datepickers
+     * to null values, giving the user a clean slate to work on so to speak.
+     * @param actionEvent
+     */
     public void handleClear(ActionEvent actionEvent) {
         appointmentIdTxt.setText("");
         titleTxt.setText("");
@@ -289,6 +329,9 @@ public class AddAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        /**
+         * These observable lists are generated and set to fill the combo boxes on the form.
+         */
         try {
             ObservableList<Customers> customers = CustomersDAO.getCustomerID();
             customerIdCombo.setItems(customers);
@@ -299,6 +342,9 @@ public class AddAppointmentController implements Initializable {
             ObservableList<Contacts> contacts = ContactsDAO.getContactID();
             contactCombo.setItems(contacts);
 
+            /**
+             * This code block generates the time selection for the Start and End time Combo boxes.
+             */
             ObservableList<String> time = FXCollections.observableArrayList();
             LocalTime start = LocalTime.of(7,0, 0, 0);
             LocalTime end = LocalTime.of(23, 0, 0, 0);
