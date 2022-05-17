@@ -56,6 +56,10 @@ public class ApptsByContactController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
+            /**
+             * This code populates the contact combo box so a user can select the contact for the report they wish to view.
+             * also sets the table values to match the data to the appropriate columns.
+             */
 
             ObservableList<Contacts> contacts = ContactsDAO.getContactID();
             contactCombo.setItems(contacts);
@@ -73,6 +77,11 @@ public class ApptsByContactController implements Initializable {
         }
     }
 
+    /**
+     * Handles the back button action, takes the user back to the report menu.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleBack(ActionEvent actionEvent) throws IOException {
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
         Parent scene = FXMLLoader.load(getClass().getResource("/reportMenu.FXML"));
@@ -82,6 +91,11 @@ public class ApptsByContactController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * This handles the Generate button action and uses a sql statement to get the data for the chosen contact.
+     * Then populates the table with the recieved data.
+     * @param actionEvent
+     */
     public void handleGenerate(ActionEvent actionEvent) {
         int contactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
 

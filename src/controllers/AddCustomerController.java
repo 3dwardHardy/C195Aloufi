@@ -49,6 +49,11 @@ public class AddCustomerController implements Initializable {
 
     Parent scene;
 
+    /**
+     * Handles the action of a country being selected and populates the state/province combo box with the associated values.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void handleFirstLevelDivision(ActionEvent actionEvent) throws SQLException {
         try {
             ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.getFirstLevel();
@@ -63,6 +68,11 @@ public class AddCustomerController implements Initializable {
         }
     }
 
+    /**
+     * Handles the save button onClick action to verify customer data has been input and pushed to the database function upon passing error
+     * checks.
+     * @param actionEvent
+     */
     public void handleSave(ActionEvent actionEvent) {
         try {
             if (customerNameTxt.getText().isEmpty()) {
@@ -119,6 +129,9 @@ public class AddCustomerController implements Initializable {
                 return;
 
             } else {
+                /**
+                 * Code reaches this else point after error checking and gets all the form input for the database.
+                 */
                 Customers customer = new Customers();
                 customer.setCustomerName(customerNameTxt.getText());
                 customer.setAddress(customerAddressTxt.getText());
@@ -141,6 +154,10 @@ public class AddCustomerController implements Initializable {
         }
     }
 
+    /**
+     * Clears the form on a clear button click.
+     * @param actionEvent
+     */
     public void handleClear(ActionEvent actionEvent) {
         customerIdTxt.setText("");
         customerNameTxt.setText("");
@@ -150,6 +167,13 @@ public class AddCustomerController implements Initializable {
         countryCombo.getSelectionModel().clearSelection();
         stateCombo.getSelectionModel().clearSelection();
     }
+
+    /**
+     * This handle the cancel button click. It will prompt the user for confirmation that they wish to leave and takes them
+     * back to the customer menu. If no confirmation received stays on the add customer form screen.
+     * @param actionEvent
+     * @throws IOException
+     */
 
     public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -167,6 +191,11 @@ public class AddCustomerController implements Initializable {
         }
     }
 
+    /**
+     * These code blocks populate the country and state/province combo boxes.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ObservableList<Countries> countries = CountriesDAO.getCountryId();
@@ -176,3 +205,4 @@ public class AddCustomerController implements Initializable {
         stateCombo.setItems(firstLevelDivisions);
     }
 }
+

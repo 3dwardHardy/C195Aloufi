@@ -50,7 +50,11 @@ public class ApptsByCustomerController implements Initializable {
     @FXML
     private ComboBox<Customers> customerCombo;
 
-
+    /**
+     * Handle the back button onClick action and takes the user back to the report menu.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleBack(ActionEvent actionEvent) throws IOException {
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
         Parent scene = FXMLLoader.load(getClass().getResource("/reportMenu.FXML"));
@@ -60,6 +64,12 @@ public class ApptsByCustomerController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * This calls for the database info for the appointent data for the chosen customer and uses the data to populate
+     * the table view.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void handleGenerate(ActionEvent actionEvent) throws SQLException {
         int customerIds = customerCombo.getSelectionModel().getSelectedItem().getCustomerId();
 
@@ -75,6 +85,11 @@ public class ApptsByCustomerController implements Initializable {
         }
     }
 
+    /**
+     * This sets up the initial table view and populates the customer combo box for the user to select.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

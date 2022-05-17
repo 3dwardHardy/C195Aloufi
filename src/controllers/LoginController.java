@@ -64,13 +64,23 @@ public class LoginController implements Initializable {
 
     private ResourceBundle resourceBundle;
 
-
+    /**
+     * This handles the login button click event.
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void handleLogin(ActionEvent actionEvent) throws IOException, SQLException {
         String username = userNameTxt.getText();
         String password = passTxt.getText();
-
+        /**
+         * this boolean will check that login is valid by compare the information in the form to the database information.
+         * if the data does not match an error will generate advising the user of an invalid username or password.
+         */
         boolean validLogon = UsersDAO.validLogin(username, password);
-
+        /**
+         * Checks that the username field has a value, if it does not will generate an error message advising of such.
+         */
         if (username.isEmpty()) {
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -81,7 +91,9 @@ public class LoginController implements Initializable {
                 return;
             }
         }
-
+        /**
+         * Checks that the password field has a value, if it does not will generate an error message advising of such.
+         */
         if (password.isEmpty()) {
             if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -92,7 +104,11 @@ public class LoginController implements Initializable {
                 return;
             }
         }
-
+        /**
+         * calls the login boolean and if a valid login is not found will generate an error stating as such. It also contains the
+         * logging method call to track the login's whether they are successful or not. If a successful login has taken place
+         * it will then load the main screen view.
+         */
         if (!validLogon) {
             Logger.loginAttempts(username, password);
 
@@ -116,15 +132,28 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Resets the login form fields on user selection.
+     * @param actionEvent
+     */
     public void handleReset(ActionEvent actionEvent) {
         userNameTxt.setText("");
         passTxt.setText("");
     }
 
+    /**
+     * Exits the program on Exit button click.
+     * @param actionEvent
+     */
     public void handleExit(ActionEvent actionEvent) {
         System.exit(0);
     }
 
+    /**
+     * This methods alerts the user that there is an appointment occurring in the next 15 minutes.
+     * It does this by calling the database and comparing the stored data times to the local times.
+     * It also displays the errors in Fnglish or French based on locale.
+     */
     public void apptAlert() {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDateTime LDTPlus15 = localDateTime.plusMinutes(15);
@@ -167,8 +196,15 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * This calls the language resources to handle the French/English differences in error messages.
+     * Also set the whole form to the desired language.
+     * @param url
+     * @param resource
+     */
     @Override
     public void initialize(URL url, ResourceBundle resource) {
+
 
         resourceBundle = ResourceBundle.getBundle("Language/language", Locale.getDefault());
 
@@ -186,6 +222,10 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handles the combo option for English language selection.
+     * @param actionEvent
+     */
     public void handleEnglish(ActionEvent actionEvent) {
         ResourceBundle  resource = ResourceBundle.getBundle("Language/language", Locale.ENGLISH);
         userLabel.setText(resource.getString("username"));
@@ -200,6 +240,10 @@ public class LoginController implements Initializable {
 
     }
 
+    /**
+     * Handles a user selecting the French option in the dropdown menu of the login form.
+     * @param actionEvent
+     */
     public void handleFrench(ActionEvent actionEvent) {
         ResourceBundle  resource = ResourceBundle.getBundle("Language/language", Locale.FRENCH);
         userLabel.setText(resource.getString("username"));

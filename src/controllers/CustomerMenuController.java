@@ -48,7 +48,12 @@ public class CustomerMenuController implements Initializable {
 
     static ObservableList<Customers> customers;
 
-
+    /**
+     * Sets up the initial view of the customer table on the launch of the customer menu.
+     * Calls the database resource to get the information to populate the table columns.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -66,6 +71,11 @@ public class CustomerMenuController implements Initializable {
         }
     }
 
+    /**
+     * Handles the Add customer click, takes the user to the add customer form.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleAddCustomer(ActionEvent actionEvent) throws IOException {
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
         Parent scene = FXMLLoader.load(getClass().getResource("/addCustomer.FXML"));
@@ -75,6 +85,13 @@ public class CustomerMenuController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Handles the modify customer button, and will take a user to the modify customer form. If no customer is selected generates
+     * an error to select a customer to modify.
+     * It also includes a function to send the data to the modify customer form so that the data is autofilled with the existing entries.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleModCustomer(ActionEvent actionEvent) throws IOException {
         ModifyCustomerController.retrieveCustomer(customerTableView.getSelectionModel().getSelectedItem());
         if (customerTableView.getSelectionModel().getSelectedItem() != null) {
@@ -93,6 +110,15 @@ public class CustomerMenuController implements Initializable {
         }
     }
 
+    /**
+     * This handles the customer delete option. It will generate an error if no customer has been selected to modify. It will the call the
+     * database to check if the customer has an existing appointment. If they do it will not allow the customer to be deleted
+     * and will generate a corresponding error message. If it shows the customer has no existing appointments
+     * it will generate a message that the customer profile has been removed.
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void handleDeleteCustomer(ActionEvent actionEvent) throws IOException, SQLException {
         if (customerTableView.getSelectionModel().getSelectedItem() != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -143,6 +169,13 @@ public class CustomerMenuController implements Initializable {
         }
     }
 
+    /**
+     * This handles a user pressing the cancel button. It will ask for confirmation that the wish to cancel and if confirmation
+     * is received will go back to the main screen of the program. If confirmation is not received it will close the error and
+     * stay on the current screen.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleCancel(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Cancel");

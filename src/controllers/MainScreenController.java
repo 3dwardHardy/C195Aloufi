@@ -21,8 +21,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -77,10 +75,12 @@ public class MainScreenController implements Initializable {
 
     static ObservableList<Appointments> appointments;
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
-
+    /**
+     * Handles the customer menu button. On click loads the customer menu page.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleCustomerMenu(ActionEvent actionEvent) throws IOException {
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
         Parent scene = FXMLLoader.load(getClass().getResource("/customerMenu.FXML"));
@@ -90,6 +90,11 @@ public class MainScreenController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Handles the add appointment button. On click loads the add appointment screen.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleAddAppt(ActionEvent actionEvent) throws IOException{
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
         Parent scene = FXMLLoader.load(getClass().getResource("/addAppointment.FXML"));
@@ -99,6 +104,14 @@ public class MainScreenController implements Initializable {
         stage.centerOnScreen();
     }
 
+    /**
+     * Handles the modify appointment button. On click, it will check to see if an appointment from the table view was selected.
+     * If no selection has been made, will generate an error. If a selection was made it will grab the selected data and use it to populate the
+     * modify appointment screen on it's launch.
+     * @param actionEvent
+     * @throws IOException
+     * @throws SQLException
+     */
     public void handleModifyAppt(ActionEvent actionEvent) throws IOException, SQLException {
     ModifyAppointmentController.retrieveAppts(appointmentsTableView.getSelectionModel().getSelectedItem());
         if (appointmentsTableView.getSelectionModel().getSelectedItem() != null) {
@@ -117,17 +130,30 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * This handles the report button. On click will take the user to the report menu.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void handleReports(ActionEvent actionEvent) throws IOException{
         Stage stage = ((Stage) ((Button) actionEvent.getSource()).getScene().getWindow());
         Parent scene = FXMLLoader.load(getClass().getResource("/reportMenu.FXML"));
-        stage.setTitle("Report Selection");
+        stage.setTitle("Report Menu");
         stage.setScene(new Scene(scene));
         stage.show();
         stage.centerOnScreen();
     }
+
+    /**
+     * This sets the view group for the radio buttons and will update the table view by which button is selected.
+     * @param event
+     * @throws SQLException
+     */
     @FXML
     void ViewGroup (ActionEvent event) throws SQLException {
-
+        /**
+         * The view all button is selected by default. This ensures the appointment data is displayed in whole.
+         */
         if (viewAllBtn.isSelected()) {
             try {
                 appointments = AppointmentsDAO.getAppts();
@@ -164,13 +190,13 @@ public class MainScreenController implements Initializable {
             LocalDateTime startWeek = now.with(DayOfWeek.MONDAY);
             LocalDateTime endWeek = now.with(DayOfWeek.SUNDAY);
             /**
-             * Lambda to filter by the next 7 days;  to generate within week appt view.
+             * Lambda to filter by the week to generate the week appt view.
              * Also left original sql statement to show the amount of code saved by this lambda function.
              */
             FilteredList<Appointments> appointmentsFilteredList = new FilteredList<>(appts);
             appointmentsFilteredList.setPredicate(row -> {
                 LocalDateTime start = (row.getStartTime().toLocalDateTime());
-                if (startWeek.isAfter(start) || endWeek.isBefore(start)) {
+                if (startWeek.isEqual(start) || endWeek.isBefore(start)) {
                     return false;
                 }
                 return true;
