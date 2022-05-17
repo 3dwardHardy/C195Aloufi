@@ -162,7 +162,8 @@ public class MainScreenController implements Initializable {
             LocalDateTime startWeek = now.minusWeeks(1);
             LocalDateTime endWeek = now.plusWeeks(1);
             /**
-             * lambda to filter by the next 7 days;  to generate within week appt view.
+             * Lambda to filter by the next 7 days;  to generate within week appt view.
+             * Also left original sql statement to show the amount of code saved by this lambda function.
              */
             FilteredList<Appointments> appointmentsFilteredList = new FilteredList<>(appts);
             appointmentsFilteredList.setPredicate(row -> {
