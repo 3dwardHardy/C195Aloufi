@@ -222,14 +222,20 @@ public class ModifyCustomerController implements Initializable {
             ObservableList<Countries> countries = CountriesDAO.getCountryId();
             countryCombo.setItems(countries);
 
-            handleFilterStates(selected.getDivisionId());
+            FilterStates(selected.getDivisionId());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void handleFilterStates(int divisionId) {
+    /**
+     * added the handle filter state action item as a method to be callable on the form load. This ensures that
+     * the state/province combo box is properly filtered, as before adding and calling this method when the modify
+     * form would load, it would list all first level divisions rather than just the ones associated with the prefilled country.
+     * @param divisionId
+     */
+    private void FilterStates(int divisionId) {
         try {
             ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.getFirstLevel();
             stateCombo.setItems(divisions);
