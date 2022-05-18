@@ -174,6 +174,7 @@ public class LoginController implements Initializable {
                         if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle(resourceBundle.getString("apptAlert"));
+                            alert.setHeaderText(resourceBundle.getString("upcoming"));
                             alert.setContentText(resourceBundle.getString("lessThan15") + "\n" + appt.getApptId() + "\n" +
                                     resourceBundle.getString("occurs") + "\n" + appt.getStartTime().toLocalDateTime());
                             alert.showAndWait();
@@ -184,6 +185,7 @@ public class LoginController implements Initializable {
                     if (Locale.getDefault().getLanguage().equals("fr") || Locale.getDefault().getLanguage().equals("en")) {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle(resourceBundle.getString("apptAlert"));
+                        alert.setHeaderText(resourceBundle.getString("noUpcoming"));
                         alert.setContentText(resourceBundle.getString("noAppts"));
                         alert.showAndWait();
                     }
