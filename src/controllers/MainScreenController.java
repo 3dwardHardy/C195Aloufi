@@ -182,6 +182,7 @@ public class MainScreenController implements Initializable {
             });
 
             appointmentsTableView.setItems(filterMonth);
+            appointmentsTableView.refresh();
 
 
         } else if (ViewGroup.getSelectedToggle().equals(viewWeekBtn)) {
@@ -202,6 +203,7 @@ public class MainScreenController implements Initializable {
                 return true;
             });
             appointmentsTableView.setItems(appointmentsFilteredList);
+            appointmentsTableView.refresh();
         }
     }
 
