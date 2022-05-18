@@ -196,7 +196,7 @@ public class MainScreenController implements Initializable {
             FilteredList<Appointments> appointmentsFilteredList = new FilteredList<>(appts);
             appointmentsFilteredList.setPredicate(row -> {
                 LocalDateTime start = (row.getStartTime().toLocalDateTime());
-                if (startWeek.isAfter(start)  || endWeek.isBefore(start)) {
+                if (startWeek.isAfter(start) || LocalDateTime.now().isEqual(now) || endWeek.isBefore(start)) {
                     return false;
                 }
                 return true;
