@@ -76,12 +76,21 @@ public class TypeMonthController implements Initializable {
         /**
          * Verifies the user entered a month number to search by. I.E. 1- for January etc. Will generate an error if empty.
          */
-        int month = Integer.parseInt(monthTxt.getText());
+        try {
+        Integer.parseInt(monthTxt.getText());
         if (monthTxt.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("You did not enter a month!");
             alert.setContentText("Please enter a month number and try again.");
+            alert.showAndWait();
+            return;
+        }
+        }catch (NumberFormatException numberFormatException) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("This only accepts number input!");
+            alert.setContentText("Please enter the month number to search for and try again.");
             alert.showAndWait();
             return;
         }
@@ -98,6 +107,7 @@ public class TypeMonthController implements Initializable {
             alert1.showAndWait();
             return;
         }
+        Integer month = Integer.parseInt(monthTxt.getText());
         typeMonthTableView.setItems(AppointmentsDAO.getApptsByTypeMonth(type, month));
         apptId.setCellValueFactory(new PropertyValueFactory<>("apptId"));
         startTime.setCellValueFactory(new PropertyValueFactory<>("startTime"));
