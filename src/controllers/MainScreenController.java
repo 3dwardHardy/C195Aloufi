@@ -19,10 +19,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 
 
 
@@ -188,16 +191,17 @@ public class MainScreenController implements Initializable {
         } else if (ViewGroup.getSelectedToggle().equals(viewWeekBtn)) {
             ObservableList<Appointments> appts = AppointmentsDAO.getAppts();
             LocalDateTime now = LocalDateTime.now();
-            LocalDateTime startWeek = now.with(DayOfWeek.MONDAY);
-            LocalDateTime endWeek = now.with(DayOfWeek.SUNDAY);
+            LocalDateTime startWeek = now.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+            LocalDateTime endWeek = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
             /**
              * Lambda to filter by the week to generate the week appt view.
              * Also left original sql statement to show the amount of code saved by this lambda function.
              */
             FilteredList<Appointments> appointmentsFilteredList = new FilteredList<>(appts);
             appointmentsFilteredList.setPredicate(row -> {
-                LocalDateTime start = (row.getStartTime().toLocalDateTime());
-                if (startWeek.isAfter(start) || LocalDateTime.now().isEqual(now) || endWeek.isBefore(start)) {
+               LocalDateTime start = (row.getStartTime().toLocalDateTime());
+               if (startWeek.isAfter(start) || endWeek.isBefore(start)) {
                     return false;
                 }
                 return true;
@@ -243,7 +247,7 @@ public class MainScreenController implements Initializable {
             alert.setHeaderText("Do you wish to delete this appointment?");
             alert.setContentText("This will remove the appointment from the database. Press OK to confirm.");
             Optional<ButtonType> result = alert.showAndWait();
-
+            if(result.get() == ButtonType.OK)
             try {
                 AppointmentsDAO.deleteAppts(appointmentsTableView.getSelectionModel().getSelectedItem().getApptId());
                 Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
