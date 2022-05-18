@@ -33,7 +33,9 @@ From the main screen a user can navigate to the report's menu by clicking the Re
 This will open a menu with
 buttons to select a specific report. The user simply clicks the type of report they wish to generate and then will be
 navigated to that screen. Selecting the generate button will run the report after a user has made the appropriate selections.
-This is done mostly via combo boxes. The cancel button will take the user back to the report menu.
+This is done mostly via combo boxes. The type/ month report does require a number value to be input for
+the month in order to generate.
+ The cancel button will take the user back to the report menu.
 From there they can hit the cancel button to go back to the main appointment view screen.
 
 Additional Report: The additional report I included shows all appoints for a selected customer.
