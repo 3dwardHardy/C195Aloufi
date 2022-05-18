@@ -222,12 +222,23 @@ public class ModifyCustomerController implements Initializable {
             ObservableList<Countries> countries = CountriesDAO.getCountryId();
             countryCombo.setItems(countries);
 
-            ObservableList<FirstLevelDivisions> firstLevelDivisions = FirstLevelDivisionDAO.getFirstLevel();
-            stateCombo.setItems(firstLevelDivisions);
-
+            handleFilterStates(selected.getDivisionId());
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleFilterStates(int divisionId) {
+        try {
+            ObservableList<FirstLevelDivisions> divisions = FirstLevelDivisionDAO.getFirstLevel();
+            stateCombo.setItems(divisions);
+
+            ObservableList<FirstLevelDivisions> division = FirstLevelDivisionDAO.returnDivisionCountry
+                    (countryCombo.getSelectionModel().getSelectedItem().getCountryId());
+            stateCombo.setItems(division);
+        } catch (NullPointerException nullPointerException) {
+            stateCombo.setItems(null);
         }
     }
 }
