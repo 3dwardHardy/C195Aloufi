@@ -12,9 +12,10 @@ public class Contacts {
 
     /**
      * Contact class getters and setters
+     *
      * @return
      */
-    public int getContactId() {
+    public Integer getContactId() {
         return contactId;
     }
 

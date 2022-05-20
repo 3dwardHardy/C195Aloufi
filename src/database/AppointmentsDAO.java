@@ -216,11 +216,29 @@ public class AppointmentsDAO {
     }
 
     /**
+     * utilizes a Lambda Expression to filter the appointments list by Contact ID; this is utilized in the get reports function
+     * when the getApptsByContactId method is called.
+     * {@code @Lambda}
+     * @param contactId
+     * @return
+     * @throws SQLException
+     */
+    public static ObservableList<Appointments> getApptsByContactId(int contactId) throws SQLException {
+        ObservableList<Appointments> appts = getAppts();
+        ObservableList<Appointments> contacts = appts.filtered(apts -> {
+            if (apts.getContactId() == contactId) {
+                return true;
+            }
+            return false;
+        });
+        return contacts;
+    }
+    /**
      * This returns a list of appointments in the database by the contact ID.
      * @param contactId
      * @return
      */
-    public static ObservableList<Appointments> getApptsByContactId(int contactId) {
+    /**public static ObservableList<Appointments> getApptsByContactId(int contactId) {
 
         ObservableList<Appointments> appts = FXCollections.observableArrayList();
 

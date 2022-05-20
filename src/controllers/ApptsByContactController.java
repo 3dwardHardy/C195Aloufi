@@ -94,9 +94,11 @@ public class ApptsByContactController implements Initializable {
     /**
      * This handles the Generate button action and uses a sql statement to get the data for the chosen contact.
      * Then populates the table with the recieved data.
+     * This utilizes te getApptsByContactId Lambda housed in on the Appointments DAO page.
+     * @Lambda
      * @param actionEvent
      */
-    public void handleGenerate(ActionEvent actionEvent) {
+    public void handleGenerate(ActionEvent actionEvent) throws SQLException {
         int contactId = contactCombo.getSelectionModel().getSelectedItem().getContactId();
 
         if (contactId > 0) {

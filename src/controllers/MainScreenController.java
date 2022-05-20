@@ -20,9 +20,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
-import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -171,7 +169,7 @@ public class MainScreenController implements Initializable {
             LocalDateTime endMonth = LocalDateTime.now().withDayOfMonth(31);
 
             /**
-             * Lambda to filter appointment list to get appointments within month view.
+             * @Lambda to filter appointment list to get appointments within month view.
              * this greatly reduced my amount of code, because previously I was using a long winded SQL function.
              * which I noted out of the code to show the difference in methods.
              */
@@ -195,7 +193,7 @@ public class MainScreenController implements Initializable {
             LocalDateTime endWeek = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
             /**
-             * Lambda to filter by the week to generate the week appt view.
+             * @Lambda to filter by the week to generate the week appt view.
              * Also left original sql statement to show the amount of code saved by this lambda function.
              */
             FilteredList<Appointments> appointmentsFilteredList = new FilteredList<>(appts);
